@@ -1,0 +1,42 @@
+﻿@using App.Frontend.BackendLink
+@using CSharpFunctionalExtensions
+@using Serilog
+@inject IWebHostEnvironment _hostEnvironment;
+@{
+	ViewData["Title"] = "Home Page";
+
+	const string entryName = "main";
+}
+
+<div id="app-entry"></div>
+
+
+@section Head
+{
+	@if (_hostEnvironment.IsDevelopment())
+	{
+		const string devFileNameJs = $"https://localhost:3000/src/entries/{entryName}.ts";
+		<script type="module" src="@devFileNameJs"></script>
+	}
+	else
+	{
+		var (hasValue, sources) = FullStackGlue.GetSources(entryName);
+
+		if (!hasValue)
+		{
+			Log.Warning(messageTemplate: "No sources found for entry {EntryName}", entryName);
+			return;
+		}
+
+		var (cssFiles, javaScriptFile) = sources;
+
+		foreach (var cssFile in cssFiles)
+		{
+			var source = FullStackGlue.BuildOutputDirectory + cssFile;
+			<link rel="stylesheet" href="@source"/>
+		}
+		var finalJsFilePath = FullStackGlue.BuildOutputDirectory + javaScriptFile;
+		<script type="module" src="@finalJsFilePath"></script>
+	}
+
+}

@@ -2,7 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B8AD9433-B688-44DB-A1D8-0B70A5B68778}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetViteWithHMR", "src\DotNetViteWithHMR\DotNetViteWithHMR.csproj", "{709DF0B9-97FD-4C05-9979-D9E9B367F8C7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App", "src\App\App.csproj", "{709DF0B9-97FD-4C05-9979-D9E9B367F8C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "src\Utility\Utility.csproj", "{D8B2B8FD-1EEE-4D20-82BD-172D3360DCDF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,8 +16,13 @@ Global
 		{709DF0B9-97FD-4C05-9979-D9E9B367F8C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{709DF0B9-97FD-4C05-9979-D9E9B367F8C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{709DF0B9-97FD-4C05-9979-D9E9B367F8C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8B2B8FD-1EEE-4D20-82BD-172D3360DCDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8B2B8FD-1EEE-4D20-82BD-172D3360DCDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8B2B8FD-1EEE-4D20-82BD-172D3360DCDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8B2B8FD-1EEE-4D20-82BD-172D3360DCDF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{709DF0B9-97FD-4C05-9979-D9E9B367F8C7} = {B8AD9433-B688-44DB-A1D8-0B70A5B68778}
+		{D8B2B8FD-1EEE-4D20-82BD-172D3360DCDF} = {B8AD9433-B688-44DB-A1D8-0B70A5B68778}
 	EndGlobalSection
 EndGlobal

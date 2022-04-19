@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using App.Frontend.BackendLink;
+using Microsoft.AspNetCore.Mvc;
 
-namespace DotNetViteWithHMR.Controllers;
+namespace App.Controllers;
 
 public class HomeController : Controller
 {

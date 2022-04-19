@@ -13,7 +13,7 @@ export default defineConfig({
 			// overwrite default .html entry
 			input: 'src/entries/main.ts',
 		},
-		outDir: 'dist/'
+		outDir: '../wwwroot/dist/'
 	},
 	server: {
 		host: 'localhost',

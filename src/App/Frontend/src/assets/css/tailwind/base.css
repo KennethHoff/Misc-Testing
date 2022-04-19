@@ -1,0 +1,9 @@
+@layer base {
+	:root {
+		--pink: hsl(320, 100%, 50%);
+		--red: hsl(0, 100%, 50%);
+
+		--primary-color: var(--pink);
+		--secondary-color: var(--red);
+	}
+}
