@@ -5,8 +5,12 @@ using Serilog;
 
 namespace App.Frontend.BackendLink;
 
+// TODO: Figure out a better way to access the `wwwroot/dist/assets/` directory without giving the user access to the other files.
+// Currently this only affects the `manifest.json` file, but I can foresee this being a problem for other files.
+
 internal static class FullStackGlue
 {
+	
 	public const string BuildOutputDirectory = "dist/";
 
 	internal static Maybe<FrontendSources> GetSources(string entryFileName)

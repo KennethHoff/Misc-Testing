@@ -21,12 +21,4 @@
     <ItemGroup>
       <ProjectReference Include="..\Utility\Utility.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <_ContentIncludedByDefault Remove="Frontend\dist\manifest.json" />
-      <_ContentIncludedByDefault Remove="Frontend\package.json" />
-      <_ContentIncludedByDefault Remove="Frontend\tsconfig.json" />
-      <_ContentIncludedByDefault Remove="Frontend\tsconfig.node.json" />
-    </ItemGroup>
-
 </Project>
