@@ -1,0 +1,1 @@
+<div>Dette er min test page for Svelte + Vite med HMR i .Net</div>
