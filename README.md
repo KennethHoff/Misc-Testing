@@ -5,4 +5,4 @@ Jeg har trodd det selv, men på vei hjem fra det møtet så tenkte jeg litt på 
 
 Jeg tok meg da litt tid til å sjekke om det faktisk var mulig å få til, og 2.5 timer senere så fikk jeg det til.
 
-Dette er da ikke en veldig utdypende løsning, men idéen er der. 
+Etter en tidlig fungerende prototype, så jobbet jeg ~3 timer til og fikk det til å kompilere riktig for Production også.
