@@ -1,4 +1,4 @@
-# ASP.Net Core 6 Solution with Svelte and Vite with working HMR
+# ASP.Net Core 6 Solution with working HMR
 
 Etter frontend møte var det snakk om at vi ikke har HMR(`Hot Module Reloading`) på grunn av at vi jobber med pseudo-SSR løsninger ved hjelp av ASP.Net. 
 Jeg har også antatt at det er en problemstilling som vi ikke kunne ha gjort noe med, men på vei hjem fra det møtet så tenkte jeg litt på det, og så følte jeg at det burde egentlig være mulig å få til.
