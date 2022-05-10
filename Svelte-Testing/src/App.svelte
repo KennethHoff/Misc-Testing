@@ -16,7 +16,6 @@
 </main>
 
 <script lang="ts">
-
 	import MobileInput from "./components/MobileInput.svelte";
 
 	let hasTriedToSubmit = false;
