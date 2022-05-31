@@ -1,0 +1,45 @@
+:root {
+    --invalid-color: red;
+    --valid-color: green;
+}
+
+main {
+    width: min(90%, 40rem);
+    margin-block-start: 3rem;
+    margin-inline: auto;
+    display: grid;
+    gap: 2rem;
+}
+
+form input:valid {
+    border-color: var(--valid-color);
+}
+
+form input:invalid {
+    border-color: var(--invalid-color);
+}
+
+form label {
+    font-weight: 700;
+}
+
+form > fieldset {
+    display: flex;
+    gap: 2rem;
+}
+
+.invisible {
+    display: none;
+}
+
+button {
+    height: fit-content;
+}
+
+[class="*flex-"] {
+    display: flex;
+}
+
+.flex-space-between {
+    place-content: space-between;
+}

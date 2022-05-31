@@ -1,0 +1,5 @@
+import { setupCrossInputValidation } from "./instances/crossInputValidation.js";
+import { setupCustomValidationPatterns } from "./instances/customValidationPatterns.js";
+setupCrossInputValidation();
+setupCustomValidationPatterns();
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJpbmRleC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxPQUFPLEVBQUMseUJBQXlCLEVBQUMsTUFBTSxxQ0FBcUMsQ0FBQztBQUM5RSxPQUFPLEVBQUMsNkJBQTZCLEVBQUMsTUFBTSx5Q0FBeUMsQ0FBQztBQUV0Rix5QkFBeUIsRUFBRSxDQUFDO0FBQzVCLDZCQUE2QixFQUFFLENBQUMifQ==
