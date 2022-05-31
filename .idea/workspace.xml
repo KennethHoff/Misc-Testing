@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="f56397b0-8b7f-4b2c-902c-8734feda7c97" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/DotNetViteWithHMR.sln" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/App.csproj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/Controllers/HomeController.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/Frontend/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/Frontend/BackendLink/FullStackGlue.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/Frontend/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/Frontend/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/Frontend/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/Frontend/pnpm-lock.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/Frontend/postcss.config.cjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/Frontend/src/assets/css/tailwind/base.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/Frontend/src/assets/css/tailwind/index.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/Frontend/src/assets/svelte.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/Frontend/src/entries/main.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/Frontend/src/pages/TestPage.svelte" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/Frontend/src/vite-env.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/Frontend/svelte.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/Frontend/tailwind.config.cjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/Frontend/tsconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/Frontend/tsconfig.node.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/Frontend/vite.config.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/Program.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/Properties/launchSettings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/Views/Home/Index.cshtml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/Views/Shared/_Layout.cshtml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/Views/_ViewImports.cshtml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/Views/_ViewStart.cshtml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/appsettings.Development.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/appsettings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/App/wwwroot/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/Utility/Extensions/IenumerableExtensions.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DotNetWithHMR-Testing/src/Utility/Utility.csproj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Svelte-Testing/.editorconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Svelte-Testing/.eslintrc.cjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Svelte-Testing/.prettierrc.cjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Svelte-Testing/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Svelte-Testing/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Svelte-Testing/pnpm-lock.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Svelte-Testing/postcss.config.cjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Svelte-Testing/public/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Svelte-Testing/src/App.svelte" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Svelte-Testing/src/assets/svelte.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Svelte-Testing/src/assets/tailwindStyles.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Svelte-Testing/src/components/MobileInput.svelte" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Svelte-Testing/src/main.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Svelte-Testing/src/utilities/InputUtilities.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Svelte-Testing/src/utilities/RandomUtilities.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Svelte-Testing/src/vite-env.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Svelte-Testing/svelte.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Svelte-Testing/tailwind.config.cjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Svelte-Testing/tsconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Svelte-Testing/tsconfig.node.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Svelte-Testing/vite.config.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Vanilla-Testing/.editorconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Vanilla-Testing/.eslintrc.cjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Vanilla-Testing/.pnpm-debug.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Vanilla-Testing/.prettierrc.cjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Vanilla-Testing/favicon.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Vanilla-Testing/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Vanilla-Testing/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Vanilla-Testing/pnpm-lock.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Vanilla-Testing/postcss.config.cjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Vanilla-Testing/src/main.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Vanilla-Testing/src/style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Vanilla-Testing/src/vite-env.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Vanilla-Testing/tailwind.config.cjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Vanilla-Testing/tsconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../input-validation/assets/css/index.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../input-validation/assets/scripts/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../input-validation/assets/scripts/index.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../input-validation/assets/scripts/instances/crossInputValidation.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../input-validation/assets/scripts/instances/crossInputValidation.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../input-validation/assets/scripts/instances/customValidationPatterns.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../input-validation/assets/scripts/instances/customValidationPatterns.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../input-validation/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../input-validation/tsconfig.json" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="29wn7WKqG6TtiYrp0E4eVRhVoPs" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/home/kennethhoff/Documents/Development/Personal/Misc-Testing/input-validation",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f56397b0-8b7f-4b2c-902c-8734feda7c97" name="Changes" comment="" />
+      <created>1654032848207</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1654032848207</updated>
+      <workItem from="1654032849306" duration="6000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+    <option name="exactExcludedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/input-validation/assets/scripts/index.js" />
+        <option value="$PROJECT_DIR$/input-validation/assets/scripts/instances/customValidationPatterns.js" />
+        <option value="$PROJECT_DIR$/input-validation/assets/scripts/instances/crossInputValidation.js" />
+      </list>
+    </option>
+  </component>
+</project>
