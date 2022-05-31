@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link
+			href="favicon.svg"
+			rel="icon"
+			type="image/svg+xml"
+		/>
+		<meta
+			content="width=device-width, initial-scale=1.0"
+			name="viewport"
+		/>
+		<title>Vite App</title>
+	</head>
+	<body>
+		<form class="flex flex-col">
+			<input
+				class="w-max peer"
+				id="mobileInput"
+				maxlength="8"
+				minlength="8"
+				oninput="onMobileInputChange"
+				pattern="[0-9]{8}"
+				required
+				type="tel"
+			/>
+			<label
+				class="peer-invalid:text-red-500 peer-valid:text-green-500"
+				for="mobileInput"
+				>Enter your phone number</label
+			>
+		</form>
+		<script
+			src="/src/main.ts"
+			type="module"
+		></script>
+	</body>
+</html>
