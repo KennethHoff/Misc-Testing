@@ -5,6 +5,10 @@
 p {
     color: var(--bad-color);
 
+    span {
+        color: blue;
+    }
+
     :has(span)
     {
         color: var(--good-color);
