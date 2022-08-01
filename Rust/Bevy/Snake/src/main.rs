@@ -2,11 +2,11 @@ use bevy::log::{Level, LogSettings};
 use bevy::prelude::*;
 use bevy::window::PresentMode;
 
+mod camera;
 mod food;
 mod grid;
-mod snake;
 mod meta;
-mod camera;
+mod snake;
 
 const CLEAR: Color = Color::rgb(0.04, 0.04, 0.04);
 const WINDOW_BASE_WIDTH: f32 = 500.;

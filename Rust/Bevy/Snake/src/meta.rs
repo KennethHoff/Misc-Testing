@@ -1,8 +1,5 @@
+use crate::{food, grid, snake};
 use bevy::prelude::*;
-
-use crate::food::Food;
-use crate::grid::GridDimensions;
-use crate::snake::{spawn_snake, SnakeSegment, SnakeSegments};
 
 pub struct Plugin;
 
@@ -22,18 +19,18 @@ fn meta_input_system(keyboard_input: Res<Input<KeyCode>>) {
 }
 
 fn game_over_system(
-    segment_res: ResMut<SnakeSegments>,
-    segments_query: Query<Entity, With<SnakeSegment>>,
-    food_query: Query<Entity, With<Food>>,
+    segment_res: ResMut<snake::Segments>,
+    segments_query: Query<Entity, With<snake::Segment>>,
+    food_query: Query<Entity, With<food::Food>>,
     mut commands: Commands,
     mut game_over_reader: EventReader<GameOverEvent>,
-    mut dimensions: ResMut<GridDimensions>,
+    mut dimensions: ResMut<grid::Dimensions>,
 ) {
     if game_over_reader.iter().next().is_some() {
         for entity in food_query.iter().chain(segments_query.iter()) {
             commands.entity(entity).despawn();
         }
-        spawn_snake(commands, segment_res);
-        *dimensions = GridDimensions::default();
+        snake::spawn(commands, segment_res);
+        *dimensions = grid::Dimensions::default();
     }
 }

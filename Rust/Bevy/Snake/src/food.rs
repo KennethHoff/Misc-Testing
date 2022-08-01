@@ -1,10 +1,6 @@
+use crate::{grid, snake};
 use bevy::core::FixedTimestep;
 use bevy::prelude::*;
-use crate::grid::{GridDimensions, GridPosition, GridSize};
-
-
-use crate::snake::{SnakeSegments};
-
 
 pub struct Plugin;
 
@@ -25,9 +21,9 @@ pub struct Food;
 
 fn food_spawning_system(
     mut commands: Commands,
-    segments: ResMut<SnakeSegments>,
-    mut query: Query<&mut GridPosition>,
-    dimensions: Res<GridDimensions>
+    segments: ResMut<snake::Segments>,
+    mut query: Query<&mut grid::Position>,
+    dimensions: Res<grid::Dimensions>,
 ) {
     commands
         .spawn_bundle(SpriteBundle {
@@ -39,18 +35,18 @@ fn food_spawning_system(
         })
         .insert(Food)
         .insert(get_random_valid_position(segments, &mut query, dimensions))
-        .insert(GridSize::square(0.5));
+        .insert(grid::Size::square(0.5));
 }
 
 fn get_random_valid_position(
-    segments: ResMut<SnakeSegments>,
-    query: &mut Query<&mut GridPosition>,
-    dimensions: Res<GridDimensions>
-) -> GridPosition {
+    segments: ResMut<snake::Segments>,
+    query: &mut Query<&mut grid::Position>,
+    dimensions: Res<grid::Dimensions>,
+) -> grid::Position {
     let occupied_positions = segments
         .iter()
         .map(|s| *query.get_mut(*s).unwrap())
-        .collect::<Vec<GridPosition>>();
+        .collect::<Vec<grid::Position>>();
 
     let mut new_position = get_random_position(&dimensions);
     while occupied_positions.contains(&new_position) {
@@ -59,8 +55,8 @@ fn get_random_valid_position(
     new_position
 }
 
-fn get_random_position(dimensions: &Res<GridDimensions>) -> GridPosition {
-    GridPosition {
+fn get_random_position(dimensions: &Res<grid::Dimensions>) -> grid::Position {
+    grid::Position {
         x: (rand::random::<f32>() * dimensions.width as f32) as i32,
         y: (rand::random::<f32>() * dimensions.height as f32) as i32,
     }
