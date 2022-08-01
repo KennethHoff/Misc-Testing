@@ -73,12 +73,12 @@ impl GridDirection {
 
 fn size_scaling(
     windows: Res<Windows>,
-    mut entities: Query<(&mut Transform, &GridSize)>,
+    mut query: Query<(&mut Transform, &GridSize)>,
     dimensions: Res<GridDimensions>,
 ) {
     match windows.get_primary() {
         Some(window) => {
-            for (mut transform, sprite_size) in entities.iter_mut() {
+            for (mut transform, sprite_size) in query.iter_mut() {
                 transform.scale = Vec3::new(
                     sprite_size.width / dimensions.width as f32 * window.width() as f32,
                     sprite_size.height / dimensions.height as f32 * window.height() as f32,
@@ -94,7 +94,7 @@ fn size_scaling(
 
 fn position_translation(
     windows: Res<Windows>,
-    mut entities: Query<(&mut Transform, &GridPosition)>,
+    mut query: Query<(&mut Transform, &GridPosition)>,
     dimensions: Res<GridDimensions>,
 ) {
     fn convert(pos: f32, bound_window: f32, bound_game: f32) -> f32 {
@@ -103,7 +103,7 @@ fn position_translation(
     }
     match windows.get_primary() {
         Some(window) => {
-            for (mut transform, pos) in entities.iter_mut() {
+            for (mut transform, pos) in query.iter_mut() {
                 transform.translation = Vec3::new(
                     convert(pos.x as f32, window.width() as f32, dimensions.width as f32),
                     convert(

@@ -23,14 +23,14 @@ fn meta_input_system(keyboard_input: Res<Input<KeyCode>>) {
 
 fn game_over_system(
     segment_res: ResMut<SnakeSegments>,
-    snake_segments: Query<Entity, With<SnakeSegment>>,
-    food_items: Query<Entity, With<Food>>,
+    segments_query: Query<Entity, With<SnakeSegment>>,
+    food_query: Query<Entity, With<Food>>,
     mut commands: Commands,
     mut game_over_reader: EventReader<GameOverEvent>,
     mut dimensions: ResMut<GridDimensions>,
 ) {
     if game_over_reader.iter().next().is_some() {
-        for entity in food_items.iter().chain(snake_segments.iter()) {
+        for entity in food_query.iter().chain(segments_query.iter()) {
             commands.entity(entity).despawn();
         }
         spawn_snake(commands, segment_res);

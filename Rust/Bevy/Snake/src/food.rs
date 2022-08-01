@@ -26,7 +26,7 @@ pub struct Food;
 fn food_spawning_system(
     mut commands: Commands,
     segments: ResMut<SnakeSegments>,
-    mut positions: Query<&mut GridPosition>,
+    mut query: Query<&mut GridPosition>,
     dimensions: Res<GridDimensions>
 ) {
     commands
@@ -38,18 +38,18 @@ fn food_spawning_system(
             ..default()
         })
         .insert(Food)
-        .insert(get_random_valid_position(segments, &mut positions, dimensions))
+        .insert(get_random_valid_position(segments, &mut query, dimensions))
         .insert(GridSize::square(0.5));
 }
 
 fn get_random_valid_position(
     segments: ResMut<SnakeSegments>,
-    positions: &mut Query<&mut GridPosition>,
+    query: &mut Query<&mut GridPosition>,
     dimensions: Res<GridDimensions>
 ) -> GridPosition {
     let occupied_positions = segments
         .iter()
-        .map(|s| *positions.get_mut(*s).unwrap())
+        .map(|s| *query.get_mut(*s).unwrap())
         .collect::<Vec<GridPosition>>();
 
     let mut new_position = get_random_position(&dimensions);

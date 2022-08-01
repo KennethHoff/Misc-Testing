@@ -45,13 +45,13 @@ struct GrowthEvent;
 struct LastTailPosition(Option<GridPosition>);
 fn eating_system(
     mut commands: Commands,
-    head_positions: Query<&GridPosition, With<SnakeHead>>,
-    food_items: Query<(Entity, &GridPosition), With<Food>>,
+    snake_head_query: Query<&GridPosition, With<SnakeHead>>,
+    food_query: Query<(Entity, &GridPosition), With<Food>>,
     mut growth_writer: EventWriter<GrowthEvent>,
 ) {
-    match head_positions.iter().next() {
+    match snake_head_query.iter().next() {
         Some(head_pos) => {
-            for (food_entity, food_pos) in food_items.iter() {
+            for (food_entity, food_pos) in food_query.iter() {
                 if head_pos == food_pos {
                     commands.entity(food_entity).despawn();
                     growth_writer.send(GrowthEvent);
@@ -80,17 +80,17 @@ fn movement_system(
     mut game_over_writer: EventWriter<GameOverEvent>,
     mut last_tail_position: ResMut<LastTailPosition>,
     segments: ResMut<SnakeSegments>,
-    mut heads: Query<(Entity, &mut SnakeHead)>,
-    mut positions: Query<&mut GridPosition>,
+    mut snake_head_query: Query<(Entity, &mut SnakeHead)>,
+    mut position_query: Query<&mut GridPosition>,
     dimensions: Res<GridDimensions>,
 ) {
-    if let Some((head_entity, mut head)) = heads.iter_mut().next() {
+    if let Some((head_entity, mut head)) = snake_head_query.iter_mut().next() {
         let segment_positions = segments
             .iter()
-            .map(|s| *positions.get_mut(*s).unwrap())
+            .map(|s| *position_query.get_mut(*s).unwrap())
             .collect::<Vec<GridPosition>>();
 
-        let mut head_pos = positions.get_mut(head_entity).unwrap();
+        let mut head_pos = position_query.get_mut(head_entity).unwrap();
 
         head.movement_direction = head.input_direction;
 
@@ -117,14 +117,14 @@ fn movement_system(
             .iter()
             .zip(segments.iter().skip(1))
             .for_each(|(pos, segment)| {
-                *positions.get_mut(*segment).unwrap() = *pos;
+                *position_query.get_mut(*segment).unwrap() = *pos;
             });
         *last_tail_position = LastTailPosition(Some(*segment_positions.last().unwrap()));
     }
 }
 
-fn movement_input_system(keyboard_input: Res<Input<KeyCode>>, mut heads: Query<&mut SnakeHead>) {
-    if let Some(mut head) = heads.iter_mut().next() {
+fn movement_input_system(keyboard_input: Res<Input<KeyCode>>, mut query: Query<&mut SnakeHead>) {
+    if let Some(mut head) = query.iter_mut().next() {
         let dir: GridDirection =
             if keyboard_input.pressed(KeyCode::Left) || keyboard_input.pressed(KeyCode::A) {
                 GridDirection::Left
@@ -172,7 +172,6 @@ pub fn spawn_snake(mut commands: Commands, mut segments: ResMut<SnakeSegments>) 
             .id(),
         spawn_segment(commands, GridPosition { x: 3, y: 2 }),
     ]);
-
 }
 
 fn spawn_segment(mut commands: Commands, position: GridPosition) -> Entity {
