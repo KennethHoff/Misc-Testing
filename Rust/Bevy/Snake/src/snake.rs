@@ -12,15 +12,15 @@ impl bevy::prelude::Plugin for Plugin {
         app.insert_resource(SnakeSegments::default())
             .insert_resource(LastTailPosition::default())
             .add_event::<GrowthEvent>()
-            .add_startup_system(spawn_snake)
+            .add_startup_system(spawning_system)
             .add_system_set(
                 SystemSet::new()
                     .with_run_criteria(FixedTimestep::step(0.2))
-                    .with_system(snake_movement)
-                    .with_system(snake_eating.after(snake_movement))
-                    .with_system(snake_growth.after(snake_eating)),
+                    .with_system(movement_system)
+                    .with_system(eating_system.after(movement_system))
+                    .with_system(growth_system.after(eating_system)),
             )
-            .add_system(snake_input_movement.before(snake_movement));
+            .add_system(movement_input_system.before(movement_system));
     }
 }
 
@@ -43,7 +43,7 @@ struct GrowthEvent;
 
 #[derive(Default)]
 struct LastTailPosition(Option<GridPosition>);
-fn snake_eating(
+fn eating_system(
     mut commands: Commands,
     head_positions: Query<&GridPosition, With<SnakeHead>>,
     food_items: Query<(Entity, &GridPosition), With<Food>>,
@@ -64,22 +64,19 @@ fn snake_eating(
     }
 }
 
-fn snake_growth(
+fn growth_system(
     commands: Commands,
     last_tail_position: Res<LastTailPosition>,
     mut segments: ResMut<SnakeSegments>,
     mut growth_reader: EventReader<GrowthEvent>,
 ) {
-    match growth_reader.iter().next() {
-        Some(_e) => {
-            let new_segment = spawn_segment(commands, last_tail_position.0.unwrap());
-            segments.push(new_segment);
-        }
-        None => {}
+    if let Some(_e) = growth_reader.iter().next() {
+        let new_segment = spawn_segment(commands, last_tail_position.0.unwrap());
+        segments.push(new_segment);
     };
 }
 
-fn snake_movement(
+fn movement_system(
     mut game_over_writer: EventWriter<GameOverEvent>,
     mut last_tail_position: ResMut<LastTailPosition>,
     segments: ResMut<SnakeSegments>,
@@ -126,7 +123,7 @@ fn snake_movement(
     }
 }
 
-fn snake_input_movement(keyboard_input: Res<Input<KeyCode>>, mut heads: Query<&mut SnakeHead>) {
+fn movement_input_system(keyboard_input: Res<Input<KeyCode>>, mut heads: Query<&mut SnakeHead>) {
     if let Some(mut head) = heads.iter_mut().next() {
         let dir: GridDirection =
             if keyboard_input.pressed(KeyCode::Left) || keyboard_input.pressed(KeyCode::A) {
@@ -144,6 +141,10 @@ fn snake_input_movement(keyboard_input: Res<Input<KeyCode>>, mut heads: Query<&m
             head.input_direction = dir;
         }
     }
+}
+
+fn spawning_system(commands: Commands, segments: ResMut<SnakeSegments>) {
+    spawn_snake(commands, segments);
 }
 
 pub fn spawn_snake(mut commands: Commands, mut segments: ResMut<SnakeSegments>) {
@@ -171,6 +172,7 @@ pub fn spawn_snake(mut commands: Commands, mut segments: ResMut<SnakeSegments>) 
             .id(),
         spawn_segment(commands, GridPosition { x: 3, y: 2 }),
     ]);
+
 }
 
 fn spawn_segment(mut commands: Commands, position: GridPosition) -> Entity {

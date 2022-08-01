@@ -16,13 +16,10 @@ impl bevy::prelude::Plugin for Plugin {
 
 const GRID_WIDTH_START: u32 = 10;
 const GRID_HEIGHT_START: u32 = 10;
-const GRID_SECONDS_BETWEEN_INCREASES: f64 = 2.;
 
 pub struct GridDimensions {
     pub width: u32,
     pub height: u32,
-    internal_width_scalar: f64,
-    internal_height_scalar: f64,
 }
 
 impl Default for GridDimensions {
@@ -30,32 +27,7 @@ impl Default for GridDimensions {
         GridDimensions {
             width: GRID_WIDTH_START,
             height: GRID_HEIGHT_START,
-            internal_width_scalar: GRID_WIDTH_START as f64,
-            internal_height_scalar: GRID_HEIGHT_START as f64,
         }
-    }
-}
-
-fn grid_dimension_increase(mut dimensions: ResMut<GridDimensions>, time: Res<Time>) {
-    let change_this_tick = time.delta_seconds_f64() / GRID_SECONDS_BETWEEN_INCREASES;
-    dimensions.internal_width_scalar += change_this_tick;
-    dimensions.internal_height_scalar += change_this_tick;
-    let floored_internal_width = dimensions.internal_width_scalar as u32;
-    let floored_internal_height = dimensions.internal_height_scalar as u32;
-
-    let width_should_change = floored_internal_width != dimensions.width;
-    if width_should_change {
-        dimensions.width = floored_internal_width;
-    }
-    let height_should_change = floored_internal_height != dimensions.height;
-    if height_should_change {
-        dimensions.height = floored_internal_height;
-    }
-    if width_should_change || height_should_change {
-        info!(
-            "Grid dimensions changed to {:?}x{:?}",
-            dimensions.width, dimensions.height
-        );
     }
 }
 
@@ -80,7 +52,7 @@ impl GridSize {
     }
 }
 
-#[derive(PartialEq, Copy, Clone)]
+#[derive(PartialEq, Eq, Copy, Clone)]
 pub enum GridDirection {
     Up,
     Down,

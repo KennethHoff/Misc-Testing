@@ -9,19 +9,19 @@ pub struct Plugin;
 impl bevy::prelude::Plugin for Plugin {
     fn build(&self, app: &mut App) {
         app.add_event::<GameOverEvent>()
-            .add_system(game_input_meta)
-            .add_system_to_stage(CoreStage::Last, game_over);
+            .add_system(meta_input_system)
+            .add_system_to_stage(CoreStage::Last, game_over_system);
     }
 }
 pub struct GameOverEvent;
 
-fn game_input_meta(keyboard_input: Res<Input<KeyCode>>) {
+fn meta_input_system(keyboard_input: Res<Input<KeyCode>>) {
     if keyboard_input.pressed(KeyCode::Q) {
         std::process::exit(0);
     }
 }
 
-fn game_over(
+fn game_over_system(
     segment_res: ResMut<SnakeSegments>,
     snake_segments: Query<Entity, With<SnakeSegment>>,
     food_items: Query<Entity, With<Food>>,

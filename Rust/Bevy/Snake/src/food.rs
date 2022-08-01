@@ -1,9 +1,9 @@
 use bevy::core::FixedTimestep;
 use bevy::prelude::*;
-use crate::grid::{GridDimensions, GridDirection, GridPosition, GridSize};
-use crate::KeyCode::Insert;
+use crate::grid::{GridDimensions, GridPosition, GridSize};
 
-use crate::snake::{SnakeHead, SnakeSegments};
+
+use crate::snake::{SnakeSegments};
 
 
 pub struct Plugin;
@@ -13,7 +13,7 @@ impl bevy::prelude::Plugin for Plugin {
         app.add_system_set(
             SystemSet::new()
                 .with_run_criteria(FixedTimestep::step(1.0))
-                .with_system(food_spawner),
+                .with_system(food_spawning_system),
         );
     }
 }
@@ -23,7 +23,7 @@ const FOOD_COLOR: Color = Color::rgb(1.0, 0.0, 1.0);
 #[derive(Component)]
 pub struct Food;
 
-fn food_spawner(
+fn food_spawning_system(
     mut commands: Commands,
     segments: ResMut<SnakeSegments>,
     mut positions: Query<&mut GridPosition>,
