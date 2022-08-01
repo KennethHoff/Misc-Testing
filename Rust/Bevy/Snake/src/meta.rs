@@ -4,17 +4,16 @@ use crate::food::Food;
 use crate::grid::GridDimensions;
 use crate::snake::{spawn_snake, SnakeSegment, SnakeSegments};
 
-pub struct MetaPlugin;
+pub struct Plugin;
 
-pub struct GameOverEvent;
-
-impl Plugin for MetaPlugin {
+impl bevy::prelude::Plugin for Plugin {
     fn build(&self, app: &mut App) {
         app.add_event::<GameOverEvent>()
             .add_system(game_input_meta)
             .add_system_to_stage(CoreStage::Last, game_over);
     }
 }
+pub struct GameOverEvent;
 
 fn game_input_meta(keyboard_input: Res<Input<KeyCode>>) {
     if keyboard_input.pressed(KeyCode::Q) {

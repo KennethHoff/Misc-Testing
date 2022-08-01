@@ -1,14 +1,14 @@
 use bevy::core::FixedTimestep;
 use bevy::prelude::*;
-use crate::grid::{GridDimensions, GridPosition, GridSize};
+use crate::grid::{GridDimensions, GridDirection, GridPosition, GridSize};
+use crate::KeyCode::Insert;
 
-use crate::snake::SnakeSegments;
+use crate::snake::{SnakeHead, SnakeSegments};
 
-const FOOD_COLOR: Color = Color::rgb(1.0, 0.0, 1.0);
 
-pub struct FoodPlugin;
+pub struct Plugin;
 
-impl Plugin for FoodPlugin {
+impl bevy::prelude::Plugin for Plugin {
     fn build(&self, app: &mut App) {
         app.add_system_set(
             SystemSet::new()
@@ -17,6 +17,8 @@ impl Plugin for FoodPlugin {
         );
     }
 }
+
+const FOOD_COLOR: Color = Color::rgb(1.0, 0.0, 1.0);
 
 #[derive(Component)]
 pub struct Food;

@@ -3,14 +3,11 @@ use bevy::prelude::*;
 
 use crate::food::Food;
 use crate::grid::{GridDimensions, GridDirection, GridPosition, GridSize};
-use crate::systems::GameOverEvent;
+use crate::meta::GameOverEvent;
 
-const SNAKE_HEAD_COLOR: Color = Color::rgb(0.7, 0.7, 0.7);
-const SNAKE_SEGMENT_COLOR: Color = Color::rgb(0.5, 0.5, 0.5);
+pub struct Plugin;
 
-pub struct SnakePlugin;
-
-impl Plugin for SnakePlugin {
+impl bevy::prelude::Plugin for Plugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(SnakeSegments::default())
             .insert_resource(LastTailPosition::default())
@@ -27,10 +24,13 @@ impl Plugin for SnakePlugin {
     }
 }
 
+const SNAKE_HEAD_COLOR: Color = Color::rgb(0.7, 0.7, 0.7);
+const SNAKE_SEGMENT_COLOR: Color = Color::rgb(0.5, 0.5, 0.5);
+
 #[derive(Component)]
-struct SnakeHead {
-    movement_direction: GridDirection,
-    input_direction: GridDirection,
+pub struct SnakeHead {
+    pub movement_direction: GridDirection,
+    pub input_direction: GridDirection,
 }
 
 #[derive(Component)]

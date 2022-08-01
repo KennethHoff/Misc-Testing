@@ -1,12 +1,8 @@
 use bevy::prelude::*;
 
-pub struct GridPlugin;
+pub struct Plugin;
 
-const GRID_WIDTH_START: u32 = 10;
-const GRID_HEIGHT_START: u32 = 10;
-const GRID_SECONDS_BETWEEN_INCREASES: f64 = 2.;
-
-impl Plugin for GridPlugin {
+impl bevy::prelude::Plugin for Plugin {
     fn build(&self, app: &mut App) {
         app.add_system_set_to_stage(
             CoreStage::PostUpdate,
@@ -17,6 +13,10 @@ impl Plugin for GridPlugin {
         .insert_resource(GridDimensions::default());
     }
 }
+
+const GRID_WIDTH_START: u32 = 10;
+const GRID_HEIGHT_START: u32 = 10;
+const GRID_SECONDS_BETWEEN_INCREASES: f64 = 2.;
 
 pub struct GridDimensions {
     pub width: u32,
