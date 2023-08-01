@@ -45,45 +45,27 @@ namespace Oxx.Backend.Analyzers {
             }
         }
         
-        internal static string AB0001Description {
+        internal static string OBA0001Title {
             get {
-                return ResourceManager.GetString("AB0001Description", resourceCulture);
+                return ResourceManager.GetString("OBA0001Title", resourceCulture);
             }
         }
         
-        internal static string AB0001MessageFormat {
+        internal static string OBA0001Description {
             get {
-                return ResourceManager.GetString("AB0001MessageFormat", resourceCulture);
+                return ResourceManager.GetString("OBA0001Description", resourceCulture);
             }
         }
         
-        internal static string AB0001Title {
+        internal static string OBA0001MessageFormat {
             get {
-                return ResourceManager.GetString("AB0001Title", resourceCulture);
+                return ResourceManager.GetString("OBA0001MessageFormat", resourceCulture);
             }
         }
         
-        internal static string AB0001CodeFixTitle {
+        internal static string OBA0001CodeFixTitle {
             get {
-                return ResourceManager.GetString("AB0001CodeFixTitle", resourceCulture);
-            }
-        }
-        
-        internal static string AB0002Description {
-            get {
-                return ResourceManager.GetString("AB0002Description", resourceCulture);
-            }
-        }
-        
-        internal static string AB0002MessageFormat {
-            get {
-                return ResourceManager.GetString("AB0002MessageFormat", resourceCulture);
-            }
-        }
-        
-        internal static string AB0002Title {
-            get {
-                return ResourceManager.GetString("AB0002Title", resourceCulture);
+                return ResourceManager.GetString("OBA0001CodeFixTitle", resourceCulture);
             }
         }
     }

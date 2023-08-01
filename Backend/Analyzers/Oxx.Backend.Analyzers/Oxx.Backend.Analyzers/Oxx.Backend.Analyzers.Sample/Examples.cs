@@ -2,18 +2,9 @@
 // ReSharper disable UnusedMember.Global
 namespace Oxx.Backend.Analyzers.Sample;
 
-// If you don't see warnings, build the Analyzers Project.
-
-public class Examples
+public class RequiredPropertyExamples
 {
-    public class CommonClass // Try to apply quick fix using the IDE.
-    {
-    }
-
-    public void ToStars()
-    {
-        var spaceship = new Spaceship();
-        spaceship.SetSpeed(300000000); // Invalid value, it should be highlighted.
-        spaceship.SetSpeed(42);
-    }
+    public required string? FirstName { get; set; }
+    public required string? LastName { get; set; }
+    public required string? Email { get; set; }
 }
