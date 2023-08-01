@@ -1,6 +1,5 @@
 # Roslyn Analyzers
 
-## Content
 ### Oxx.Backend.Analyzers
 A .NET Standard project with implementations of sample analyzers and code fix providers.
 **You must build this project to see the results (warnings) in the IDE.**
