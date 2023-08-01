@@ -1,6 +1,4 @@
-# Roslyn Analyzers Sample
-
-A set of three sample projects that includes Roslyn analyzers with code fix providers. Enjoy this template to learn from and modify analyzers for your own needs.
+# Roslyn Analyzers
 
 ## Content
 ### Oxx.Backend.Analyzers
