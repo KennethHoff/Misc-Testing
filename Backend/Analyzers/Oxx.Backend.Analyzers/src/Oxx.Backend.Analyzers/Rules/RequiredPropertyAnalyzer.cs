@@ -24,7 +24,7 @@ public sealed class RequiredPropertyAnalyzer : DiagnosticAnalyzer
 
 	public override void Initialize(AnalysisContext context)
 	{
-		// TODO: Should this be `None` instead?
+		// This might need to be `GeneratedCodeAnalysisFlags.None` instead, but I'm not sure.
 		context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.Analyze |
 											   GeneratedCodeAnalysisFlags.ReportDiagnostics);
 		context.EnableConcurrentExecution();
