@@ -53,36 +53,42 @@ public sealed class RequiredPropertyCodeFixProvider : CodeFixProvider
     private static async Task<Document> AddRequiredKeywordAsync(Document document,
         PropertyDeclarationSyntax propertyDeclarationSyntax, CancellationToken cancellationToken)
     {
-        var newPropertyDeclarationSyntax =
-            propertyDeclarationSyntax.AddModifiers(SyntaxFactory.Token(SyntaxKind.RequiredKeyword));
-
-        var root = await document.GetSyntaxRootAsync(cancellationToken);
-
-        if (root is null)
+        // If the document doesn't have a syntax root, we can't do anything.
+        if (await document.GetSyntaxRootAsync(cancellationToken) is not { } root)
         {
             return document;
         }
 
+        // Adds the 'required' keyword to the property.
+        var newPropertyDeclarationSyntax =
+            propertyDeclarationSyntax.AddModifiers(SyntaxFactory.Token(SyntaxKind.RequiredKeyword));
+
+        // Replaces the old property with the new property.
         var newRoot = root.ReplaceNode(propertyDeclarationSyntax, newPropertyDeclarationSyntax);
 
+        // Replaces the entire document with a new one that contains the new property.
         return document.WithSyntaxRoot(newRoot);
     }
 
     private static async Task<Document> AddNullableAnnotationAsync(Document document,
         PropertyDeclarationSyntax propertyDeclarationSyntax, CancellationToken cancellationToken)
     {
-        var nullableTypeSyntax = SyntaxFactory.NullableType(propertyDeclarationSyntax.Type);
-        var newPropertyDeclarationSyntax = propertyDeclarationSyntax.WithType(nullableTypeSyntax);
-
-        var root = await document.GetSyntaxRootAsync(cancellationToken);
-
-        if (root is null)
+        // If the document doesn't have a syntax root, we can't do anything.
+        if (await document.GetSyntaxRootAsync(cancellationToken) is not { } root)
         {
             return document;
         }
 
+        // Creates the nullable annotation.
+        var nullableTypeSyntax = SyntaxFactory.NullableType(propertyDeclarationSyntax.Type);
+
+        // Adds the nullable annotation to the property.
+        var newPropertyDeclarationSyntax = propertyDeclarationSyntax.WithType(nullableTypeSyntax);
+
+        // Replaces the old property with the new property.
         var newRoot = root.ReplaceNode(propertyDeclarationSyntax, newPropertyDeclarationSyntax);
 
+        // Replaces the entire document with a new one that contains the new property.
         return document.WithSyntaxRoot(newRoot);
     }
 }
