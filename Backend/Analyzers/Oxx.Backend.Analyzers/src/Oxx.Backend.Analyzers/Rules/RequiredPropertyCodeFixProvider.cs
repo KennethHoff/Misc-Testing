@@ -36,17 +36,17 @@ public sealed class RequiredPropertyCodeFixProvider : CodeFixProvider
         // (This is the default due to it being the first Code Action registered.)
         context.RegisterCodeFix(
             CodeAction.Create(
-                title: string.Format(Resources.OBA0001CodeFix1Title),
+                title: string.Format(Resources.OXX0001CodeFix1Title),
                 createChangedDocument: c => AddRequiredKeywordAsync(context.Document, declaration, c),
-                equivalenceKey: nameof(Resources.OBA0001CodeFix1Title)),
+                equivalenceKey: nameof(Resources.OXX0001CodeFix1Title)),
             diagnostic);
 
         // Adds a Code Fixer for adding the nullable annotation. This is an alternative fixer that has to be applied manually.
         context.RegisterCodeFix(
             CodeAction.Create(
-                title: string.Format(Resources.OBA0001CodeFix2Title),
+                title: string.Format(Resources.OXX0001CodeFix2Title),
                 createChangedDocument: c => AddNullableAnnotationAsync(context.Document, declaration, c),
-                equivalenceKey: nameof(Resources.OBA0001CodeFix2Title)),
+                equivalenceKey: nameof(Resources.OXX0001CodeFix2Title)),
             diagnostic);
     }
 
