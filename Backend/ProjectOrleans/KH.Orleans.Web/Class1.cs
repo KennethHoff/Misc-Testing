@@ -2,5 +2,5 @@
 
 public class Class1
 {
-    public required string FirstName { get; set; }
+    public string FirstName { get; set; }
 }
