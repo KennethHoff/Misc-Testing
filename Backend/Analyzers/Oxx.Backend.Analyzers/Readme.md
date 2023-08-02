@@ -9,4 +9,5 @@ A .NET Standard project with implementations of sample analyzers and code fix pr
 - [RequiredPropertyCodeFixProvider.cs](Oxx.Backend.Analyzers/Oxx.Backend.Analyzers/RequiredPropertyCodeFixProvider.cs): Adds two code fixers to the RequiredPropertyAnalyzer that either:
   - Adds the `required` keyword to the property.
   - Makes the property nullable.
+
     ![Required Property Code Fix](assets/RequiredPropertyAnalyzer_CodeFixExample.png)
