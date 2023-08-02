@@ -18,15 +18,22 @@ public sealed class RequiredPropertyCodeFixProvider : CodeFixProvider
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {
-        var diagnostic = context.Diagnostics.First();
+        // Unsure if this is necessary, but it's here for reference.
+        // await Task.WhenAll(context.Diagnostics.Select(diagnostic => RegisterCodeFixesAsync(context, diagnostic)));
 
-        var diagnosticSpan = diagnostic.Location.SourceSpan;
+        await RegisterCodeFixesAsync(context, context.Diagnostics.First());
+    }
 
-        var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken);
+    private static async Task RegisterCodeFixesAsync(CodeFixContext context, Diagnostic diagnostic)
+    {
+        // If the document doesn't have a syntax root, we can't do anything.
+        if (await context.Document.GetSyntaxRootAsync(context.CancellationToken) is not { } root)
+        {
+            return;
+        }
 
-        var diagnosticNode = root?.FindNode(diagnosticSpan);
-
-        if (diagnosticNode is not PropertyDeclarationSyntax declaration)
+        // If the diagnostic node isn't a Property, we're not interested.
+        if (root.FindNode(diagnostic.Location.SourceSpan) is not PropertyDeclarationSyntax declaration)
         {
             return;
         }

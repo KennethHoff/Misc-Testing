@@ -17,13 +17,14 @@ public sealed class RequiredPropertyAnalyzer : DiagnosticAnalyzer
     private static readonly LocalizableString Description = new LocalizableResourceString(
         nameof(Resources.OXX0001Description), Resources.ResourceManager, typeof(Resources));
 
-    private static readonly DiagnosticDescriptor Rule = new(AnalyzerIds.RequiredProperty, Title, MessageFormat, Categories.Design,
-        DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
+    private static readonly DiagnosticDescriptor Rule = new(AnalyzerIds.RequiredProperty, Title, MessageFormat,
+        Categories.Design, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = ImmutableArray.Create(Rule);
 
     public override void Initialize(AnalysisContext context)
     {
+        // TODO: Should this be `None` instead?
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.Analyze |
                                                GeneratedCodeAnalysisFlags.ReportDiagnostics);
         context.EnableConcurrentExecution();
@@ -39,25 +40,17 @@ public sealed class RequiredPropertyAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        // If it's already required, we're not interested.
-        if (propertySymbol.IsRequired)
+        // If it's already required or nullable, we're not interested.
+        if (propertySymbol.IsRequired || propertySymbol.NullableAnnotation is NullableAnnotation.Annotated)
         {
             return;
         }
 
-        // Nullable properties are fine not being required as they have a sensible default.
-        if (propertySymbol.NullableAnnotation is NullableAnnotation.Annotated)
-        {
-            return;
-        }
-
-        // Otherwise, all properties must be required.
-        var diagnostic = Diagnostic.Create(Rule,
+        // Otherwise, report a diagnostic.
+        context.ReportDiagnostic(Diagnostic.Create(Rule,
             // The highlighted area in the analyzed source code. Keep it as specific as possible.
             propertySymbol.Locations[0],
             // The value is passed to the 'MessageFormat' argument of your rule.
-            propertySymbol.Name);
-
-        context.ReportDiagnostic(diagnostic);
+            propertySymbol.Name));
     }
 }
