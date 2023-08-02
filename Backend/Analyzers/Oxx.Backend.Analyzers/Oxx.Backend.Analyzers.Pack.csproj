@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <EnableDefaultItems>false</EnableDefaultItems>
+        <GenerateDependencyFile>false</GenerateDependencyFile>
+        <developmentDependency>true</developmentDependency>
+        <NoPackageAnalysis>true</NoPackageAnalysis>
+
+        <Version>1.0.0-beta05</Version>
+        <Authors>Kenneth Hoff</Authors>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        
+        <PackageId>Oxx.Backend.Analyzers</PackageId>
+        <Description>A Roslyn analyzer to enforce some good practices in C#</Description>
+        <PackageTags>OXX, analyzers</PackageTags>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="./README.md" Pack="true" PackagePath="" />
+        <None Include="$(MSBuildThisFileDirectory)/artifacts/bin/Oxx.Backend.Analyzers/release/" Pack="true" PackagePath="analyzers/dotnet/roslyn4.6/cs/" />
+    </ItemGroup>
+</Project>
