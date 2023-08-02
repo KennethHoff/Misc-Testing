@@ -23,7 +23,7 @@ By default, all analyzers are configured to report `warning`s.
 
 If you have the msbuild property `<TreatWarningsAsErrors>true</TreatWarningsAsErrors>` set (which you should), then all analyzers will report as errors.
 
-If you want to change the severity of any analyzer(From this package or otherwise), you can do so in your project's `.editorconfig` file.
+If you want to change the severity of any analyzer (From this package or otherwise), you can do so in your project's `.editorconfig` file. You can find the analyzer code by looking at the message in the IDE.
 
 ```editorconfig
 # Set the severity of the `RequiredPropertyAnalyzer`(OXX0001) to `none`. This will disable the analyzer and code fixers.
