@@ -1,16 +1,16 @@
 using Xunit;
 using Verifier =
-    Microsoft.CodeAnalysis.CSharp.Testing.XUnit.CodeFixVerifier<Oxx.Backend.Analyzers.Rules.RequiredPropertyAnalyzer,
-        Oxx.Backend.Analyzers.Rules.RequiredPropertyCodeFixProvider>;
+	Microsoft.CodeAnalysis.CSharp.Testing.XUnit.CodeFixVerifier<Oxx.Backend.Analyzers.Rules.RequiredPropertyAnalyzer,
+		Oxx.Backend.Analyzers.Rules.RequiredPropertyCodeFixProvider>;
 
 namespace Oxx.Backend.Analyzers.Tests;
 
 public class RequiredPropertyCodeFixProviderTests
 {
-    [Fact]
-    public async Task PropertyWithoutRequiredKeyword_AddRequiredKeyword()
-    {
-        const string text = """
+	[Fact]
+	public async Task PropertyWithoutRequiredKeyword_AddRequiredKeyword()
+	{
+		const string text = """
 
                             public class Person
                             {
@@ -19,7 +19,7 @@ public class RequiredPropertyCodeFixProviderTests
 
                             """;
 
-        const string newText = """
+		const string newText = """
 
                                public class Person
                                {
@@ -28,9 +28,9 @@ public class RequiredPropertyCodeFixProviderTests
 
                                """;
 
-        var expected = Verifier.Diagnostic()
-            .WithArguments("FirstName");
+		var expected = Verifier.Diagnostic()
+			.WithArguments("FirstName");
 
-        await Verifier.VerifyCodeFixAsync(text, expected, newText).ConfigureAwait(false);
-    }
+		await Verifier.VerifyCodeFixAsync(text, expected, newText).ConfigureAwait(false);
+	}
 }
