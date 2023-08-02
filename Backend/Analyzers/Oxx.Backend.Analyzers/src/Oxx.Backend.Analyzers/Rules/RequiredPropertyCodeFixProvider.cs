@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Oxx.Backend.Analyzers.Constants;
 
 namespace Oxx.Backend.Analyzers.Rules;
 
@@ -14,7 +15,7 @@ public sealed class RequiredPropertyCodeFixProvider : CodeFixProvider
 	public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 
 	public override ImmutableArray<string> FixableDiagnosticIds { get; } =
-		ImmutableArray.Create(AnalyzerIds.RequiredProperty);
+		ImmutableArray.Create(AnalyzerId.RequiredProperty);
 
 	public override async Task RegisterCodeFixesAsync(CodeFixContext context)
 	{

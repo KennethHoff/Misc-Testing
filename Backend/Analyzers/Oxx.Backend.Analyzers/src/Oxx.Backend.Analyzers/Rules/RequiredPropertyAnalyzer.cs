@@ -2,6 +2,7 @@ using System.Collections.Immutable;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Oxx.Backend.Analyzers.Constants;
 
 namespace Oxx.Backend.Analyzers.Rules;
 
@@ -17,8 +18,8 @@ public sealed class RequiredPropertyAnalyzer : DiagnosticAnalyzer
 	private static readonly LocalizableString Description = new LocalizableResourceString(
 		nameof(Resources.OXX0001Description), Resources.ResourceManager, typeof(Resources));
 
-	private static readonly DiagnosticDescriptor Rule = new(AnalyzerIds.RequiredProperty, Title, MessageFormat,
-		Categories.Design, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
+	private static readonly DiagnosticDescriptor Rule = new(AnalyzerId.RequiredProperty, Title, MessageFormat,
+		DiagnosticCategory.Design, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
 
 	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = ImmutableArray.Create(Rule);
 

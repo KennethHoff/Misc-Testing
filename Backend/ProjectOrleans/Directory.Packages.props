@@ -1,7 +1,7 @@
 <Project>
   <ItemGroup>
     <PackageVersion Include="JetBrains.Annotations" Version="2023.2.0" />
-    <PackageVersion Include="Oxx.Backend.Analyzers" Version="1.0.0-beta16">
+    <PackageVersion Include="Oxx.Backend.Analyzers" Version="1.0.0-beta17">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageVersion>
