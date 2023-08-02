@@ -7,5 +7,5 @@ public class Class1
         FirstName = firstName;
     }
 
-    public string FirstName { get; set; }
+    public required string FirstName { get; set; }
 }

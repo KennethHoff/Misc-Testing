@@ -1,7 +1,7 @@
 using Xunit;
 using Verifier =
-    Microsoft.CodeAnalysis.CSharp.Testing.XUnit.CodeFixVerifier<Oxx.Backend.Analyzers.RequiredPropertyAnalyzer,
-        Oxx.Backend.Analyzers.RequiredPropertyCodeFixProvider>;
+    Microsoft.CodeAnalysis.CSharp.Testing.XUnit.CodeFixVerifier<Oxx.Backend.Analyzers.Rules.RequiredPropertyAnalyzer,
+        Oxx.Backend.Analyzers.Rules.RequiredPropertyCodeFixProvider>;
 
 namespace Oxx.Backend.Analyzers.Tests;
 

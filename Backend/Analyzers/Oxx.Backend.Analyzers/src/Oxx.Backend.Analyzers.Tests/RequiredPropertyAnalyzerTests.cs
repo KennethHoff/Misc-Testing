@@ -1,6 +1,6 @@
 using Xunit;
 using Verifier =
-    Microsoft.CodeAnalysis.CSharp.Testing.XUnit.AnalyzerVerifier<Oxx.Backend.Analyzers.RequiredPropertyAnalyzer>;
+    Microsoft.CodeAnalysis.CSharp.Testing.XUnit.AnalyzerVerifier<Oxx.Backend.Analyzers.Rules.RequiredPropertyAnalyzer>;
 
 namespace Oxx.Backend.Analyzers.Tests;
 

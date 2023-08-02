@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Oxx.Backend.Analyzers;
+namespace Oxx.Backend.Analyzers.Rules;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp), PublicAPI("Roslyn Analyzer")]
 public sealed class RequiredPropertyAnalyzer : DiagnosticAnalyzer

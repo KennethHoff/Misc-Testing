@@ -1,4 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
+    <!-- 
+    This Project is used to build the NuGet package for the analyzers
+    This is done because it removes all the dependencies from the package 
+    -->
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <IncludeBuildOutput>false</IncludeBuildOutput>
@@ -6,18 +10,18 @@
         <GenerateDependencyFile>false</GenerateDependencyFile>
         <developmentDependency>true</developmentDependency>
         <NoPackageAnalysis>true</NoPackageAnalysis>
-
-        <Version>1.0.0-beta05</Version>
+        
+        <Version>1.0.0-beta06</Version>
         <Authors>Kenneth Hoff</Authors>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        
+
         <PackageId>Oxx.Backend.Analyzers</PackageId>
-        <Description>A Roslyn analyzer to enforce some good practices in C#</Description>
+        <Description>A set of Roslyn analyzers for OXX backend projects</Description>
         <PackageTags>OXX, analyzers</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
-        <None Include="./README.md" Pack="true" PackagePath="" />
-        <None Include="$(MSBuildThisFileDirectory)/artifacts/bin/Oxx.Backend.Analyzers/release/" Pack="true" PackagePath="analyzers/dotnet/roslyn4.6/cs/" />
+        <None Include="./Readme.md" Pack="true" PackagePath=""/>
+        <None Include="$(MSBuildThisFileDirectory)/artifacts/bin/Oxx.Backend.Analyzers/release/" Pack="true" PackagePath="analyzers/dotnet/roslyn4.6/cs/"/>
     </ItemGroup>
 </Project>

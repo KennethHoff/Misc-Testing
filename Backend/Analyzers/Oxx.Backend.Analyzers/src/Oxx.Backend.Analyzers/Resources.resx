@@ -23,7 +23,7 @@
             PublicKeyToken=b77a5c561934e089
         </value>
     </resheader>
-    
+
     <data name="OBA0001Title" xml:space="preserve">
         <value>Use the `required` keyword on all properties</value>
         <comment>The title of the diagnostic</comment>
@@ -40,4 +40,5 @@
         <value>Make property required</value>
         <comment>The title of the code fix</comment>
     </data>
+
 </root>
