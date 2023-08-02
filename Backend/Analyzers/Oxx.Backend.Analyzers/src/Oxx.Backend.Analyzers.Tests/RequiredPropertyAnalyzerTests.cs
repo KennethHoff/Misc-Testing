@@ -6,7 +6,7 @@ namespace Oxx.Backend.Analyzers.Tests;
 
 public class RequiredPropertyAnalyzerTests
 {
-    
+
     [Fact]
     public async Task NoCode_NoDiagnostics()
     {
@@ -14,7 +14,7 @@ public class RequiredPropertyAnalyzerTests
 
         await Verifier.VerifyAnalyzerAsync(text);
     }
-    
+
     [Fact]
     public async Task NonRequiredProperty_AlertDiagnostic()
     {

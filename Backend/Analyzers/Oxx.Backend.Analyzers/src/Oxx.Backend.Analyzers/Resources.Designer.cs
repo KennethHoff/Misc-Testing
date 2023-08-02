@@ -63,9 +63,15 @@ namespace Oxx.Backend.Analyzers {
             }
         }
         
-        internal static string OBA0001CodeFixTitle {
+        internal static string OBA0001CodeFix1Title {
             get {
-                return ResourceManager.GetString("OBA0001CodeFixTitle", resourceCulture);
+                return ResourceManager.GetString("OBA0001CodeFix1Title", resourceCulture);
+            }
+        }
+        
+        internal static string OBA0001CodeFix2Title {
+            get {
+                return ResourceManager.GetString("OBA0001CodeFix2Title", resourceCulture);
             }
         }
     }

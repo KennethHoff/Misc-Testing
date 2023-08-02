@@ -4,4 +4,4 @@
 
 Rule ID | Category | Severity | Notes                                          
 --------|----------|----------|------------------------------------------------
-OBA0001 | Design   | Warning  | All properties must be required.
+OBA0001 | Design   | Warning  | All non-nullable properties must be required.

@@ -25,20 +25,18 @@
     </resheader>
 
     <data name="OBA0001Title" xml:space="preserve">
-        <value>Use the `required` keyword on all properties</value>
-        <comment>The title of the diagnostic</comment>
+        <value>Non-nullable property '{0}' is not required</value>
     </data>
     <data name="OBA0001Description" xml:space="preserve">
         <value>A required property is easier to reason about than an optional one, and are therefore preferred.</value>
-        <comment>The description of the diagnostic</comment>
     </data>
     <data name="OBA0001MessageFormat" xml:space="preserve">
-        <value>Property '{0}' is not required</value>
-        <comment>The message format</comment>
+        <value>Non-nullable property '{0}' is not required</value>
     </data>
-    <data name="OBA0001CodeFixTitle" xml:space="preserve">
+    <data name="OBA0001CodeFix1Title" xml:space="preserve">
         <value>Make property required</value>
-        <comment>The title of the code fix</comment>
     </data>
-
+    <data name="OBA0001CodeFix2Title" xml:space="preserve">
+        <value>Make property nullable</value>
+    </data>
 </root>

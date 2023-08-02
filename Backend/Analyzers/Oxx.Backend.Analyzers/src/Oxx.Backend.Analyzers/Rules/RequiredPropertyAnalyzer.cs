@@ -8,16 +8,14 @@ namespace Oxx.Backend.Analyzers.Rules;
 [DiagnosticAnalyzer(LanguageNames.CSharp), PublicAPI("Roslyn Analyzer")]
 public sealed class RequiredPropertyAnalyzer : DiagnosticAnalyzer
 {
-    private static readonly LocalizableString Title = new LocalizableResourceString(nameof(Resources.OBA0001Title),
-        Resources.ResourceManager, typeof(Resources));
+    private static readonly LocalizableString Title = new LocalizableResourceString(
+        nameof(Resources.OBA0001Title), Resources.ResourceManager, typeof(Resources));
 
     private static readonly LocalizableString MessageFormat = new LocalizableResourceString(
-        nameof(Resources.OBA0001MessageFormat),
-        Resources.ResourceManager, typeof(Resources));
+        nameof(Resources.OBA0001MessageFormat), Resources.ResourceManager, typeof(Resources));
 
     private static readonly LocalizableString Description = new LocalizableResourceString(
-        nameof(Resources.OBA0001Description),
-        Resources.ResourceManager, typeof(Resources));
+        nameof(Resources.OBA0001Description), Resources.ResourceManager, typeof(Resources));
 
     private static readonly DiagnosticDescriptor Rule = new(AnalyzerIds.RequiredProperty, Title, MessageFormat, Categories.Design,
         DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
@@ -35,11 +33,25 @@ public sealed class RequiredPropertyAnalyzer : DiagnosticAnalyzer
 
     private void AnalyzeOperation(SymbolAnalysisContext context)
     {
-        if (context.Symbol is not IPropertySymbol { IsRequired: false } propertySymbol)
+        // If it's not a Property, we're not interested.
+        if (context.Symbol is not IPropertySymbol propertySymbol)
         {
             return;
         }
 
+        // If it's already required, we're not interested.
+        if (propertySymbol.IsRequired)
+        {
+            return;
+        }
+
+        // Nullable properties are fine not being required as they have a sensible default.
+        if (propertySymbol.NullableAnnotation is NullableAnnotation.Annotated)
+        {
+            return;
+        }
+
+        // Otherwise, all properties must be required.
         var diagnostic = Diagnostic.Create(Rule,
             // The highlighted area in the analyzed source code. Keep it as specific as possible.
             propertySymbol.Locations[0],

@@ -12,7 +12,7 @@ namespace Oxx.Backend.Analyzers.Rules;
 public sealed class RequiredPropertyCodeFixProvider : CodeFixProvider
 {
     public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
-    
+
     public override ImmutableArray<string> FixableDiagnosticIds { get; } =
         ImmutableArray.Create(AnalyzerIds.RequiredProperty);
 
@@ -31,17 +31,48 @@ public sealed class RequiredPropertyCodeFixProvider : CodeFixProvider
             return;
         }
 
+        // Adds a Code Fixer for adding the 'required' keyword.
+        // This is the default fixer and is the one that will be applied with `dotnet format`.
+        // (This is the default due to it being the first Code Action registered.)
         context.RegisterCodeFix(
             CodeAction.Create(
-                title: string.Format(Resources.OBA0001CodeFixTitle),
+                title: string.Format(Resources.OBA0001CodeFix1Title),
                 createChangedDocument: c => AddRequiredKeywordAsync(context.Document, declaration, c),
-                equivalenceKey: nameof(Resources.OBA0001CodeFixTitle)),
+                equivalenceKey: nameof(Resources.OBA0001CodeFix1Title)),
+            diagnostic);
+
+        // Adds a Code Fixer for adding the nullable annotation. This is an alternative fixer that has to be applied manually.
+        context.RegisterCodeFix(
+            CodeAction.Create(
+                title: string.Format(Resources.OBA0001CodeFix2Title),
+                createChangedDocument: c => AddNullableAnnotationAsync(context.Document, declaration, c),
+                equivalenceKey: nameof(Resources.OBA0001CodeFix2Title)),
             diagnostic);
     }
-    
-    private static async Task<Document> AddRequiredKeywordAsync(Document document, PropertyDeclarationSyntax propertyDeclarationSyntax, CancellationToken cancellationToken)
+
+    private static async Task<Document> AddRequiredKeywordAsync(Document document,
+        PropertyDeclarationSyntax propertyDeclarationSyntax, CancellationToken cancellationToken)
     {
-        var newPropertyDeclarationSyntax = propertyDeclarationSyntax.AddModifiers(SyntaxFactory.Token(SyntaxKind.RequiredKeyword));
+        var newPropertyDeclarationSyntax =
+            propertyDeclarationSyntax.AddModifiers(SyntaxFactory.Token(SyntaxKind.RequiredKeyword));
+
+        var root = await document.GetSyntaxRootAsync(cancellationToken);
+
+        if (root is null)
+        {
+            return document;
+        }
+
+        var newRoot = root.ReplaceNode(propertyDeclarationSyntax, newPropertyDeclarationSyntax);
+
+        return document.WithSyntaxRoot(newRoot);
+    }
+
+    private static async Task<Document> AddNullableAnnotationAsync(Document document,
+        PropertyDeclarationSyntax propertyDeclarationSyntax, CancellationToken cancellationToken)
+    {
+        var nullableTypeSyntax = SyntaxFactory.NullableType(propertyDeclarationSyntax.Type);
+        var newPropertyDeclarationSyntax = propertyDeclarationSyntax.WithType(nullableTypeSyntax);
 
         var root = await document.GetSyntaxRootAsync(cancellationToken);
 
