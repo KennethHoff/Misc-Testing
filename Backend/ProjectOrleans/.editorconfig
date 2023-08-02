@@ -1,0 +1,4 @@
+root = true
+
+[*.cs]
+dotnet_diagnostic.OXX0001.severity = error # Mon-nullable properties is not required

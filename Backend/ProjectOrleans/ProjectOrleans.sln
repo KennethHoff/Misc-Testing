@@ -11,6 +11,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{0FF1F574-78BA-42BD-AFBE-2412AEA98B4F}"
 	ProjectSection(SolutionItems) = preProject
 		nuget.config = nuget.config
+		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KH.Orleans.Web", "KH.Orleans.Web\KH.Orleans.Web.csproj", "{AE8BD665-7E4C-490F-923F-C330EE1041E8}"
