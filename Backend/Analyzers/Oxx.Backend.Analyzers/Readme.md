@@ -21,7 +21,7 @@ A .NET Standard project with implementations of sample analyzers and code fix pr
 
 By default, all analyzers are configured to report `warning`s. 
 
-If you have the msbuild property `<TreatWarningsAsErrors>true</TreatWarningsAsErrors>` set, all analyzers with a severity of `warning` will be treated as errors.
+If you have the msbuild property `<TreatWarningsAsErrors>true</TreatWarningsAsErrors>` set(which you should), then all analyzers will report as errors.
 
 If you want to change the severity of any analyzer(From this package or otherwise), you can do so in your project's `.editorconfig` file.
 
