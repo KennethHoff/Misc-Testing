@@ -19,17 +19,19 @@ A .NET Standard project with implementations of sample analyzers and code fix pr
 
 #### Modify the severity of the analyzer
 
-By default, all analyzers are configured to report `warning`s. 
+By default, all analyzers are configured with severity `warning`.
 
-If you have the msbuild property `<TreatWarningsAsErrors>true</TreatWarningsAsErrors>` set (which you should), then all analyzers will report as errors.
+If you have the msbuild property `<TreatWarningsAsErrors>true</TreatWarningsAsErrors>` set (which you should), then all analyzers will report `error`.
 
-If you want to change the severity of any analyzer (From this package or otherwise), you can do so in your project's `.editorconfig` file. You can find the analyzer code by looking at the message in the IDE.
+If you want to change the severity of any analyzer (From this package or otherwise), you can do so in your project's `.editorconfig` file.
+
+In the following example, I will change the severity of the `RequiredPropertyAnalyzer` which has the Analyzer Id of `OXX0001`. (You can see all IDs provided by this package [here](https://github.com/KennethHoff/Misc-Testing/blob/master/Backend/Analyzers/Oxx.Backend.Analyzers/src/Oxx.Backend.Analyzers/Constants/AnalyzerId.cs))
 
 ```editorconfig
-# Set the severity of the `RequiredPropertyAnalyzer`(OXX0001) to `none`. This will disable the analyzer and code fixers.
+# Set the severity to `none`. This will disable the analyzer and code fixers.
 dotnet_diagnostic.OXX0001.severity = none
 
-# Set the severity of the `RequiredPropertyAnalyzer`(OXX0001) to `error`. This will cause the analyzer to report an error.
+# Set the severity to `error`. This will cause the analyzer to report an error.
 dotnet_diagnostic.OXX0001.severity = error
 ```
 
