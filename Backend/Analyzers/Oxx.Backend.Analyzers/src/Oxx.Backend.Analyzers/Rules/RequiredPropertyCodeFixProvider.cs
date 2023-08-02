@@ -48,7 +48,8 @@ public sealed class RequiredPropertyCodeFixProvider : CodeFixProvider
                 equivalenceKey: nameof(Resources.OXX0001CodeFix1Title)),
             diagnostic);
 
-        // Adds a Code Fixer for adding the nullable annotation. This is an alternative fixer that has to be applied manually.
+        // Adds a Code Fixer for adding the nullable annotation.
+        // This is an alternative fixer that has to be applied manually if the other fixer is not desired.
         context.RegisterCodeFix(
             CodeAction.Create(
                 title: string.Format(Resources.OXX0001CodeFix2Title),
