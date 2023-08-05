@@ -1,12 +1,11 @@
 ﻿services:
-  kh.orleans.api:
-    image: kh.orleans.api
-    build:
-      context: .
-      dockerfile: src/KH.Orleans.API/Dockerfile
-      
-  kh.orleans.silo:
-    image: kh.orleans.silo
-    build:
-      context: .
-      dockerfile: src/KH.Orleans.Silo/Dockerfile
+  npgsql:
+    image: postgres:latest
+    container_name: npgsql
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres

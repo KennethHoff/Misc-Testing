@@ -1,5 +1,5 @@
 using KH.Orleans.GrainInterfaces;
-using KH.Orleans.Identity.Extensions;
+using KH.Orleans.API.Identity.Extensions;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Serilog;
 

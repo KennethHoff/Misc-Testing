@@ -1,8 +1,15 @@
+##### .Net Build Output #####
+
+### The new one ###
 artifacts/
+
+### The old ones ###
+bin/
+obj/
+
+#### Rust Build Output ####
 target/
 
-/packages/
-riderModule.iml
-/_ReSharper.Caches/
+#### Development ####
 node_modules/
 .idea/

@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{0FF1F5
 	ProjectSection(SolutionItems) = preProject
 		nuget.config = nuget.config
 		.editorconfig = .editorconfig
+		.config\dotnet-tools.json = .config\dotnet-tools.json
+		..\..\.gitignore = ..\..\.gitignore
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KH.Orleans.Silo", "src\KH.Orleans.Silo\KH.Orleans.Silo.csproj", "{E42C420D-95F8-43DA-8EC3-3B42B5AAD336}"
@@ -23,7 +25,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KH.Orleans.GrainInterfaces"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KH.Orleans.API", "src\KH.Orleans.API\KH.Orleans.API.csproj", "{F9A9F861-EA9C-49AB-8516-279B6DB7BA97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KH.Orleans.Identity", "src\KH.Orleans.Identity\KH.Orleans.Identity.csproj", "{917B28F7-E0F7-4C56-9BCA-2231ECEABE79}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KH.Orleans.API.Identity", "src\KH.Orleans.API.Identity\KH.Orleans.API.Identity.csproj", "{917B28F7-E0F7-4C56-9BCA-2231ECEABE79}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

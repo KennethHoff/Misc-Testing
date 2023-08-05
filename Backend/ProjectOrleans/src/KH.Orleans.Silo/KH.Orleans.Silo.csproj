@@ -1,20 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
+  
   <ItemGroup>
-    <PackageReference Include="Microsoft.Orleans.Server" />
-    <PackageReference Include="Serilog" />
-    <PackageReference Include="Serilog.Extensions.Hosting" />
-    <PackageReference Include="Serilog.Sinks.Console" />
+    <PackageReference Include="Microsoft.Orleans.Server"/>
+    <PackageReference Include="Serilog"/>
+    <PackageReference Include="Serilog.Extensions.Hosting"/>
+    <PackageReference Include="Serilog.Sinks.Console"/>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\KH.Orleans.Grains\KH.Orleans.Grains.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="..\..\.dockerignore">
-      <Link>.dockerignore</Link>
-    </Content>
+    <ProjectReference Include="..\KH.Orleans.Grains\KH.Orleans.Grains.csproj"/>
   </ItemGroup>
 </Project>

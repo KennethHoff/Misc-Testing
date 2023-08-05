@@ -5,7 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <UseArtifactsOutput>true</UseArtifactsOutput>
+<!--        <UseArtifactsOutput>true</UseArtifactsOutput>-->
 
         <!-- Central Package Management -->
         <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
@@ -14,9 +14,5 @@
 
     <ItemGroup>
         <PackageReference Include="JetBrains.Annotations"/>
-        <PackageReference Include="Meziantou.Analyzer">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
     </ItemGroup>
 </Project>
