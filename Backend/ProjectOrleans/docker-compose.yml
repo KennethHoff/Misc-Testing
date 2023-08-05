@@ -1,0 +1,12 @@
+﻿services:
+  kh.orleans.api:
+    image: kh.orleans.api
+    build:
+      context: .
+      dockerfile: src/KH.Orleans.API/Dockerfile
+      
+  kh.orleans.silo:
+    image: kh.orleans.silo
+    build:
+      context: .
+      dockerfile: src/KH.Orleans.Silo/Dockerfile

@@ -1,0 +1,5 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\KH.Orleans.GrainInterfaces\KH.Orleans.GrainInterfaces.csproj" />
+  </ItemGroup>
+</Project>

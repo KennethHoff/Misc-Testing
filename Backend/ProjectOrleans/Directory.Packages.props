@@ -1,9 +1,16 @@
 <Project>
   <ItemGroup>
     <PackageVersion Include="JetBrains.Annotations" Version="2023.2.0" />
-    <PackageVersion Include="Oxx.Backend.Analyzers" Version="1.0.0-beta17">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageVersion>
+    <PackageVersion Include="Meziantou.Analyzer" Version="2.0.80" />
+    <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.9" />
+    <PackageVersion Include="Microsoft.Orleans.Client" Version="7.2.1" />
+    <PackageVersion Include="Microsoft.Orleans.Sdk" Version="7.2.1" />
+    <PackageVersion Include="Microsoft.Orleans.Server" Version="7.2.1" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
+    <PackageVersion Include="NSwag.AspNetCore" Version="13.19.0" />
+    <PackageVersion Include="Serilog" Version="3.0.1" />
+    <PackageVersion Include="Serilog.AspNetCore" Version="7.0.0" />
+    <PackageVersion Include="Serilog.Extensions.Hosting" Version="7.0.0" />
+    <PackageVersion Include="Serilog.Sinks.Console" Version="4.1.0" />
   </ItemGroup>
 </Project>
