@@ -10,6 +10,8 @@ builder.UseSerilog((_, _, loggerConfiguration) =>
 builder.UseOrleans(siloBuilder =>
 {
     siloBuilder.UseLocalhostClustering();
+
+    siloBuilder.UseDashboard();
 });
 
 var app = builder.Build();
