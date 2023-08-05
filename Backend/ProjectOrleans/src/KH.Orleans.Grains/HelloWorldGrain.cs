@@ -18,6 +18,8 @@ public sealed class HelloWorldGrain(ILogger<HelloWorldGrain> logger) : Grain, IH
         var counterString = _counter switch
         {
             1 => "1st",
+            2 => "2nd",
+            3 => "3rd",
             _ => $"{_counter}th",
         };
         return new ValueTask<string>($"Hello, {name}! This is the {counterString} time you've said hello.");

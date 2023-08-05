@@ -1,3 +1,5 @@
+using System.Security.Principal;
+using KH.Orleans.API.Identity;
 using KH.Orleans.GrainInterfaces;
 using KH.Orleans.API.Identity.Extensions;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -25,6 +27,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseOpenApi();
+
 app.UseSwaggerUi3(opt =>
 {
     // Makes TryItOut the default
@@ -34,23 +37,17 @@ app.UseSwaggerUi3(opt =>
     opt.DocExpansion = "list";
 });
 
-var greetingGroup = app.MapGroup("/Greeting");
-greetingGroup.MapGet("/1", async ValueTask<Results<Ok<string>, UnauthorizedHttpResult, NotFound>> (IGrainFactory grainFactory, string name, HttpContext context) =>
+app.MapGroup("/Identity").MapIdentityApi<KhApplicationUser>();
+
+app.MapGet("/Greeting", async ValueTask<Results<Ok<string>, UnauthorizedHttpResult>> (IGrainFactory grainFactory, HttpContext context) =>
 {
-    var identity = context.User.Identity;
-    
-    if (!identity?.IsAuthenticated ?? false)
+    if (context.User.Identity is null or { IsAuthenticated: false } or {Name: null})
     {
         return TypedResults.Unauthorized();
     }
     
-    if (string.IsNullOrWhiteSpace(name))
-    {
-        return TypedResults.NotFound();
-    }
-    
     var helloGrain = grainFactory.GetGrain<IHelloWorldGrain>(0);
-    var greeting = await helloGrain.SayHello(name).ConfigureAwait(false);
+    var greeting = await helloGrain.SayHello(context.User.Identity.Name).ConfigureAwait(false);
     
     return TypedResults.Ok(greeting);
 });
