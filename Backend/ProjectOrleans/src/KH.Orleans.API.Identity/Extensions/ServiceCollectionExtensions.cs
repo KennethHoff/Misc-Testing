@@ -1,4 +1,4 @@
-using System.Security.Claims;
+using KH.Orleans.API.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -17,10 +17,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddKhIdentity(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddAuthentication();
-        services.AddAuthorization(options =>
-        {
-            options.AddClaimPolicies();
-        });
+        services.AddAuthorization();
         services.AddDbContext<KhDbContext>(contextOptions =>
         {
             contextOptions.UseNpgsql(configuration.GetConnectionString("Npgsql"), npgsqlOptions =>
@@ -30,11 +27,16 @@ public static class ServiceCollectionExtensions
         });
 
         services.AddSingleton<IStartupFilter, MigrationStartupFilter>();
+        // services.AddScoped<IUserClaimsPrincipalFactory<KhApplicationUser>, KhUserClaimsPrincipalFactory>();
 
         services.AddIdentityApiEndpoints<KhApplicationUser>()
+            .AddDefaultTokenProviders()
+            .AddRoles<KhApplicationRole>()
+            .AddUserManager<KhUserManager>()
+            .AddRoleManager<KhRoleManager>()
             .AddEntityFrameworkStores<KhDbContext>()
-            .AddDefaultTokenProviders();
-        
+            .AddSignInManager<KhSignInManager>();
+
         return services;
     }
 }
@@ -45,58 +47,144 @@ public static class AppBuilderExtensions
     {
         app.UseAuthentication();
         app.UseAuthorization();
-        
-        var identityGroup = app.MapGroup("/identity");
 
-        identityGroup.MapIdentityApi<KhApplicationUser>();
+        var identityGroup = app.MapGroup("/identity")
+            .RequireAuthorization(Policies.RequireAdmin)
+            .WithTags("Identity");
 
-        identityGroup.MapPatch("/claims",
-            async ValueTask<Results<Ok, UnauthorizedHttpResult, NotFound<ClaimError>, ProblemHttpResult>> (HttpContext context,
-                UserManager<KhApplicationUser> userManager, Claims claim) =>
-            {
-                if (context.User.Identity is null or { IsAuthenticated: false } or { Name: null })
-                {
-                    return TypedResults.Unauthorized();
-                }
+        // We need to allow login for anonymous users... duh
+        identityGroup.MapIdentityApi<KhApplicationUser>()
+            .AllowAnonymous();
 
-                if (await userManager.FindByNameAsync(context.User.Identity.Name) is not {} user)
-                {
-                    return TypedResults.NotFound(ClaimError.UserNotFound);
-                }
+        identityGroup.MapGroup("/roles")
+            .MapRoleEndpoints();
 
-                var claimName = claim.GetName();
-                if (context.User.HasClaim(claimName, "true"))
-                {
-                    return TypedResults.NotFound(ClaimError.ClaimAlreadyExists);
-                }
+        identityGroup.MapGroup("/users")
+            .MapUserEndpoints();
 
-                var result = await userManager.AddClaimAsync(user, new Claim(claimName, "true"));
-
-                return result.Succeeded switch
-                {
-                    true => TypedResults.Ok(),
-                    _ => TypedResults.Problem(new ProblemDetails
-                    {
-                        Title = "Failed to add claim",
-                        Detail = string.Join(", ", result.Errors.Select(e => e.Description)),
-                        Status = StatusCodes.Status400BadRequest,
-                    })
-                };
-            })
-            .RequireAuthorization(opt =>
-            {
-                opt.RequireClaim(Claims.Admin.GetName());
-            });
-        
         return app;
     }
-}
 
-file enum ClaimError
-{
-    UserNotFound,
-    ClaimNotFound,
-    ClaimAlreadyExists,
+    private static RouteGroupBuilder MapRoleEndpoints(this RouteGroupBuilder group)
+    {
+        group.MapGet("/",
+                async (KhRoleManager roleManager) =>
+                {
+                    var roles = await roleManager.Roles.ToListAsync();
+                    return TypedResults.Ok(roles);
+                })
+            .WithName("GetRoles");
+
+        group.MapGet("/{role}",
+                async (KhRoleManager roleManager, string role) =>
+                {
+                    var roles = await roleManager.Roles.Where(r => r.Name == role).ToListAsync();
+                    return TypedResults.Ok(roles);
+                })
+            .WithName("GetRole");
+
+        group.MapPost("/",
+                async ValueTask<Results<CreatedAtRoute, ProblemHttpResult>> (KhRoleManager roleManager, string role) =>
+                {
+                    var result = await roleManager.CreateAsync(new KhApplicationRole { Name = role });
+                    return result.Succeeded switch
+                    {
+                        true => TypedResults.CreatedAtRoute("GetRole", new { role }),
+                        _ => TypedResults.Problem(new ProblemDetails
+                        {
+                            Title = "Failed to create role",
+                            Detail = string.Join(", ", result.Errors.Select(e => e.Description)),
+                            Status = StatusCodes.Status500InternalServerError
+                        })
+                    };
+                })
+            .WithName("CreateRole");
+
+        return group;
+    }
+
+    private static RouteGroupBuilder MapUserEndpoints(this RouteGroupBuilder group)
+    {
+        group.MapPatch("/add-role",
+                async ValueTask<Results<NotFound<ApiDetails>, BadRequest<ApiDetails>, ProblemHttpResult, Ok>> (
+        KhUserManager userManager, KhSignInManager signInManager, string userName, string role) =>
+                {
+                    if (await userManager.FindByNameAsync(userName) is not { } user)
+                    {
+                        return TypedResults.NotFound(new ApiDetails
+                        {
+                            Title = "Failed to add role",
+                            Detail = "User not found"
+                        });
+                    }
+
+                    if (await userManager.IsInRoleAsync(user, role))
+                    {
+                        return TypedResults.BadRequest(new ApiDetails
+                        {
+                            Title = "Failed to add role",
+                            Detail = "User already in role"
+                        });
+                    }
+
+                    var result = await userManager.AddToRoleAsync(user, role);
+
+                    await signInManager.RefreshSignInAsync(user);
+
+                    return result.Succeeded switch
+                    {
+                        true => TypedResults.Ok(),
+                        _ => TypedResults.Problem(new ProblemDetails
+                        {
+                            Title = "Failed to add role",
+                            Detail = string.Join(", ", result.Errors.Select(e => e.Description)),
+                            Status = StatusCodes.Status500InternalServerError
+                        })
+                    };
+                })
+            .WithName("AddRoleToUser");
+
+        group.MapPatch("/remove-role",
+                async ValueTask<Results<NotFound<ApiDetails>, BadRequest<ApiDetails>, ProblemHttpResult, Ok>> (
+                    KhUserManager userManager, KhSignInManager signInManager, string userName, string role) =>
+                {
+                    if (await userManager.FindByNameAsync(userName) is not { } user)
+                    {
+                        return TypedResults.NotFound(new ApiDetails
+                        {
+                            Title = "Failed to remove role",
+                            Detail = "User not found",
+                        });
+                    }
+
+                    if (!await userManager.IsInRoleAsync(user, role))
+                    {
+                        return TypedResults.BadRequest(new ApiDetails
+                        {
+                            Title = "Failed to remove role",
+                            Detail = "User not in role",
+                        });
+                    }
+
+                    var result = await userManager.RemoveFromRoleAsync(user, role);
+
+                    await signInManager.RefreshSignInAsync(user);
+
+                    return result.Succeeded switch
+                    {
+                        true => TypedResults.Ok(),
+                        _ => TypedResults.Problem(new ProblemDetails
+                        {
+                            Title = "Failed to remove role",
+                            Detail = string.Join(", ", result.Errors.Select(e => e.Description)),
+                            Status = StatusCodes.Status500InternalServerError,
+                        })
+                    };
+                })
+            .WithName("RemoveRoleFromUser");
+
+        return group;
+    }
 }
 
 file sealed class MigrationStartupFilter : IStartupFilter

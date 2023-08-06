@@ -6,5 +6,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KH.Orleans.API.Models\KH.Orleans.API.Models.csproj" />
+  </ItemGroup>
 
 </Project>

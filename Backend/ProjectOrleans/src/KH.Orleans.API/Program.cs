@@ -1,6 +1,9 @@
+using System.Diagnostics;
+using System.Security.Claims;
 using KH.Orleans.GrainInterfaces;
 using KH.Orleans.API.Identity.Extensions;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
 var builder = WebApplication.CreateSlimBuilder(args);
@@ -27,26 +30,24 @@ app.MapKhIdentity();
 
 app.UseSwaggerUi3(opt =>
 {
-    // Makes TryItOut the default
+    // Makes TryItOut the default... Why is this not the default?
     opt.AdditionalSettings["tryItOutEnabled"] = true;
 
     // Makes all top-level folders expanded by default
     opt.DocExpansion = "list";
+    
+    // Do not expand the Schema section -- Clutters the UI
+    opt.DefaultModelsExpandDepth = 0;
 });
 
 app.MapGet("/Greeting",
-        async ValueTask<Results<Ok<string>, UnauthorizedHttpResult>> (IGrainFactory grainFactory,
-            HttpContext context) =>
+        async ValueTask<IResult> (IGrainFactory grainFactory, ClaimsPrincipal claimsPrincipal) =>
         {
-            if (context.User.Identity is null or { IsAuthenticated: false } or { Name: null })
-            {
-                return TypedResults.Unauthorized();
-            }
+            Debug.Assert(claimsPrincipal.Identity is not null);
 
-            var helloGrain = grainFactory.GetGrain<IHelloWorldGrain>(0);
-            var greeting = await helloGrain.SayHello(context.User.Identity.Name).ConfigureAwait(false);
+            var helloGrain = grainFactory.GetGrain<IGreetingGrain>(claimsPrincipal.Identity.Name);
 
-            return TypedResults.Ok(greeting);
+            return TypedResults.Ok(await helloGrain.Greet());
         })
     .RequireAuthorization();
 

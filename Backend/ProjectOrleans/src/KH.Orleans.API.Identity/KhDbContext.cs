@@ -3,4 +3,4 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KH.Orleans.API.Identity;
 
-public sealed class KhDbContext(DbContextOptions<KhDbContext> options) : IdentityDbContext<KhApplicationUser>(options);
+public sealed class KhDbContext(DbContextOptions<KhDbContext> options) : IdentityDbContext<KhApplicationUser, KhApplicationRole, string>(options);
