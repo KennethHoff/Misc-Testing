@@ -47,6 +47,7 @@ app.MapGet("/Greeting",
 
             return TypedResults.Ok(await helloGrain.Greet());
         })
+    .WithName("Greeting")
     .RequireAuthorization();
 
 app.Run();

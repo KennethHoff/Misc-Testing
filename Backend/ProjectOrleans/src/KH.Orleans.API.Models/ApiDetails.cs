@@ -1,7 +1,17 @@
 namespace KH.Orleans.API.Models;
 
+/// <summary>
+///  A model representing an error returned by the API.
+/// </summary>
 public sealed record class ApiDetails
 {
-    public required string Title { get; init; }
+    /// <summary>
+    ///    A machine-readable error code.
+    /// </summary>
+    public required string Code { get; init; }
+
+    /// <summary>
+    ///   A human-readable error message.
+    /// </summary>
     public required string Detail { get; init; }
 }

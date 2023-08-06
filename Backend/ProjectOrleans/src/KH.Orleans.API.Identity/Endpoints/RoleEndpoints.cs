@@ -11,46 +11,51 @@ public static class RoleEndpoints
 {
     public static RouteGroupBuilder MapRoleEndpoints(this RouteGroupBuilder group)
     {
-        group.MapGet("/",
-                async (KhRoleManager roleManager) =>
-                {
-                    var roles = await roleManager.Roles.ToListAsync();
-                    return TypedResults.Ok(roles);
-                })
+        group.MapGet("/", GetRolesEndPointHandler)
             .WithName("GetRoles");
 
-        group.MapGet("/{role}",
-                async (KhRoleManager roleManager, string role) =>
-                {
-                    var roles = await roleManager.Roles.Where(r => r.Name == role).ToListAsync();
-                    return TypedResults.Ok(roles);
-                })
+        group.MapGet("/{role}", GetRoleEndPointHandler)
             .WithName("GetRole");
 
-        group.MapPost("/",
-                async ValueTask<Results<CreatedAtRoute, ProblemHttpResult>> (KhRoleManager roleManager, string role) =>
-                {
-                    var result = await roleManager.CreateAsync(new KhApplicationRole
-                    {
-                        Name = role
-                    });
-                    return result.Succeeded switch
-                    {
-                        true => TypedResults.CreatedAtRoute("GetRole", new
-                        {
-                            role
-                        }),
-                        _ => TypedResults.Problem(new ProblemDetails
-                        {
-                            Title = "Failed to create role",
-                            Detail = string.Join(", ", result.Errors.Select(e => e.Description)),
-                            Status = StatusCodes.Status500InternalServerError
-                        })
-                    };
-                })
+        group.MapPost("/", CreateRoleEndPointHandler)
             .WithName("CreateRole");
 
         return group;
     }
 
+    private static async ValueTask<Ok<List<KhApplicationRole>>> GetRolesEndPointHandler(KhRoleManager roleManager,
+        CancellationToken ct)
+    {
+        var roles = await roleManager.Roles.ToListAsync(cancellationToken: ct);
+        return TypedResults.Ok(roles);
+    }
+
+    private static async ValueTask<Ok<KhApplicationRole>> GetRoleEndPointHandler(KhRoleManager roleManager, string role,
+        CancellationToken ct)
+    {
+        var roles = await roleManager.Roles.FirstOrDefaultAsync(r => r.Name == role, cancellationToken: ct);
+        return TypedResults.Ok(roles);
+    }
+
+    private static async ValueTask<Results<CreatedAtRoute, ProblemHttpResult>> CreateRoleEndPointHandler(
+        KhRoleManager roleManager, string role)
+    {
+        var result = await roleManager.CreateAsync(new KhApplicationRole
+        {
+            Name = role
+        });
+        return result.Succeeded switch
+        {
+            true => TypedResults.CreatedAtRoute("GetRole", new
+            {
+                role
+            }),
+            _ => TypedResults.Problem(new ProblemDetails
+            {
+                Title = "Failed to create role",
+                Detail = string.Join(", ", result.Errors.Select(e => e.Description)),
+                Status = StatusCodes.Status500InternalServerError
+            })
+        };
+    }
 }
