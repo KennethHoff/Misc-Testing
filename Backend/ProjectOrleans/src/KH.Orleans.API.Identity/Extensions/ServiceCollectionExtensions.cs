@@ -105,6 +105,21 @@ public static class AppBuilderExtensions
 
     private static RouteGroupBuilder MapUserEndpoints(this RouteGroupBuilder group)
     {
+        group.MapGet("/{userName}",
+                async ValueTask<Results<Ok<KhApplicationUser>, NotFound<ApiDetails>>> (
+                    KhUserManager userManager, string userName) =>
+                {
+                    var user = await userManager.FindByNameAsync(userName);
+                    return user is null
+                        ? TypedResults.NotFound(new ApiDetails
+                        {
+                            Title = "Failed to find user",
+                            Detail = "User not found"
+                        })
+                        : TypedResults.Ok(user);
+                })
+            .WithName("GetUser");
+
         group.MapPatch("/add-role",
                 async ValueTask<Results<NotFound<ApiDetails>, BadRequest<ApiDetails>, ProblemHttpResult, Ok>> (
         KhUserManager userManager, KhSignInManager signInManager, string userName, string role) =>

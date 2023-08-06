@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using System.Security.Claims;
-using KH.Orleans.GrainInterfaces;
 using KH.Orleans.API.Identity.Extensions;
+using KH.Orleans.GrainInterfaces;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
@@ -35,7 +35,7 @@ app.UseSwaggerUi3(opt =>
 
     // Makes all top-level folders expanded by default
     opt.DocExpansion = "list";
-    
+
     // Do not expand the Schema section -- Clutters the UI
     opt.DefaultModelsExpandDepth = 0;
 });

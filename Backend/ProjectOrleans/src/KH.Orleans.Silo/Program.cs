@@ -6,7 +6,7 @@ builder.UseSerilog((_, _, loggerConfiguration) =>
 {
     loggerConfiguration.WriteTo.Console();
 });
-    
+
 builder.UseOrleans(siloBuilder =>
 {
     siloBuilder.UseLocalhostClustering();
