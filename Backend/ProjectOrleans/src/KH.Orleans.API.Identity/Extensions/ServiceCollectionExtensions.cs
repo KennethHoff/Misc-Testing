@@ -67,6 +67,32 @@ public static class AppBuilderExtensions
 
     private static RouteGroupBuilder MapRoleEndpoints(this RouteGroupBuilder group)
     {
+        group.MapGet("/{userName}",
+                async ValueTask<Results<Ok<IList<string>>, NotFound<ApiDetails>>> (
+                    KhUserManager userManager, string userName) =>
+                {
+                    if (await userManager.FindByNameAsync(userName) is not { } user)
+                    {
+                        return TypedResults.NotFound(new ApiDetails
+                        {
+                            Title = "Failed to find user",
+                            Detail = "User not found"
+                        });
+                    }
+
+                    return await userManager.GetRolesAsync(user) switch
+                    {
+                        null => TypedResults.NotFound(new ApiDetails
+                        {
+                            Title = "Failed to find user",
+                            Detail = "User not found"
+                        }),
+                        { } roles => TypedResults.Ok(roles),
+                    };
+                })
+            .WithName("GetUser");
+
+
         group.MapGet("/",
                 async (KhRoleManager roleManager) =>
                 {
@@ -86,10 +112,16 @@ public static class AppBuilderExtensions
         group.MapPost("/",
                 async ValueTask<Results<CreatedAtRoute, ProblemHttpResult>> (KhRoleManager roleManager, string role) =>
                 {
-                    var result = await roleManager.CreateAsync(new KhApplicationRole { Name = role });
+                    var result = await roleManager.CreateAsync(new KhApplicationRole
+                    {
+                        Name = role
+                    });
                     return result.Succeeded switch
                     {
-                        true => TypedResults.CreatedAtRoute("GetRole", new { role }),
+                        true => TypedResults.CreatedAtRoute("GetRole", new
+                        {
+                            role
+                        }),
                         _ => TypedResults.Problem(new ProblemDetails
                         {
                             Title = "Failed to create role",
@@ -122,7 +154,7 @@ public static class AppBuilderExtensions
 
         group.MapPatch("/add-role",
                 async ValueTask<Results<NotFound<ApiDetails>, BadRequest<ApiDetails>, ProblemHttpResult, Ok>> (
-        KhUserManager userManager, KhSignInManager signInManager, string userName, string role) =>
+                    KhUserManager userManager, KhSignInManager signInManager, string userName, string role) =>
                 {
                     if (await userManager.FindByNameAsync(userName) is not { } user)
                     {

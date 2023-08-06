@@ -2,8 +2,6 @@ using System.Diagnostics;
 using System.Security.Claims;
 using KH.Orleans.API.Identity.Extensions;
 using KH.Orleans.GrainInterfaces;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
 var builder = WebApplication.CreateSlimBuilder(args);
