@@ -1,4 +1,3 @@
-using KH.Orleans.API.Identity;
 using KH.Orleans.GrainInterfaces;
 using KH.Orleans.API.Identity.Extensions;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -22,21 +21,18 @@ builder.Services.AddOpenApiDocument();
 
 var app = builder.Build();
 
-app.UseAuthentication();
-app.UseAuthorization();
-
 app.UseOpenApi();
+
+app.MapKhIdentity();
 
 app.UseSwaggerUi3(opt =>
 {
     // Makes TryItOut the default
     opt.AdditionalSettings["tryItOutEnabled"] = true;
-    
+
     // Makes all top-level folders expanded by default
     opt.DocExpansion = "list";
 });
-
-app.MapGroup("/Identity").MapIdentityApi<KhApplicationUser>();
 
 app.MapGet("/Greeting",
         async ValueTask<Results<Ok<string>, UnauthorizedHttpResult>> (IGrainFactory grainFactory,
@@ -53,6 +49,5 @@ app.MapGet("/Greeting",
             return TypedResults.Ok(greeting);
         })
     .RequireAuthorization();
-
 
 app.Run();
