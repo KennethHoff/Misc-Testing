@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Security.Claims;
 using KH.Orleans.API.Identity.Extensions;
 using KH.Orleans.GrainInterfaces;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Serilog;
 
 var builder = WebApplication.CreateSlimBuilder(args);
@@ -22,10 +23,9 @@ builder.Services.AddOpenApiDocument();
 
 var app = builder.Build();
 
+app.UseKhIdentity();
+
 app.UseOpenApi();
-
-app.MapKhIdentity();
-
 app.UseSwaggerUi3(opt =>
 {
     // Makes TryItOut the default... Why is this not the default?
@@ -39,7 +39,7 @@ app.UseSwaggerUi3(opt =>
 });
 
 app.MapGet("/Greeting",
-        async ValueTask<IResult> (IGrainFactory grainFactory, ClaimsPrincipal claimsPrincipal) =>
+        async ValueTask<Ok<string>> (IGrainFactory grainFactory, ClaimsPrincipal claimsPrincipal) =>
         {
             Debug.Assert(claimsPrincipal.Identity is not null);
 

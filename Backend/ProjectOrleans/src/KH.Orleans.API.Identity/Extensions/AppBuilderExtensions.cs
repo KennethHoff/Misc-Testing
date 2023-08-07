@@ -7,7 +7,7 @@ namespace KH.Orleans.API.Identity.Extensions;
 
 public static class AppBuilderExtensions
 {
-    public static IApplicationBuilder MapKhIdentity(this WebApplication app)
+    public static IApplicationBuilder UseKhIdentity(this WebApplication app)
     {
         app.UseAuthentication();
         app.UseAuthorization();
