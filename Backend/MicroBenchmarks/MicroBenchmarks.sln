@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F9ED642D-ED26-4C2A-8259-A2C9E9949753}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
+		nuget.config = nuget.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B3009B0B-EA0B-4D25-BE3D-478B093A6308}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroBenchmarks", "src\MicroBenchmarks\MicroBenchmarks.csproj", "{E8D5F8D1-073D-46DC-8423-9E7A46FE5B27}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E8D5F8D1-073D-46DC-8423-9E7A46FE5B27} = {B3009B0B-EA0B-4D25-BE3D-478B093A6308}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E8D5F8D1-073D-46DC-8423-9E7A46FE5B27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8D5F8D1-073D-46DC-8423-9E7A46FE5B27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8D5F8D1-073D-46DC-8423-9E7A46FE5B27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8D5F8D1-073D-46DC-8423-9E7A46FE5B27}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
