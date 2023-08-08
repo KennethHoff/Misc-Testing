@@ -1,18 +1,19 @@
 <Project>
-    <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <LangVersion>preview</LangVersion>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-<!--        <UseArtifactsOutput>true</UseArtifactsOutput>-->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>preview</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!--        <UseArtifactsOutput>true</UseArtifactsOutput>-->
 
-        <!-- Central Package Management -->
-        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-        <EnablePackageVersionOverride>false</EnablePackageVersionOverride>
-    </PropertyGroup>
+    <!-- Central Package Management -->
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <EnablePackageVersionOverride>false</EnablePackageVersionOverride>
+  </PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="JetBrains.Annotations"/>
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations"/>
+    <PackageReference Include="OneOf"/>
+  </ItemGroup>
 </Project>

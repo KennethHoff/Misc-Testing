@@ -136,6 +136,7 @@ csharp_preserve_single_line_blocks = true
 # dotnet Analyzers            #
 ###############################
 dotnet_diagnostic.IDE0005.severity = warning # Using directive is unnecessary.
+dotnet_diagnostic.CA2012.severity = error # Use ValueTasks correctly.
 
 
 [*.vb]
