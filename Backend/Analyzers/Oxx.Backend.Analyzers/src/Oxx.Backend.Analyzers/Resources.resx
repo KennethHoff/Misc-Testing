@@ -39,7 +39,30 @@
     <data name="OXX0001CodeFix2Title" xml:space="preserve">
         <value>Make property nullable</value>
     </data>
-    <data name="OXX0001SuppressorTitle" xml:space="preserve">
+    <data name="OXX0001SuppressorJustification" xml:space="preserve">
         <value>Effectively superseded by OXX0001</value>
+    </data>
+
+    <data name="OXX9001Title_NotExhaustive" xml:space="preserve">
+        <value>Switch expression is incompatible with One&lt;{0}&gt;</value>
+    </data>
+    <data name="OXX9001Description" xml:space="preserve">
+        <value>Switch expression on OneOf.Value has to be exhaustive.</value>
+    </data>
+    <data name="OXX9001MessageFormat_NotExhaustive" xml:space="preserve">
+        <value>Switch expression is not exhaustive. You are missing cases for [{0}].</value>
+    </data>
+    <data name="OXX9001MessageFormat_TooExhaustive" xml:space="preserve">
+        <value>Switch expression is too exhaustive. You are checking for [{0}] which is not possible.</value>
+    </data>
+    <data name="OXX9001MessageFormat_Both" xml:space="preserve">
+        <value>Switch expression is not exhaustive. You are missing cases for [{0}] and checking for [{1}] which is not possible.</value>
+    </data>
+    
+    <data name="OXX9001CodeFixTitle" xml:space="preserve">
+        <value>Add missing cases and remove impossible cases</value>
+    </data>
+    <data name="OXX9001SuppressorJustification" xml:space="preserve">
+        <value>OXX9001 ensures switch expressions on OneOf.Value are exhaustive.</value>
     </data>
 </root>

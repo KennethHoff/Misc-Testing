@@ -8,10 +8,10 @@ namespace Oxx.Backend.Analyzers.Rules.RequiredProperty;
 [DiagnosticAnalyzer(LanguageNames.CSharp), PublicAPI("Roslyn Analyzer")]
 public sealed class RequiredPropertyDiagnosticSuppressor : DiagnosticSuppressor
 {
-	private static readonly LocalizableString Title = new LocalizableResourceString(
-		nameof(Resources.OXX0001SuppressorTitle), Resources.ResourceManager, typeof(Resources));
+	private static readonly LocalizableString Justification = new LocalizableResourceString(
+		nameof(Resources.OXX0001SuppressorJustification), Resources.ResourceManager, typeof(Resources));
 
-	private static readonly SuppressionDescriptor SuppressionDescriptor = new("OXX0001_SPR", "CS8618", Title);
+	private static readonly SuppressionDescriptor SuppressionDescriptor = new("OXX0001_SPR", "CS8618", Justification);
 
 	public override ImmutableArray<SuppressionDescriptor> SupportedSuppressions { get; } =
 		ImmutableArray.Create(SuppressionDescriptor);
@@ -20,14 +20,14 @@ public sealed class RequiredPropertyDiagnosticSuppressor : DiagnosticSuppressor
 	{
 		foreach (var diagnostic in context.ReportedDiagnostics)
 		{
-			HandleSuppression(SuppressionDescriptor, diagnostic);
+			HandleSuppression(diagnostic);
 		}
 
 		return;
 
-		void HandleSuppression(SuppressionDescriptor suppressionDescriptor, Diagnostic diagnostic)
+		void HandleSuppression(Diagnostic diagnostic)
 		{
-			context.ReportSuppression(Suppression.Create(suppressionDescriptor, diagnostic));
+			context.ReportSuppression(Suppression.Create(SuppressionDescriptor, diagnostic));
 		}
 	}
 }

@@ -75,9 +75,51 @@ namespace Oxx.Backend.Analyzers {
             }
         }
         
-        internal static string OXX0001SuppressorTitle {
+        internal static string OXX0001SuppressorJustification {
             get {
-                return ResourceManager.GetString("OXX0001SuppressorTitle", resourceCulture);
+                return ResourceManager.GetString("OXX0001SuppressorJustification", resourceCulture);
+            }
+        }
+        
+        internal static string OXX9001Title_NotExhaustive {
+            get {
+                return ResourceManager.GetString("OXX9001Title_NotExhaustive", resourceCulture);
+            }
+        }
+        
+        internal static string OXX9001Description {
+            get {
+                return ResourceManager.GetString("OXX9001Description", resourceCulture);
+            }
+        }
+        
+        internal static string OXX9001MessageFormat_NotExhaustive {
+            get {
+                return ResourceManager.GetString("OXX9001MessageFormat_NotExhaustive", resourceCulture);
+            }
+        }
+        
+        internal static string OXX9001MessageFormat_TooExhaustive {
+            get {
+                return ResourceManager.GetString("OXX9001MessageFormat_TooExhaustive", resourceCulture);
+            }
+        }
+        
+        internal static string OXX9001MessageFormat_Both {
+            get {
+                return ResourceManager.GetString("OXX9001MessageFormat_Both", resourceCulture);
+            }
+        }
+        
+        internal static string OXX9001CodeFixTitle {
+            get {
+                return ResourceManager.GetString("OXX9001CodeFixTitle", resourceCulture);
+            }
+        }
+        
+        internal static string OXX9001SuppressorJustification {
+            get {
+                return ResourceManager.GetString("OXX9001SuppressorJustification", resourceCulture);
             }
         }
     }
