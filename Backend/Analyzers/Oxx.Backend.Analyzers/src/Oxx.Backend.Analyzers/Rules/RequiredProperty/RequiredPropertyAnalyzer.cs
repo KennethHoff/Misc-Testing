@@ -1,6 +1,7 @@
 using System.Collections.Immutable;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Oxx.Backend.Analyzers.Constants;
 
@@ -41,17 +42,64 @@ public sealed class RequiredPropertyAnalyzer : DiagnosticAnalyzer
 			return;
 		}
 
+		// If it's readonly, we're not interested.
+		if (propertySymbol.IsReadOnly)
+		{
+			return;
+		}
+
 		// If it's already required or nullable, we're not interested.
 		if (propertySymbol.IsRequired || propertySymbol.NullableAnnotation is NullableAnnotation.Annotated)
 		{
 			return;
 		}
 
-		// Otherwise, report a diagnostic.
-		context.ReportDiagnostic(Diagnostic.Create(Rule,
-			// The highlighted area in the analyzed source code. Keep it as specific as possible.
-			propertySymbol.Locations[0],
-			// The value is passed to the 'MessageFormat' argument of your rule.
-			propertySymbol.Name));
+		// If it's initialized, we're not interested.
+		if (IsSetInInitializer(propertySymbol) || IsSetInConstructor(propertySymbol))
+		{
+			return;
+		}
+
+		// If the property is static, only report nullable.
+		if (propertySymbol.IsStatic)
+		{
+			ReportNullable(context, propertySymbol);
+			return;
+		}
+
+		ReportRequiredOrNullable(context, propertySymbol);
+	}
+
+	private static void ReportRequiredOrNullable(SymbolAnalysisContext context, IPropertySymbol propertySymbol)
+	{
+		context.ReportDiagnostic(Diagnostic.Create(Rule, propertySymbol.Locations[0], propertySymbol.Name));
+	}
+
+	private static void ReportNullable(SymbolAnalysisContext context, IPropertySymbol propertySymbol)
+	{
+		context.ReportDiagnostic(Diagnostic.Create(Rule, propertySymbol.Locations[0], propertySymbol.Name));
+	}
+
+	// W.I.P - This is not yet working.
+	// Should maybe be merged with IsSetInInitializer as they both iterate over the same nodes.
+	private static bool IsSetInInitializer(IPropertySymbol propertySymbol)
+	{
+		return propertySymbol.DeclaringSyntaxReferences
+			.SelectMany(x => x.GetSyntax().DescendantNodes())
+			.OfType<AssignmentExpressionSyntax>()
+			.Any(x => x.Left is IdentifierNameSyntax identifierNameSyntax &&
+			          identifierNameSyntax.Identifier.Text == propertySymbol.Name);
+	}
+
+	// W.I.P - This is not yet working.
+	private static bool IsSetInConstructor(IPropertySymbol propertySymbol)
+	{
+		return propertySymbol.DeclaringSyntaxReferences
+			.SelectMany(x => x.GetSyntax().DescendantNodes())
+			.OfType<ConstructorDeclarationSyntax>()
+			.SelectMany(x => x.Body?.DescendantNodes() ?? Enumerable.Empty<SyntaxNode>())
+			.OfType<AssignmentExpressionSyntax>()
+			.Any(x => x.Left is IdentifierNameSyntax identifierNameSyntax &&
+			          identifierNameSyntax.Identifier.Text == propertySymbol.Name);
 	}
 }

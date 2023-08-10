@@ -34,13 +34,5 @@
             <AutoGen>True</AutoGen>
             <DependentUpon>Resources.resx</DependentUpon>
         </Compile>
-    <ItemGroup>
-      <Folder Include="Rules\RequiredProperty\assets\" />
     </ItemGroup>
-
-    </ItemGroup>
-
-
-
-
 </Project>
