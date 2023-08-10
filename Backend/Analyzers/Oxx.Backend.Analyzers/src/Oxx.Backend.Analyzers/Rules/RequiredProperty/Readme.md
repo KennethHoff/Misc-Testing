@@ -1,6 +1,6 @@
 # Required Property Analyzer
 
-This analyzer ensures all properties are either required. This is to prevent the use of the default value for a property, which can lead to unexpected behavior.
+This analyzer ensures all properties are either required or nullable. This is to prevent the use of the default value for a property, which can lead to unexpected behavior.
 
 ## [Analyzer](RequiredPropertyAnalyzer.cs)
 ![Required Property Analyzer](assets/Analyzer.png)
