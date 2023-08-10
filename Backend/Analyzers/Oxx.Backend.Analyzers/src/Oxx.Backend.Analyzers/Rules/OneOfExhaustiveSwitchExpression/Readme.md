@@ -4,6 +4,7 @@ This analyzer will warn you if you have a switch expression on a `OneOf<T>` that
 
 ## [Analyzer](OneOfExhaustiveSwitchExpressionAnalyzer.cs)
 ![OneOf Exhaustive Switch Expression Analyzer](assets/Analyzer.png)
+![OneOf Exhaustive Switch Expression Analyzer with more Context](assets/Analyzer_MoreContext.png)
 
 ## [Code Fix](OneOfExhaustiveSwitchExpressionCodeFixProvider.cs)
 

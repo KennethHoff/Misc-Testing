@@ -17,12 +17,7 @@ public class RequiredPropertyExamples
 	{
 		var result = new OneOf<NotFound, Success, False>();
 
-		var message = result.Value switch
-		{
-			NotFound => "Not Found",
-			Success => "Success!",
-			False => throw new NotImplementedException()
-		};
+		var message = result.Value switch { };
 	}
 }
 
