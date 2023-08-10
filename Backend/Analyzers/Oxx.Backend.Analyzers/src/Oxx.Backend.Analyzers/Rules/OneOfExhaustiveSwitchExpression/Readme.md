@@ -3,16 +3,17 @@
 This analyzer will warn you if you have a switch expression on a `OneOf<T>` that is not exhaustive.
 
 ## [Analyzer](OneOfExhaustiveSwitchExpressionAnalyzer.cs)
-![OneOf Exhaustive Switch Expression Analyzer](assets/Analyzer.png)
-![OneOf Exhaustive Switch Expression Analyzer with more Context](assets/Analyzer_MoreContext.png)
+![Analyzer - Not Exhaustive](assets/Analyzer_NotExhaustive.png)
+![Analyzer - Too Exhaustive](assets/Analyzer_TooExhaustive.png)
+![Analyzer - Both](assets/Analyzer_Both.png)
 
 ## [Code Fix](OneOfExhaustiveSwitchExpressionCodeFixProvider.cs)
 
 ### Add missing cases
-![OneOf Exhaustive Switch Expression Code Fix](assets/CodeFix_Selector.png)
+![Code Fix - Selector](assets/CodeFix_Selector.png)
 
 ### Fixed
-![OneOf Exhaustive Switch Expression Code Fix](assets/CodeFix_Fixed.png)
+![Code Fix - Fixed](assets/CodeFix_Fixed.png)
 
 ## [Diagnostic Suppressor](OneOfExhaustiveSwitchExpressionDiagnosticSuppressor.cs)
 

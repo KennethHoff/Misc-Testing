@@ -17,12 +17,14 @@ public class RequiredPropertyExamples
 	{
 		var result = new OneOf<NotFound, Success, False>();
 
-		var message = result.Value switch { };
+		var message = result.Value switch
+		{
+			NotFound => throw new NotImplementedException(),
+			Success => throw new NotImplementedException(),
+			False => throw new NotImplementedException(),
+		};
 	}
 }
-
-
-
 
 
 #pragma warning restore CS8509 // The switch expression does not handle all possible values of its input type (it is not exhaustive).
