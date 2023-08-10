@@ -3,7 +3,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace KH.Orleans.API.Identity.Migrations
+namespace IdentityTesting.API.Identity.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration

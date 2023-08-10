@@ -5,14 +5,16 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.Orleans.Client"/>
         <PackageReference Include="NSwag.AspNetCore"/>
         <PackageReference Include="Serilog.AspNetCore"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\KH.Orleans.GrainInterfaces\KH.Orleans.GrainInterfaces.csproj"/>
-        <ProjectReference Include="..\KH.Orleans.API.Identity\KH.Orleans.API.Identity.csproj" />
+        <ProjectReference Include="..\IdentityTesting.API.Identity\IdentityTesting.API.Identity.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageVersion Update="SvSoft.OneOf.Analyzers.SwitchDiagnosticSuppression" Version="1.1.0" />
     </ItemGroup>
 
 </Project>

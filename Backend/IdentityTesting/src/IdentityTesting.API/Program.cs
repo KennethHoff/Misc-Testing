@@ -1,19 +1,10 @@
-using System.Diagnostics;
-using System.Security.Claims;
-using KH.Orleans.API.Identity.Extensions;
-using KH.Orleans.GrainInterfaces;
-using Microsoft.AspNetCore.Http.HttpResults;
+using IdentityTesting.API.Identity.Extensions;
 using Serilog;
 
 var builder = WebApplication.CreateSlimBuilder(args);
 builder.Host.UseSerilog((_, _, loggerConfiguration) =>
 {
     loggerConfiguration.WriteTo.Console();
-});
-
-builder.Host.UseOrleansClient(clientBuilder =>
-{
-    clientBuilder.UseLocalhostClustering();
 });
 
 builder.Services.AddKhIdentity(builder.Configuration);
@@ -37,17 +28,4 @@ app.UseSwaggerUi3(opt =>
     // Do not expand the Schema section -- Clutters the UI
     opt.DefaultModelsExpandDepth = 0;
 });
-
-app.MapGet("/Greeting",
-        async ValueTask<Ok<string>> (IGrainFactory grainFactory, ClaimsPrincipal claimsPrincipal) =>
-        {
-            Debug.Assert(claimsPrincipal.Identity is not null);
-
-            var helloGrain = grainFactory.GetGrain<IGreetingGrain>(claimsPrincipal.Identity.Name);
-
-            return TypedResults.Ok(await helloGrain.Greet());
-        })
-    .WithName("Greeting")
-    .RequireAuthorization();
-
 app.Run();

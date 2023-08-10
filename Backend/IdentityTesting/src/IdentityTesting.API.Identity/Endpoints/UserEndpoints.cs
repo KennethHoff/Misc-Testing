@@ -1,4 +1,4 @@
-using KH.Orleans.API.Models;
+using IdentityTesting.API.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 
-namespace KH.Orleans.API.Identity.Endpoints;
+namespace IdentityTesting.API.Identity.Endpoints;
 
 public static class UserEndpoints
 {

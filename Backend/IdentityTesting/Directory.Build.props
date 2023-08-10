@@ -15,5 +15,6 @@
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations"/>
     <PackageReference Include="OneOf"/>
+    <PackageReference Include="SvSoft.OneOf.Analyzers.SwitchDiagnosticSuppression" />
   </ItemGroup>
 </Project>

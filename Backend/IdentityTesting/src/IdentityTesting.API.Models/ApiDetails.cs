@@ -1,4 +1,4 @@
-namespace KH.Orleans.API.Models;
+namespace IdentityTesting.API.Models;
 
 /// <summary>
 ///  A model representing an error returned by the API.

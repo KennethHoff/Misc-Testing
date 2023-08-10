@@ -17,17 +17,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{0FF1F5
 		..\..\.gitignore = ..\..\.gitignore
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KH.Orleans.Silo", "src\KH.Orleans.Silo\KH.Orleans.Silo.csproj", "{E42C420D-95F8-43DA-8EC3-3B42B5AAD336}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityTesting.API", "src\IdentityTesting.API\IdentityTesting.API.csproj", "{F9A9F861-EA9C-49AB-8516-279B6DB7BA97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KH.Orleans.Grains", "src\KH.Orleans.Grains\KH.Orleans.Grains.csproj", "{82C1332A-1CCB-41FF-B4D6-9B3FC133B7F4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityTesting.API.Identity", "src\IdentityTesting.API.Identity\IdentityTesting.API.Identity.csproj", "{917B28F7-E0F7-4C56-9BCA-2231ECEABE79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KH.Orleans.GrainInterfaces", "src\KH.Orleans.GrainInterfaces\KH.Orleans.GrainInterfaces.csproj", "{DD4118B7-8321-4EB5-B6E9-E3716DD54F69}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KH.Orleans.API", "src\KH.Orleans.API\KH.Orleans.API.csproj", "{F9A9F861-EA9C-49AB-8516-279B6DB7BA97}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KH.Orleans.API.Identity", "src\KH.Orleans.API.Identity\KH.Orleans.API.Identity.csproj", "{917B28F7-E0F7-4C56-9BCA-2231ECEABE79}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KH.Orleans.API.Models", "src\KH.Orleans.API.Models\KH.Orleans.API.Models.csproj", "{B9B0A12D-E413-46F1-9E5A-05C03D2B1EEE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityTesting.API.Models", "src\IdentityTesting.API.Models\IdentityTesting.API.Models.csproj", "{B9B0A12D-E413-46F1-9E5A-05C03D2B1EEE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,26 +30,11 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0FF1F574-78BA-42BD-AFBE-2412AEA98B4F} = {0C66608F-2A33-4FEE-A320-6597D080E391}
-		{E42C420D-95F8-43DA-8EC3-3B42B5AAD336} = {E2A36E37-6669-44EF-8CD7-A40E6116C821}
-		{82C1332A-1CCB-41FF-B4D6-9B3FC133B7F4} = {E2A36E37-6669-44EF-8CD7-A40E6116C821}
-		{DD4118B7-8321-4EB5-B6E9-E3716DD54F69} = {E2A36E37-6669-44EF-8CD7-A40E6116C821}
 		{F9A9F861-EA9C-49AB-8516-279B6DB7BA97} = {E2A36E37-6669-44EF-8CD7-A40E6116C821}
 		{917B28F7-E0F7-4C56-9BCA-2231ECEABE79} = {E2A36E37-6669-44EF-8CD7-A40E6116C821}
 		{B9B0A12D-E413-46F1-9E5A-05C03D2B1EEE} = {E2A36E37-6669-44EF-8CD7-A40E6116C821}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E42C420D-95F8-43DA-8EC3-3B42B5AAD336}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E42C420D-95F8-43DA-8EC3-3B42B5AAD336}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E42C420D-95F8-43DA-8EC3-3B42B5AAD336}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E42C420D-95F8-43DA-8EC3-3B42B5AAD336}.Release|Any CPU.Build.0 = Release|Any CPU
-		{82C1332A-1CCB-41FF-B4D6-9B3FC133B7F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{82C1332A-1CCB-41FF-B4D6-9B3FC133B7F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{82C1332A-1CCB-41FF-B4D6-9B3FC133B7F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{82C1332A-1CCB-41FF-B4D6-9B3FC133B7F4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DD4118B7-8321-4EB5-B6E9-E3716DD54F69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DD4118B7-8321-4EB5-B6E9-E3716DD54F69}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DD4118B7-8321-4EB5-B6E9-E3716DD54F69}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DD4118B7-8321-4EB5-B6E9-E3716DD54F69}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F9A9F861-EA9C-49AB-8516-279B6DB7BA97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F9A9F861-EA9C-49AB-8516-279B6DB7BA97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9A9F861-EA9C-49AB-8516-279B6DB7BA97}.Release|Any CPU.ActiveCfg = Release|Any CPU

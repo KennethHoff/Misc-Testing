@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 
-namespace KH.Orleans.API.Identity;
+namespace IdentityTesting.API.Identity;
 
 public static class Policies
 {

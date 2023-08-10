@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace KH.Orleans.API.Identity.Extensions;
+namespace IdentityTesting.API.Identity.Extensions;
 
 public static class ServiceCollectionExtensions
 {
@@ -15,6 +15,12 @@ public static class ServiceCollectionExtensions
     {
         services.AddAuthentication();
         services.AddAuthorizationBuilder();
+
+        services.Configure<SecurityStampValidatorOptions>(opt =>
+        {
+            opt.ValidationInterval = TimeSpan.FromMilliseconds(1);
+        });
+        
         services.AddDbContext<KhDbContext>(contextOptions =>
         {
             contextOptions.UseNpgsql(configuration.GetConnectionString("Npgsql"), npgsqlOptions =>

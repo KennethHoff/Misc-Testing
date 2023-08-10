@@ -1,9 +1,9 @@
-using KH.Orleans.API.Identity.Endpoints;
+using IdentityTesting.API.Identity.Endpoints;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
-namespace KH.Orleans.API.Identity.Extensions;
+namespace IdentityTesting.API.Identity.Extensions;
 
 public static class AppBuilderExtensions
 {
@@ -13,7 +13,7 @@ public static class AppBuilderExtensions
         app.UseAuthorization();
 
         var identityGroup = app.MapGroup("/identity")
-            .RequireAuthorization(Policies.RequireAdmin)
+            // .RequireAuthorization(Policies.RequireAdmin)
             .WithTags("Identity");
 
         // We need to allow login for anonymous users... duh

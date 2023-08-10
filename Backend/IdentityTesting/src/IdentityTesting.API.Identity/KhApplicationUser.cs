@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace KH.Orleans.API.Identity;
+namespace IdentityTesting.API.Identity;
 
 public sealed class KhApplicationUser : IdentityUser;
 

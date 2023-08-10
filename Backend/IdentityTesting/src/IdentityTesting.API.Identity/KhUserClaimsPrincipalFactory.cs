@@ -3,7 +3,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
-namespace KH.Orleans.API.Identity;
+namespace IdentityTesting.API.Identity;
 
 public sealed class KhUserClaimsPrincipalFactory(KhUserManager userManager, KhRoleManager roleManager,
         IOptions<IdentityOptions> options)
