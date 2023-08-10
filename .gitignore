@@ -13,3 +13,4 @@ target/
 #### Development ####
 node_modules/
 .idea/
+*.user
