@@ -3,13 +3,7 @@
 ## Roslyn Analyzers
 A .NET Standard project with implementations of sample analyzers and code fix providers.
 
-- [RequiredPropertyAnalyzer.cs](src/Oxx.Backend.Analyzers/Rules/RequiredPropertyAnalyzer.cs): An analyzer that reports non-nullable properties that are not required.
-    ![Required Property Analyzer](assets/RequiredPropertyAnalyzer_Analyzer.png)
-- [RequiredPropertyCodeFixProvider.cs](src/Oxx.Backend.Analyzers/Rules/RequiredPropertyCodeFixProvider.cs): Adds two code fixers to the RequiredPropertyAnalyzer that either:
-  - Adds the `required` keyword to the property.
-  - Makes the property nullable.
-
-    ![Required Property Code Fix](assets/RequiredPropertyAnalyzer_CodeFix.png)
+- [RequiredPropertyAnalyzer](src/Oxx.Backend.Analyzers/Rules/RequiredProperty): An analyzer that reports non-nullable properties that are not required.
 
 ### How to use
 

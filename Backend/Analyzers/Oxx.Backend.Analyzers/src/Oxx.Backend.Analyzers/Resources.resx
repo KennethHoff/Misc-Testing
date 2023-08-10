@@ -40,6 +40,6 @@
         <value>Make property nullable</value>
     </data>
     <data name="OXX0001SuppressorTitle" xml:space="preserve">
-        <value>Non-nullable properties are already handled by OXX0001</value>
+        <value>Effectively superseded by OXX0001</value>
     </data>
 </root>
