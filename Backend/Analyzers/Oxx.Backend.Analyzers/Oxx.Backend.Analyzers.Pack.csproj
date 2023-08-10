@@ -11,7 +11,7 @@
         <DevelopmentDependency>true</DevelopmentDependency>
         <NoPackageAnalysis>true</NoPackageAnalysis>
         
-        <Version>1.0.0-beta17</Version>
+        <Version>1.0.0-beta18</Version>
         <Authors>Kenneth Hoff</Authors>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 

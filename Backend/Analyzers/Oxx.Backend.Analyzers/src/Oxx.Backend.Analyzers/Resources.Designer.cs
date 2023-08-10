@@ -74,5 +74,11 @@ namespace Oxx.Backend.Analyzers {
                 return ResourceManager.GetString("OXX0001CodeFix2Title", resourceCulture);
             }
         }
+        
+        internal static string OXX0001SuppressorTitle {
+            get {
+                return ResourceManager.GetString("OXX0001SuppressorTitle", resourceCulture);
+            }
+        }
     }
 }

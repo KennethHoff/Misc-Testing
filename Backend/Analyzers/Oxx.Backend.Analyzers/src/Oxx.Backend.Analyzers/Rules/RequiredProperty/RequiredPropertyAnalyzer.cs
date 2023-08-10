@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Oxx.Backend.Analyzers.Constants;
 
-namespace Oxx.Backend.Analyzers.Rules;
+namespace Oxx.Backend.Analyzers.Rules.RequiredProperty;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp), PublicAPI("Roslyn Analyzer")]
 public sealed class RequiredPropertyAnalyzer : DiagnosticAnalyzer
@@ -27,7 +27,7 @@ public sealed class RequiredPropertyAnalyzer : DiagnosticAnalyzer
 	{
 		// This might need to be `GeneratedCodeAnalysisFlags.None` instead, but I'm not sure.
 		context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.Analyze |
-											   GeneratedCodeAnalysisFlags.ReportDiagnostics);
+		                                       GeneratedCodeAnalysisFlags.ReportDiagnostics);
 		context.EnableConcurrentExecution();
 
 		context.RegisterSymbolAction(AnalyzeOperation, SymbolKind.Property);
