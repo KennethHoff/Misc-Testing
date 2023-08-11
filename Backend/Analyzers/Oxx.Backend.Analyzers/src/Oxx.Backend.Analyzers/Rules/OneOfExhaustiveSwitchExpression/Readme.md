@@ -5,7 +5,7 @@ This analyzer will warn you if you have a switch expression on a `OneOf<T>.Value
 ## [Missing cases Analyzer](OneOfExhaustiveSwitchExpressionMissingCasesAnalyzer.cs)
 ![Analyzer - Missing cases](assets/Analyzer_MissingCases.png)
 
-![Analyzer - Missing cases Partial](assets/Analyzer_MissingCases_Partial.png)
+![Analyzer - Missing cases Partial](assets/Analyzer_MissingCases2.png)
 
 ## [Impossible cases Analyzer](OneOfExhaustiveSwitchExpressionImpossibleCasesAnalyzer.cs)
 ![Analyzer - Impossible cases](assets/Analyzer_ImpossibleCases.png)

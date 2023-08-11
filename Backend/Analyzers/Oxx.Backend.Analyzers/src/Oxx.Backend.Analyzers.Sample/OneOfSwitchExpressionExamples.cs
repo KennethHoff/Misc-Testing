@@ -15,8 +15,6 @@ OneOf<bool, string> twoOf = "hmm";
 var message = twoOf.Value switch
 {
 	bool x => "This is a boolean",
-	string x => "This is a string",
-	int x => "This is an int",
 };
 
 
