@@ -8,5 +8,6 @@ public static class AnalyzerId
 	private const string Prefix = "OXX";
 
 	public const string RequiredProperty = Prefix + "0001";
-	public const string OneOfExhaustiveSwitch = Prefix + "9001";
+	public const string OneOfSwitchExpressionMissingCases = Prefix + "9001";
+	public const string OneOfSwitchExpressionImpossibleCases = Prefix + "9002";
 }

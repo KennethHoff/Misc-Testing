@@ -63,15 +63,15 @@ namespace Oxx.Backend.Analyzers {
             }
         }
         
-        internal static string OXX0001CodeFix1Title {
+        internal static string OXX0001CodeFix1 {
             get {
-                return ResourceManager.GetString("OXX0001CodeFix1Title", resourceCulture);
+                return ResourceManager.GetString("OXX0001CodeFix1", resourceCulture);
             }
         }
         
-        internal static string OXX0001CodeFix2Title {
+        internal static string OXX0001CodeFix2 {
             get {
-                return ResourceManager.GetString("OXX0001CodeFix2Title", resourceCulture);
+                return ResourceManager.GetString("OXX0001CodeFix2", resourceCulture);
             }
         }
         
@@ -81,9 +81,9 @@ namespace Oxx.Backend.Analyzers {
             }
         }
         
-        internal static string OXX9001Title_NotExhaustive {
+        internal static string OXX9001Title {
             get {
-                return ResourceManager.GetString("OXX9001Title_NotExhaustive", resourceCulture);
+                return ResourceManager.GetString("OXX9001Title", resourceCulture);
             }
         }
         
@@ -93,33 +93,45 @@ namespace Oxx.Backend.Analyzers {
             }
         }
         
-        internal static string OXX9001MessageFormat_NotExhaustive {
+        internal static string OXX9001MessageFormat {
             get {
-                return ResourceManager.GetString("OXX9001MessageFormat_NotExhaustive", resourceCulture);
+                return ResourceManager.GetString("OXX9001MessageFormat", resourceCulture);
             }
         }
         
-        internal static string OXX9001MessageFormat_TooExhaustive {
+        internal static string OXX9001CodeFix {
             get {
-                return ResourceManager.GetString("OXX9001MessageFormat_TooExhaustive", resourceCulture);
-            }
-        }
-        
-        internal static string OXX9001MessageFormat_Both {
-            get {
-                return ResourceManager.GetString("OXX9001MessageFormat_Both", resourceCulture);
-            }
-        }
-        
-        internal static string OXX9001CodeFixTitle {
-            get {
-                return ResourceManager.GetString("OXX9001CodeFixTitle", resourceCulture);
+                return ResourceManager.GetString("OXX9001CodeFix", resourceCulture);
             }
         }
         
         internal static string OXX9001SuppressorJustification {
             get {
                 return ResourceManager.GetString("OXX9001SuppressorJustification", resourceCulture);
+            }
+        }
+        
+        internal static string OXX9002Title {
+            get {
+                return ResourceManager.GetString("OXX9002Title", resourceCulture);
+            }
+        }
+        
+        internal static string OXX9002Description {
+            get {
+                return ResourceManager.GetString("OXX9002Description", resourceCulture);
+            }
+        }
+        
+        internal static string OXX9002MessageFormat {
+            get {
+                return ResourceManager.GetString("OXX9002MessageFormat", resourceCulture);
+            }
+        }
+        
+        internal static string OXX9002CodeFix {
+            get {
+                return ResourceManager.GetString("OXX9002CodeFix", resourceCulture);
             }
         }
     }

@@ -44,26 +44,26 @@ public sealed class RequiredPropertyCodeFixProvider : CodeFixProvider
 		// (This is the default due to it being the first Code Action registered.)
 		context.RegisterCodeFix(
 			CodeAction.Create(
-				title: string.Format(Resources.OXX0001CodeFix1Title),
+				title: string.Format(Resources.OXX0001CodeFix1),
 				createChangedDocument: c => AddRequiredKeywordAsync(context.Document, declaration, c),
-				equivalenceKey: nameof(Resources.OXX0001CodeFix1Title)),
+				equivalenceKey: nameof(Resources.OXX0001CodeFix1)),
 			diagnostic);
 
 		// Adds a Code Fixer for adding the nullable annotation.
 		// This is an alternative fixer that has to be applied manually if the other fixer is not desired.
 		context.RegisterCodeFix(
 			CodeAction.Create(
-				title: string.Format(Resources.OXX0001CodeFix2Title),
+				title: string.Format(Resources.OXX0001CodeFix2),
 				createChangedDocument: c => AddNullableAnnotationAsync(context.Document, declaration, c),
-				equivalenceKey: nameof(Resources.OXX0001CodeFix2Title)),
+				equivalenceKey: nameof(Resources.OXX0001CodeFix2)),
 			diagnostic);
 	}
 
 	private static async Task<Document> AddRequiredKeywordAsync(Document document,
-		PropertyDeclarationSyntax propertyDeclarationSyntax, CancellationToken cancellationToken)
+		PropertyDeclarationSyntax propertyDeclarationSyntax, CancellationToken ct)
 	{
 		// If the document doesn't have a syntax root, we can't do anything.
-		if (await document.GetSyntaxRootAsync(cancellationToken) is not { } root)
+		if (await document.GetSyntaxRootAsync(ct) is not { } root)
 		{
 			return document;
 		}
@@ -80,10 +80,10 @@ public sealed class RequiredPropertyCodeFixProvider : CodeFixProvider
 	}
 
 	private static async Task<Document> AddNullableAnnotationAsync(Document document,
-		PropertyDeclarationSyntax propertyDeclarationSyntax, CancellationToken cancellationToken)
+		PropertyDeclarationSyntax propertyDeclarationSyntax, CancellationToken ct)
 	{
 		// If the document doesn't have a syntax root, we can't do anything.
-		if (await document.GetSyntaxRootAsync(cancellationToken) is not { } root)
+		if (await document.GetSyntaxRootAsync(ct) is not { } root)
 		{
 			return document;
 		}

@@ -6,3 +6,4 @@ Rule ID | Category | Severity | Notes
 --------|----------|----------|------------------------------------------------
 OXX0001 | Design   | Warning  | All non-nullable properties must be required.
 OXX9001 | Design   | Warning  | Switch expressions on OneOf.Value must be exhaustive.
+OXX9002 | Design   | Warning  | Switch expressions should not check for impossible cases.
