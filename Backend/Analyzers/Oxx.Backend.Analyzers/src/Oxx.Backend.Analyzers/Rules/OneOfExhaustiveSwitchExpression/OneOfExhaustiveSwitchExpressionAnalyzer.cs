@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Oxx.Backend.Analyzers.Constants;
+using Oxx.Backend.Analyzers.Utilities;
 
 namespace Oxx.Backend.Analyzers.Rules.OneOfExhaustiveSwitchExpression;
 
@@ -29,21 +30,25 @@ public sealed class OneOfExhaustiveSwitchExpressionAnalyzer : DiagnosticAnalyzer
 	private static readonly LocalizableString Description = new LocalizableResourceString(
 		nameof(Resources.OXX9001Description), Resources.ResourceManager, typeof(Resources));
 
-	private static readonly DiagnosticDescriptor RuleNotExhaustive = new(AnalyzerId.OneOfExhaustiveSwitch, Title, MessageFormatNotExhaustive,
+	private static readonly DiagnosticDescriptor RuleNotExhaustive = new(AnalyzerId.OneOfExhaustiveSwitch, Title,
+		MessageFormatNotExhaustive,
 		DiagnosticCategory.Design, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
 
-	private static readonly DiagnosticDescriptor RuleTooExhaustive = new(AnalyzerId.OneOfExhaustiveSwitch, Title, MessageFormatTooExhaustive,
+	private static readonly DiagnosticDescriptor RuleTooExhaustive = new(AnalyzerId.OneOfExhaustiveSwitch, Title,
+		MessageFormatTooExhaustive,
 		DiagnosticCategory.Design, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
 
-	private static readonly DiagnosticDescriptor RuleBoth = new(AnalyzerId.OneOfExhaustiveSwitch, Title, MessageFormatBoth,
+	private static readonly DiagnosticDescriptor RuleBoth = new(AnalyzerId.OneOfExhaustiveSwitch, Title,
+		MessageFormatBoth,
 		DiagnosticCategory.Design, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
 
-	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = ImmutableArray.CreateRange(new[]
-	{
-		RuleNotExhaustive,
-		RuleTooExhaustive,
-		RuleBoth
-	});
+	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = ImmutableArray.CreateRange(
+		new[]
+		{
+			RuleNotExhaustive,
+			RuleTooExhaustive,
+			RuleBoth
+		});
 
 	public override void Initialize(AnalysisContext context)
 	{
@@ -76,11 +81,11 @@ public sealed class OneOfExhaustiveSwitchExpressionAnalyzer : DiagnosticAnalyzer
 		}
 
 		// If the switch expression has the same exact types as the OneOf, we're not interested.
-		HashSet<string> requiredTypes = new(oneOfTypeSymbol.TypeArguments.Select(type => type.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
-		HashSet<string> switchTypes = new(switchExpressionSyntax.Arms.Select(arm => arm.Pattern.GetFirstToken().ToString()));
+		HashSet<ITypeSymbol> requiredTypes = new(oneOfTypeSymbol.TypeArguments, SymbolEqualityComparer.Default);
+		HashSet<ITypeSymbol> currentTypes = new(SwitchExpressionUtilities.GetTypeForAllArms(context.SemanticModel, switchExpressionSyntax), SymbolEqualityComparer.Default);
 
-		var missingTypes = requiredTypes.Except(switchTypes).ToArray();
-		var redundantTypes = switchTypes.Except(requiredTypes).ToArray();
+		var missingTypes = requiredTypes.Except(currentTypes).ToArray();
+		var redundantTypes = currentTypes.Except(requiredTypes).ToArray();
 
 		if (missingTypes.Length == 0 && redundantTypes.Length == 0)
 		{
@@ -88,20 +93,24 @@ public sealed class OneOfExhaustiveSwitchExpressionAnalyzer : DiagnosticAnalyzer
 		}
 
 		// If there are more types in the OneOf than in the switch expression, report a "Missing" diagnostic.
-		if (requiredTypes.IsSupersetOf(switchTypes))
+		if (requiredTypes.IsSupersetOf(currentTypes))
 		{
-			context.ReportDiagnostic(Diagnostic.Create(RuleNotExhaustive, switchExpressionSyntax.GetLocation(), string.Join(", ", missingTypes)));
+			context.ReportDiagnostic(Diagnostic.Create(RuleNotExhaustive, switchExpressionSyntax.GetLocation(),
+				DiagnosticUtilities.CreateMessageArguments(missingTypes)));
 			return;
 		}
 
 		// If there are more types in the switch expression than in the OneOf, report a "Unnecessary" diagnostic.
-		if (switchTypes.IsSupersetOf(requiredTypes))
+		if (currentTypes.IsSupersetOf(requiredTypes))
 		{
-			context.ReportDiagnostic(Diagnostic.Create(RuleTooExhaustive, switchExpressionSyntax.GetLocation(), string.Join(", ", redundantTypes)));
+			context.ReportDiagnostic(Diagnostic.Create(RuleTooExhaustive, switchExpressionSyntax.GetLocation(),
+				DiagnosticUtilities.CreateMessageArguments(redundantTypes)));
 			return;
 		}
 
 		// Otherwise, report a "Both" diagnostic.
-		context.ReportDiagnostic(Diagnostic.Create(RuleBoth, switchExpressionSyntax.GetLocation(), string.Join(", ", missingTypes), string.Join(", ", redundantTypes)));
+		context.ReportDiagnostic(Diagnostic.Create(RuleBoth, switchExpressionSyntax.GetLocation(),
+			DiagnosticUtilities.CreateMessageArguments(missingTypes),
+			DiagnosticUtilities.CreateMessageArguments(redundantTypes)));
 	}
 }
