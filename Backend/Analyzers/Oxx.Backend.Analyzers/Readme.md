@@ -1,7 +1,7 @@
 # Oxx.Backend.Analyzers
 
 ## Roslyn Analyzers
-A .NET Standard project with implementations of sample analyzers and code fix providers.
+A .NET Standard project with a few analyzers and code fix providers.
 
 - [RequiredPropertyAnalyzer](src/Oxx.Backend.Analyzers/Rules/RequiredProperty): An analyzer that reports non-nullable properties that are not required.
 - [OneOfExhaustiveSwitchExpressionAnalyzer](src/Oxx.Backend.Analyzers/Rules/OneOfExhaustiveSwitchExpression): An analyzer that reports when a switch expression on a OneOf type is incomplete.
