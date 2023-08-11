@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.Composition;
+using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
@@ -9,7 +10,9 @@ using Oxx.Backend.Analyzers.Constants;
 
 namespace Oxx.Backend.Analyzers.Rules.OneOfExhaustiveSwitchExpression;
 
-[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(OneOfExhaustiveSwitchExpressionCodeFixProvider)), Shared]
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(OneOfExhaustiveSwitchExpressionCodeFixProvider))]
+[Shared]
+[PublicAPI("Roslyn Analyzer")]
 public sealed class OneOfExhaustiveSwitchExpressionCodeFixProvider : CodeFixProvider
 {
 	public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
@@ -84,10 +87,11 @@ public sealed class OneOfExhaustiveSwitchExpressionCodeFixProvider : CodeFixProv
 		return document.WithSyntaxRoot(newRoot);
 	}
 
-	private static SwitchExpressionSyntax ReplaceArms(SwitchExpressionSyntax switchExpressionSyntax, INamedTypeSymbol oneOfTypeSymbol)
+	private static SwitchExpressionSyntax ReplaceArms(SwitchExpressionSyntax switchExpressionSyntax,
+		INamedTypeSymbol oneOfTypeSymbol)
 	{
-		var requiredTypes = new HashSet<string>(oneOfTypeSymbol.TypeArguments.Select(type => type.Name));
-		var switchTypes = new HashSet<string>(switchExpressionSyntax.Arms.Select(arm => arm.Pattern.ToString()));
+		var requiredTypes = new HashSet<string>(oneOfTypeSymbol.TypeArguments.Select(type => type.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
+		var switchTypes = new HashSet<string>(switchExpressionSyntax.Arms.Select(arm => arm.Pattern.GetFirstToken().ToString()));
 
 		var missingTypes = requiredTypes.Except(switchTypes).ToArray();
 		var redundantTypes = switchTypes.Except(requiredTypes).ToArray();
@@ -105,15 +109,23 @@ public sealed class OneOfExhaustiveSwitchExpressionCodeFixProvider : CodeFixProv
 	{
 		foreach (var missingType in missingTypes)
 		{
-			var typeSymbol = oneOfTypeSymbol.TypeArguments.First(type => type.Name == missingType);
-			var typeSyntax = SyntaxFactory.IdentifierName(typeSymbol.Name);
+			// Get the type symbol for the missing type based on the OneOf's type arguments
+			var typeSymbol = oneOfTypeSymbol.TypeArguments.First(argument => argument.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat) == missingType);
 
-			var newArm = SyntaxFactory.SwitchExpressionArm(
-				SyntaxFactory.ConstantPattern(typeSyntax),
-				SyntaxFactory.ThrowExpression(SyntaxFactory.ObjectCreationExpression(
-					SyntaxFactory.IdentifierName("NotImplementedException"),
-					SyntaxFactory.ArgumentList(),
-					null)));
+			// Create a type syntax for the missing type symbol using a syntax format that is short and readable (e.g. "string" instead of "System.String")
+			var typeSyntax = SyntaxFactory.IdentifierName(typeSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat));
+
+			// Create a pattern that extracts the value from the OneOf
+			var patternSyntax = SyntaxFactory.DeclarationPattern(typeSyntax,
+				SyntaxFactory.SingleVariableDesignation(SyntaxFactory.Identifier("x")));
+
+			// Create a throw expression that throws a NotImplementedException
+			var expressionSyntax = SyntaxFactory.ThrowExpression(SyntaxFactory.ObjectCreationExpression(
+				SyntaxFactory.IdentifierName("NotImplementedException"),
+				SyntaxFactory.ArgumentList(),
+				null));
+
+			var newArm = SyntaxFactory.SwitchExpressionArm(patternSyntax, expressionSyntax);
 
 			newArms = newArms.Add(newArm);
 		}
@@ -124,8 +136,11 @@ public sealed class OneOfExhaustiveSwitchExpressionCodeFixProvider : CodeFixProv
 	{
 		foreach (var redundantType in redundantTypes)
 		{
-			var redundantArm = newArms.First(arm => arm.Pattern.ToString() == redundantType);
-			newArms = newArms.Remove(redundantArm);
+			// Get the index of the redundant type in the list of arms
+			var index = newArms.IndexOf(arm => arm.Pattern.GetFirstToken().ToString() == redundantType);
+
+			// Remove the arm at the index
+			newArms = newArms.RemoveAt(index);
 		}
 	}
 }

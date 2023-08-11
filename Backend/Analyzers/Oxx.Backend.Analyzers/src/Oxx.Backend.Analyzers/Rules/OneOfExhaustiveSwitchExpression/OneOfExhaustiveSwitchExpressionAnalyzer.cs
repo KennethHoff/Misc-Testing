@@ -8,7 +8,8 @@ using Oxx.Backend.Analyzers.Constants;
 
 namespace Oxx.Backend.Analyzers.Rules.OneOfExhaustiveSwitchExpression;
 
-[DiagnosticAnalyzer(LanguageNames.CSharp), PublicAPI("Roslyn Analyzer")]
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+[PublicAPI("Roslyn Analyzer")]
 public sealed class OneOfExhaustiveSwitchExpressionAnalyzer : DiagnosticAnalyzer
 {
 	private static readonly LocalizableString Title = new LocalizableResourceString(
@@ -75,8 +76,8 @@ public sealed class OneOfExhaustiveSwitchExpressionAnalyzer : DiagnosticAnalyzer
 		}
 
 		// If the switch expression has the same exact types as the OneOf, we're not interested.
-		HashSet<string> requiredTypes = new(oneOfTypeSymbol.TypeArguments.Select(type => type.Name));
-		HashSet<string> switchTypes = new(switchExpressionSyntax.Arms.Select(arm => arm.Pattern.ToString()));
+		HashSet<string> requiredTypes = new(oneOfTypeSymbol.TypeArguments.Select(type => type.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
+		HashSet<string> switchTypes = new(switchExpressionSyntax.Arms.Select(arm => arm.Pattern.GetFirstToken().ToString()));
 
 		var missingTypes = requiredTypes.Except(switchTypes).ToArray();
 		var redundantTypes = switchTypes.Except(requiredTypes).ToArray();

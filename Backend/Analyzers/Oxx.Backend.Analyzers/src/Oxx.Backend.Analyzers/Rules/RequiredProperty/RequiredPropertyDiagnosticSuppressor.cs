@@ -5,7 +5,8 @@ using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Oxx.Backend.Analyzers.Rules.RequiredProperty;
 
-[DiagnosticAnalyzer(LanguageNames.CSharp), PublicAPI("Roslyn Analyzer")]
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+[PublicAPI("Roslyn Analyzer")]
 public sealed class RequiredPropertyDiagnosticSuppressor : DiagnosticSuppressor
 {
 	private static readonly LocalizableString Justification = new LocalizableResourceString(

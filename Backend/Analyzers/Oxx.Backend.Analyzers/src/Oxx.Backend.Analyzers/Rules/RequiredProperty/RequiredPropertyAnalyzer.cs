@@ -7,7 +7,8 @@ using Oxx.Backend.Analyzers.Constants;
 
 namespace Oxx.Backend.Analyzers.Rules.RequiredProperty;
 
-[DiagnosticAnalyzer(LanguageNames.CSharp), PublicAPI("Roslyn Analyzer")]
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+[PublicAPI("Roslyn Analyzer")]
 public sealed class RequiredPropertyAnalyzer : DiagnosticAnalyzer
 {
 	private static readonly LocalizableString Title = new LocalizableResourceString(
