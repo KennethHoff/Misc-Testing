@@ -3,16 +3,16 @@
 This analyzer will warn you if you have a switch expression on a `OneOf<T>.Value` that is not exhaustive or is checking for impossible cases.
 
 ## [Missing cases Analyzer](OneOfExhaustiveSwitchExpressionMissingCasesAnalyzer.cs)
-![Analyzer - Missing cases](assets/Analyzer_Missing.png)
+![Analyzer - Missing cases](assets/Analyzer_MissingCases.png)
 
 ## [Impossible cases Analyzer](OneOfExhaustiveSwitchExpressionImpossibleCasesAnalyzer.cs)
-![Analyzer - Impossible cases](assets/Analyzer_Impossible.png)
+![Analyzer - Impossible cases](assets/Analyzer_ImpossibleCases.png)
 
 ## [Missing cases Code Fix](OneOfExhaustiveSwitchExpressionMissingCasesCodeFixProvider.cs)
-![Code Fix - Missing cases](assets/CodeFix_Missing.png)
+![Code Fix - Missing cases](assets/CodeFix_MissingCases.png)
 
 ## [Impossible cases Code Fix](OneOfExhaustiveSwitchExpressionImpossibleCasesCodeFixProvider.cs)
-![Code Fix - Impossible cases](assets/CodeFix_Impossible.png)
+![Code Fix - Impossible cases](assets/CodeFix_ImpossibleCases.png)
 
 ## [Diagnostic Suppressor](OneOfExhaustiveSwitchExpressionDiagnosticSuppressor.cs)
 
