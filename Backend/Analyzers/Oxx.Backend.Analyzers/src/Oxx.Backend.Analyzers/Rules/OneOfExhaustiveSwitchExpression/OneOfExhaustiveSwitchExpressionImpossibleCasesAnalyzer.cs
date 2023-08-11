@@ -26,7 +26,26 @@ public sealed class OneOfExhaustiveSwitchExpressionImpossibleCasesAnalyzer : Dia
 		MessageFormat,
 		DiagnosticCategory.Design, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
 
-	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = ImmutableArray.Create(Rule);
+
+	private static readonly LocalizableString DescriptionDiscardPattern = new LocalizableResourceString(
+		nameof(Resources.OXX9002DescriptionDiscardPattern), Resources.ResourceManager, typeof(Resources));
+
+	private static readonly LocalizableString MessageFormatDiscardPattern = new LocalizableResourceString(
+		nameof(Resources.OXX9002MessageFormatDiscardPattern), Resources.ResourceManager, typeof(Resources));
+
+	private static readonly LocalizableString TitleDiscardPattern = new LocalizableResourceString(
+		nameof(Resources.OXX9002TitleDiscardPattern), Resources.ResourceManager, typeof(Resources));
+
+	private static readonly  DiagnosticDescriptor RuleDiscardPattern = new(AnalyzerId.OneOfSwitchExpressionImpossibleCases, TitleDiscardPattern,
+		MessageFormatDiscardPattern,
+		DiagnosticCategory.Design, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: DescriptionDiscardPattern);
+
+
+	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = ImmutableArray.CreateRange(new[]
+	{
+		Rule,
+		RuleDiscardPattern
+	});
 
 	public override void Initialize(AnalysisContext context)
 	{
@@ -96,6 +115,14 @@ public sealed class OneOfExhaustiveSwitchExpressionImpossibleCasesAnalyzer : Dia
 				if (SwitchExpressionUtilities.GetTypeForArm(context.SemanticModel, switchExpressionSyntax.Arms[index]) is not
 				    { } impossibleType)
 				{
+					continue;
+				}
+
+				// If it's the DiscardPattern or `object`, report a different diagnostic.
+				if (impossibleType.Name.Equals("Object", StringComparison.OrdinalIgnoreCase))
+				{
+					context.ReportDiagnostic(Diagnostic.Create(RuleDiscardPattern,
+						switchExpressionSyntax.Arms[index].GetLocation()));
 					continue;
 				}
 

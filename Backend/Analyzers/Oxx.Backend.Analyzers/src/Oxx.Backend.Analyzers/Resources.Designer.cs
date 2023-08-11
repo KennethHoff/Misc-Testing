@@ -117,15 +117,33 @@ namespace Oxx.Backend.Analyzers {
             }
         }
         
+        internal static string OXX9002TitleDiscardPattern {
+            get {
+                return ResourceManager.GetString("OXX9002TitleDiscardPattern", resourceCulture);
+            }
+        }
+        
         internal static string OXX9002Description {
             get {
                 return ResourceManager.GetString("OXX9002Description", resourceCulture);
             }
         }
         
+        internal static string OXX9002DescriptionDiscardPattern {
+            get {
+                return ResourceManager.GetString("OXX9002DescriptionDiscardPattern", resourceCulture);
+            }
+        }
+        
         internal static string OXX9002MessageFormat {
             get {
                 return ResourceManager.GetString("OXX9002MessageFormat", resourceCulture);
+            }
+        }
+        
+        internal static string OXX9002MessageFormatDiscardPattern {
+            get {
+                return ResourceManager.GetString("OXX9002MessageFormatDiscardPattern", resourceCulture);
             }
         }
         

@@ -64,7 +64,7 @@ public sealed class OneOfExhaustiveSwitchExpressionImpossibleCasesCodeFixProvide
 
 		// Removes the impossible type from the switch expression.
 		// If it's the last type, it will remove the entire switch expression.(??)
-		if (root.RemoveNode(armSyntax, SyntaxRemoveOptions.KeepNoTrivia) is not {} newRoot)
+		if (root.RemoveNode(armSyntax, SyntaxRemoveOptions.AddElasticMarker) is not {} newRoot)
 		{
 			return document.WithText(DiagnosticUtilities.CreateDebuggingSourceText("Root has been removed."));
 		}

@@ -1,36 +1,28 @@
+// JetBrains Rider currently does not support Roslyn Diagnostic Suppressors (https://youtrack.jetbrains.com/issue/RIDER-45021)
+// Hence, we need to disable the warning for the entire file as a pretend suppressor.
+// This is not necessary for the analyzer to work, it is just to avoid the warning in the IDE.
 #pragma warning disable CS8509 // The switch expression does not handle all possible values of its input type (it is not exhaustive).
-
 using OneOf;
 
-namespace Oxx.Backend.Analyzers.Sample;
 
-public class OneOfSwitchExpressionExamples
+
+
+
+
+
+OneOf<bool, string> twoOf = "hmm";
+
+var message = twoOf.Value switch
 {
-	public static void DoThing()
-	{
-		OneOf<IReadOnlyDictionary<int, (bool, bool, bool)>, bool, uint, sbyte, char, IReadOnlyList<string>,
-			IReadOnlyList<IReadOnlyList<string>>> oneOf = true;
+	bool x => "This is a boolean",
+	string x => "This is a string",
+	int x => "This is an int",
+};
 
-		var message = oneOf.Value switch
-		{
-			uint x => "hmm",
-			char x => throw new NotImplementedException(),
-			sbyte x => throw new NotImplementedException(),
-			IReadOnlyDictionary<int, (bool, bool, bool)> x => throw new NotImplementedException(),
-			IReadOnlyList<IReadOnlyList<string>> x => throw new NotImplementedException(),
-			IReadOnlyList<string> x => throw new NotImplementedException(),
-			bool x => throw new NotImplementedException()
-		};
 
-		OneOf<bool, string> twoOf = "hmm";
 
-		var message2 = twoOf.Value switch
-		{
-			bool x => "Boolean!",
-			string x => throw new NotImplementedException()
-		};
-	}
-}
+
 
 
 #pragma warning restore CS8509 // The switch expression does not handle all possible values of its input type (it is not exhaustive).
+
