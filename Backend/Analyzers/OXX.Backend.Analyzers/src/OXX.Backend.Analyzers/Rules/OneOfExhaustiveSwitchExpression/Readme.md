@@ -65,6 +65,7 @@ Suppresses [CS8509](https://learn.microsoft.com/en-us/dotnet/csharp/language-ref
     };
     ```
     This improves readability and maintainability, as the `Match` method is based on the order of the types, and not the types themselves.
+    So if you don't use the extracted variable - or the variable works with multiple types - you might not notice that the order of the types is wrong which could lead to bugs.
 
 
 - Code Fixer to convert methods that throws exceptions to `OneOf<T>.Value` switch expression
