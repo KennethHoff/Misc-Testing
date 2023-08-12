@@ -13,7 +13,7 @@ This analyzer will warn you if you have a switch expression on a `OneOf<T>.Value
 ![Analyzer - Impossible cases - Discard Pattern](assets/Analyzer_ImpossibleCases2.png)
 
 ## [Missing cases Code Fix](OneOfExhaustiveSwitchExpressionMissingCasesCodeFixProvider.cs)
-![Code Fix - Missing cases](assets/CodeFix_MissingCases2.png)
+![Code Fix - Missing cases](assets/CodeFix_MissingCases.png)
 
 ## [Impossible cases Code Fix](OneOfExhaustiveSwitchExpressionImpossibleCasesCodeFixProvider.cs)
 ![Code Fix - Impossible cases](assets/CodeFix_ImpossibleCases.png)
