@@ -27,7 +27,7 @@ Suppresses [CS8509](https://learn.microsoft.com/en-us/dotnet/csharp/language-ref
 
 ## Known Issues
 
-- The analyzer will not detect literal values as valid for the type, and will not report missing cases for them.
+- The analyzer will detect literal values as the type itself, and will not report missing cases for their type.
   - For example, with the following code:
     ```csharp
     OneOf<bool, string> stringOrBool = "Test";
