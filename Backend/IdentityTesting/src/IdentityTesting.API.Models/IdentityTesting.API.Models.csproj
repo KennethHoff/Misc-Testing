@@ -1,5 +1,2 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <PackageReference Remove="SvSoft.OneOf.Analyzers.SwitchDiagnosticSuppression" />
-  </ItemGroup>
 </Project>
