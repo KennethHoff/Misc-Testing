@@ -10,17 +10,6 @@ using OXX.Backend.Analyzers.Utilities;
 
 namespace OXX.Backend.Analyzers.Rules.OneOfExhaustiveSwitchExpression;
 
-// BUG: In the case of literals, the analyzer will fail to detect missing cases
-// For example, with the following code:
-// OneOf<bool, string> stringOrBool = "Test";
-// var message = stringOrBool.Value switch
-// {
-// 	true => "This is a bool",
-// 	"A string" => "lol",
-// };
-// The analyzer will report no missing cases here, as both a bool and a string are present.
-// This is clearly wrong, as even in this simple example, this will throw an exception.
-
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 [PublicAPI("Roslyn Analyzer")]
 public sealed class OneOfExhaustiveSwitchExpressionMissingCasesAnalyzer : DiagnosticAnalyzer
