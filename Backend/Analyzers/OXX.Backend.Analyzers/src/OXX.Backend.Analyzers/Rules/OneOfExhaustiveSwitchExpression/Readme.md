@@ -68,6 +68,8 @@ Suppresses [CS8509](https://learn.microsoft.com/en-us/dotnet/csharp/language-ref
 
 ## Future Plans
 
+- I might move the Discard Pattern to a separate analyzer(OXX9003), as it's more or a design choice than a bug.
+
 - Code Fixer to convert `OneOf<T>.Match` to `OneOf<T>.Value` switch expression
   - For example, look at the following code:
     ```csharp
