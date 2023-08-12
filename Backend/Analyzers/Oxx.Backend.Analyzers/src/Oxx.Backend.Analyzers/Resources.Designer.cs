@@ -45,6 +45,30 @@ namespace Oxx.Backend.Analyzers {
             }
         }
         
+        internal static string UnreachableTitle {
+            get {
+                return ResourceManager.GetString("UnreachableTitle", resourceCulture);
+            }
+        }
+        
+        internal static string UnreachableDescription {
+            get {
+                return ResourceManager.GetString("UnreachableDescription", resourceCulture);
+            }
+        }
+        
+        internal static string UnreachableMessageFormat {
+            get {
+                return ResourceManager.GetString("UnreachableMessageFormat", resourceCulture);
+            }
+        }
+        
+        internal static string UnreachableCodeFix {
+            get {
+                return ResourceManager.GetString("UnreachableCodeFix", resourceCulture);
+            }
+        }
+        
         internal static string OXX0001Title {
             get {
                 return ResourceManager.GetString("OXX0001Title", resourceCulture);

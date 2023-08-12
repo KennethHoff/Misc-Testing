@@ -9,12 +9,18 @@ using OneOf;
 
 
 
-
+const string randomString = "hey";
 OneOf<bool, string> twoOf = "hmm";
 
 var message = twoOf.Value switch
 {
-	bool x => "This is a boolean",
+	bool x => "Hey",
+	string x => throw new NotImplementedException()
+};
+
+var hmm = randomString switch
+{
+	_ => "throw new NotImplementedException()",
 };
 
 

@@ -26,7 +26,7 @@ public sealed class OneOfExhaustiveSwitchExpressionMissingCasesAnalyzer : Diagno
 		MessageFormat,
 		DiagnosticCategory.Design, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
 
-	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = ImmutableArray.Create(Rule);
+	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = ImmutableArray.Create(Rule, DiagnosticUtilities.UnreachableRule);
 
 	public override void Initialize(AnalysisContext context)
 	{
@@ -39,14 +39,12 @@ public sealed class OneOfExhaustiveSwitchExpressionMissingCasesAnalyzer : Diagno
 
 	private static void AnalyzeOperation(SyntaxNodeAnalysisContext context)
 	{
-		// If it's not a SwitchExpression, we're not interested.
-		if (context.Node is not SwitchExpressionSyntax switchExpressionSyntax)
-		{
-			return;
-		}
-
-		// If it's not a MemberAccessExpression, we're not interested.
-		if (switchExpressionSyntax.GoverningExpression is not MemberAccessExpressionSyntax memberAccessExpressionSyntax)
+		// If it's not a SwitchExpression on a MemberAccessExpression, we're not interested.
+		if (SwitchExpressionUtilities.GetSyntaxNodesForMemberAccess(context) is not
+		    {
+			    SwitchExpressionSyntax: var switchExpressionSyntax,
+			    MemberAccessExpressionSyntax: var memberAccessExpressionSyntax
+		    })
 		{
 			return;
 		}
@@ -60,16 +58,15 @@ public sealed class OneOfExhaustiveSwitchExpressionMissingCasesAnalyzer : Diagno
 
 		// If the switch expression has the same exact types as the OneOf, we're not interested.
 		HashSet<ITypeSymbol> requiredTypes = new(oneOfTypeSymbol.TypeArguments, SymbolEqualityComparer.Default);
-		HashSet<ITypeSymbol> currentTypes = new(
-			SwitchExpressionUtilities.GetTypeForAllArms(context.SemanticModel, switchExpressionSyntax),
-				SymbolEqualityComparer.Default);
+		HashSet<ITypeSymbol> currentTypes = SwitchExpressionUtilities.GetComparableTypeSymbolsForArms(context.SemanticModel, switchExpressionSyntax);
 
 		var missingTypes = requiredTypes.Except(currentTypes).ToArray();
 
-		if (missingTypes.Length == 0)
+		if (missingTypes.Length is 0)
 		{
 			return;
 		}
+
 		context.ReportDiagnostic(Diagnostic.Create(Rule, switchExpressionSyntax.GetLocation(),
 			DiagnosticUtilities.CreateMessageArguments(missingTypes)));
 	}

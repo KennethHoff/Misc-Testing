@@ -1,11 +1,26 @@
 using System.Text;
+using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
+using Oxx.Backend.Analyzers.Constants;
 
 namespace Oxx.Backend.Analyzers.Utilities;
 
 public static class DiagnosticUtilities
 {
+	private static readonly LocalizableString UnreachableTitle = new LocalizableResourceString(
+		nameof(Resources.UnreachableTitle), Resources.ResourceManager, typeof(Resources));
+
+	private static readonly LocalizableString UnreachableMessageFormat = new LocalizableResourceString(
+		nameof(Resources.UnreachableMessageFormat), Resources.ResourceManager, typeof(Resources));
+
+	private static readonly LocalizableString UnreachableDescription = new LocalizableResourceString(
+		nameof(Resources.UnreachableDescription), Resources.ResourceManager, typeof(Resources));
+
+	public static readonly DiagnosticDescriptor UnreachableRule = new(AnalyzerId.Unreachable, UnreachableTitle,
+		UnreachableMessageFormat,
+		DiagnosticCategory.Design, DiagnosticSeverity.Info, isEnabledByDefault: true, description: UnreachableDescription);
+
 	public static SourceText CreateDebuggingSourceText(string text)
 	{
 		const string prefixText = """
@@ -14,18 +29,22 @@ public static class DiagnosticUtilities
 
 		                          - The code you were trying to analyze.
 		                          - The analyzer ID.
-		                          - Version of the analyzer (If you're not using the latest version, update before reporting).
+		                          - Version of the analyzer (If you're not using the latest version, I probably will not help you).
 		                          """;
 
 		var sourceText = $"""
+		                  /*
 		                  {prefixText}
 
+		                  Problem reported:
 		                  {text}
+		                  */
 		                  """;
 
 		return SourceText.From(sourceText);
 	}
-	public static string CreateMessageArguments(ReadOnlySpan<ITypeSymbol> typeSymbols)
+
+	public static string CreateMessageArguments(scoped ReadOnlySpan<ITypeSymbol> typeSymbols)
 	{
 		var builder = new StringBuilder();
 

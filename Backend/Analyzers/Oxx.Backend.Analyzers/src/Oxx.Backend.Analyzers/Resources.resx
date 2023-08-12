@@ -23,6 +23,19 @@
             PublicKeyToken=b77a5c561934e089
         </value>
     </resheader>
+    
+    <data name="UnreachableTitle" xml:space="preserve">
+        <value>If you see this, something went wrong</value>
+    </data>
+    <data name="UnreachableDescription" xml:space="preserve">
+        <value>If you see this, something went wrong. Contact the author of this analyzer.</value>
+    </data>
+    <data name="UnreachableMessageFormat" xml:space="preserve">
+        <value>If you see this, something went wrong at {0}: {1}. Contact the author of this analyzer.</value>
+    </data>
+    <data name="UnreachableCodeFix" xml:space="preserve">
+        <value>If you see this, something went wrong. Contact the author of this analyzer.</value>
+    </data>
 
     <data name="OXX0001Title" xml:space="preserve">
         <value>Non-nullable property '{0}' is not required</value>
