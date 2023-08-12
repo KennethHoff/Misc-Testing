@@ -28,4 +28,5 @@ app.UseSwaggerUi3(opt =>
     // Do not expand the Schema section -- Clutters the UI
     opt.DefaultModelsExpandDepth = 0;
 });
+
 app.Run();

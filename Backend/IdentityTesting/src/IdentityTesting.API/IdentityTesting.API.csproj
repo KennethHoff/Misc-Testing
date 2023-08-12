@@ -7,14 +7,12 @@
         </PackageReference>
         <PackageReference Include="NSwag.AspNetCore"/>
         <PackageReference Include="Serilog.AspNetCore"/>
+        <PackageReference Remove="SvSoft.OneOf.Analyzers.SwitchDiagnosticSuppression" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\IdentityTesting.API.Identity\IdentityTesting.API.Identity.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <PackageVersion Update="SvSoft.OneOf.Analyzers.SwitchDiagnosticSuppression" Version="1.1.0" />
-    </ItemGroup>
 
 </Project>

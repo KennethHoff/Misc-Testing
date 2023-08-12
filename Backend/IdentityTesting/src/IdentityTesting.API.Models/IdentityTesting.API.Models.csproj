@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <PackageVersion Update="SvSoft.OneOf.Analyzers.SwitchDiagnosticSuppression" Version="1.1.0" />
+    <PackageReference Remove="SvSoft.OneOf.Analyzers.SwitchDiagnosticSuppression" />
   </ItemGroup>
 </Project>

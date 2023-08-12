@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.EntityFrameworkCore;
 using OneOf.Types;
+using NotFound = Microsoft.AspNetCore.Http.HttpResults.NotFound;
 
 namespace IdentityTesting.API.Identity.Endpoints;
 
@@ -16,27 +16,39 @@ public static class RoleEndpoints
         group.MapGet("/", GetRolesEndPointHandler)
             .WithName("GetRoles");
 
+        group.MapPost("/", CreateRoleEndPointHandler)
+            .WithName("CreateRole");
+
         group.MapGet("/{role}", GetRoleEndPointHandler)
             .WithName("GetRole");
 
-        group.MapPost("/", CreateRoleEndPointHandler)
-            .WithName("CreateRole");
+        group.MapDelete("/{role}", DeleteRoleEndPointHandler)
+            .WithName("DeleteRole");
 
         return group;
     }
 
-    private static async ValueTask<Ok<List<KhApplicationRole>>> GetRolesEndPointHandler(KhRoleManager roleManager,
+    private static async ValueTask<Ok<List<KhApplicationRole>>> GetRolesEndPointHandler(RoleService roleService,
         CancellationToken ct)
     {
-        var roles = await roleManager.Roles.ToListAsync(cancellationToken: ct);
-        return TypedResults.Ok(roles);
+        var result = await roleService.GetRolesAsync(ct);
+
+        return result.Value switch
+        {
+            List<KhApplicationRole> x => TypedResults.Ok(x)
+        };
     }
 
-    private static async ValueTask<Ok<KhApplicationRole>> GetRoleEndPointHandler(KhRoleManager roleManager, string role,
+    private static async ValueTask<Results<NotFound, Ok<KhApplicationRole>>> GetRoleEndPointHandler(RoleService roleService, string role,
         CancellationToken ct)
     {
-        var roles = await roleManager.Roles.FirstOrDefaultAsync(r => r.Name == role, cancellationToken: ct);
-        return TypedResults.Ok(roles);
+        var result = await roleService.GetRoleAsync(role, ct);
+
+        return result.Value switch
+        {
+            OneOf.Types.NotFound x => TypedResults.NotFound(),
+            KhApplicationRole x => TypedResults.Ok(x)
+        };
     }
 
     private static async ValueTask<Results<CreatedAtRoute, Conflict, ProblemHttpResult>> CreateRoleEndPointHandler(
@@ -57,6 +69,18 @@ public static class RoleEndpoints
                 Detail = string.Join(", ", errorResult.Errors.Select(e => e.Description)),
                 Status = StatusCodes.Status500InternalServerError
             }),
+        };
+    }
+
+    private static async ValueTask<Results<NotFound, Ok>> DeleteRoleEndPointHandler(
+        RoleService roleService, string role)
+    {
+        var result = await roleService.DeleteRoleAsync(role);
+
+        return result.Value switch
+        {
+            Success => TypedResults.Ok(),
+            OneOf.Types.NotFound => TypedResults.NotFound(),
         };
     }
 }

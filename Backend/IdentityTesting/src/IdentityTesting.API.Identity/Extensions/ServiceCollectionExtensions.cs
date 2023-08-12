@@ -1,3 +1,4 @@
+using IdentityTesting.API.Identity.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -13,13 +14,10 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddKhIdentity(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddScoped<RoleService>();
+        services.AddScoped<UserService>();
         services.AddAuthentication();
         services.AddAuthorizationBuilder();
-
-        services.Configure<SecurityStampValidatorOptions>(opt =>
-        {
-            opt.ValidationInterval = TimeSpan.FromMilliseconds(1);
-        });
         
         services.AddDbContext<KhDbContext>(contextOptions =>
         {

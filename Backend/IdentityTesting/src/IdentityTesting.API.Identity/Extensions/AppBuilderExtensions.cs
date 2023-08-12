@@ -13,7 +13,7 @@ public static class AppBuilderExtensions
         app.UseAuthorization();
 
         var identityGroup = app.MapGroup("/identity")
-            // .RequireAuthorization(Policies.RequireAdmin)
+            .RequireAuthorization(Policies.RequireAdmin)
             .WithTags("Identity");
 
         // We need to allow login for anonymous users... duh

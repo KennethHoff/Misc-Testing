@@ -16,5 +16,9 @@
     <PackageReference Include="JetBrains.Annotations"/>
     <PackageReference Include="OneOf"/>
     <PackageReference Include="SvSoft.OneOf.Analyzers.SwitchDiagnosticSuppression" />
+    <PackageReference Include="OXX.Backend.Analyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 </Project>

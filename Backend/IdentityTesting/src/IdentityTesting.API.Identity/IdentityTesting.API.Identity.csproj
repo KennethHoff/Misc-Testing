@@ -5,6 +5,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+    <PackageReference Remove="SvSoft.OneOf.Analyzers.SwitchDiagnosticSuppression" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IdentityTesting.API.Models\IdentityTesting.API.Models.csproj" />

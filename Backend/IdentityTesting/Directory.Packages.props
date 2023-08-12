@@ -9,7 +9,7 @@
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
     <PackageVersion Include="NSwag.AspNetCore" Version="13.19.0" />
     <PackageVersion Include="OneOf" Version="3.0.255" />
+    <PackageVersion Include="OXX.Backend.Analyzers" Version="1.0.0-beta02" />
     <PackageVersion Include="Serilog.AspNetCore" Version="7.0.0" />
-    <PackageVersion Include="SvSoft.OneOf.Analyzers.SwitchDiagnosticSuppression" Version="1.1.0" />
   </ItemGroup>
 </Project>
