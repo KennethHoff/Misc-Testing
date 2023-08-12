@@ -1,3 +1,5 @@
+using IdentityTesting.API.Identity.Models;
+using IdentityTesting.API.Identity.Services.Models;
 using Microsoft.EntityFrameworkCore;
 using OneOf;
 using OneOf.Types;

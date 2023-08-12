@@ -1,3 +1,4 @@
+using IdentityTesting.API.Identity.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,4 +1,5 @@
-using Microsoft.AspNetCore.Identity;
+using IdentityTesting.API.Identity.Models;
+using IdentityTesting.API.Identity.Services.Models;
 using OneOf;
 using OneOf.Types;
 
@@ -70,8 +71,6 @@ public sealed class UserService(
         return new Success();
     }
 }
-
-public readonly record struct UnknownIdentityError(IEnumerable<IdentityError> Errors);
 
 public readonly struct UserNotFound;
 

@@ -1,4 +1,5 @@
 using IdentityTesting.API.Identity.Services;
+using IdentityTesting.API.Identity.Services.Models;
 using IdentityTesting.API.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;

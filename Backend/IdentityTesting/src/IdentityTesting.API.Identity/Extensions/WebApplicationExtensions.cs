@@ -1,4 +1,5 @@
 using IdentityTesting.API.Identity.Endpoints;
+using IdentityTesting.API.Identity.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
