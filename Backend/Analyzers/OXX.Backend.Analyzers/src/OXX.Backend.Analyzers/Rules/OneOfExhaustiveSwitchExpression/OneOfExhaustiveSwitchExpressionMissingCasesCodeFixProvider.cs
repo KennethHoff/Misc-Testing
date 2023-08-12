@@ -101,7 +101,7 @@ public sealed class OneOfExhaustiveSwitchExpressionMissingCasesCodeFixProvider :
 			var typeSymbol = requiredTypes.First(typeSymbol => typeSymbol.Equals(missingType, SymbolEqualityComparer.Default));
 
 			// Create a type syntax for the missing type symbol using a syntax format that is short and readable (e.g. "string" instead of "System.String")
-			var typeSyntax = SyntaxFactory.IdentifierName(typeSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat));
+			var typeSyntax = SyntaxFactory.IdentifierName(typeSymbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat));
 
 			// Create a pattern that extracts the value from the OneOf
 			var patternSyntax = SyntaxFactory.DeclarationPattern(typeSyntax,
