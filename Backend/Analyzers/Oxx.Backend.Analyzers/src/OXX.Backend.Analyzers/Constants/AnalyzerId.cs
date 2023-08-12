@@ -1,4 +1,4 @@
-namespace Oxx.Backend.Analyzers.Constants;
+namespace OXX.Backend.Analyzers.Constants;
 
 public static class AnalyzerId
 {

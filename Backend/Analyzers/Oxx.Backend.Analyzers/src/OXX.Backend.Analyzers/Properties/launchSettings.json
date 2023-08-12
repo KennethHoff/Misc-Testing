@@ -3,7 +3,7 @@
   "profiles": {
     "DebugRoslynAnalyzers": {
       "commandName": "DebugRoslynComponent",
-      "targetProject": "../Oxx.Backend.Analyzers.Sample/Oxx.Backend.Analyzers.Sample.csproj"
+      "targetProject": "../OXX.Backend.Analyzers.Sample/OXX.Backend.Analyzers.Sample.csproj"
     }
   }
 }

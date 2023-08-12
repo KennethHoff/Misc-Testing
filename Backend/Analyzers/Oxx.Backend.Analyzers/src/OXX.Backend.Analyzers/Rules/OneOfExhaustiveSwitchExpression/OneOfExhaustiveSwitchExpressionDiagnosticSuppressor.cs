@@ -2,9 +2,9 @@ using System.Collections.Immutable;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Oxx.Backend.Analyzers.Utilities;
+using OXX.Backend.Analyzers.Utilities;
 
-namespace Oxx.Backend.Analyzers.Rules.OneOfExhaustiveSwitchExpression;
+namespace OXX.Backend.Analyzers.Rules.OneOfExhaustiveSwitchExpression;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 [PublicAPI("Roslyn Analyzer")]

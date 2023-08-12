@@ -3,7 +3,7 @@
 // using Microsoft.CodeAnalysis;
 // using Microsoft.CodeAnalysis.Diagnostics;
 //
-// namespace Oxx.Backend.Analyzers.Rules.RequiredProperty;
+// namespace OXX.Backend.Analyzers.Rules.RequiredProperty;
 //
 // [DiagnosticAnalyzer(LanguageNames.CSharp)]
 // [PublicAPI("Roslyn Analyzer")]

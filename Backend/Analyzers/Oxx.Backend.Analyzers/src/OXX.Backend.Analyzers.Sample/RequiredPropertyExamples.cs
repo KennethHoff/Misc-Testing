@@ -4,7 +4,7 @@
 // using OneOf;
 // using OneOf.Types;
 //
-// namespace Oxx.Backend.Analyzers.Sample;
+// namespace OXX.Backend.Analyzers.Sample;
 //
 // public class RequiredPropertyExamples
 // {

@@ -1,10 +1,10 @@
-# Oxx.Backend.Analyzers
+# OXX.Backend.Analyzers
 
 ## Roslyn Analyzers
 A .NET Standard project with a few analyzers and code fix providers.
 
-- [RequiredPropertyAnalyzer](src/Oxx.Backend.Analyzers/Rules/RequiredProperty): An analyzer that reports non-nullable properties that are not required.
-- [OneOfExhaustiveSwitchExpressionAnalyzer](src/Oxx.Backend.Analyzers/Rules/OneOfExhaustiveSwitchExpression): An analyzer that reports when a switch expression on a OneOf type is incomplete.
+- [RequiredPropertyAnalyzer](src/OXX.Backend.Analyzers/Rules/RequiredProperty): An analyzer that reports non-nullable properties that are not required.
+- [OneOfExhaustiveSwitchExpressionAnalyzer](src/OXX.Backend.Analyzers/Rules/OneOfExhaustiveSwitchExpression): An analyzer that reports when a switch expression on a OneOf type is incomplete.
 
 ### How to use
 
@@ -20,7 +20,7 @@ If you have the msbuild property `<TreatWarningsAsErrors>true</TreatWarningsAsEr
 
 If you want to change the severity of any analyzer (From this package or otherwise), you can do so in your project's `.editorconfig` file.
 
-In the following example, I will change the severity of the `RequiredPropertyAnalyzer` which has the Analyzer Id of `OXX0001`. (You can see all IDs provided by this package [here](https://github.com/KennethHoff/Misc-Testing/blob/master/Backend/Analyzers/Oxx.Backend.Analyzers/src/Oxx.Backend.Analyzers/Constants/AnalyzerId.cs))
+In the following example, I will change the severity of the `RequiredPropertyAnalyzer` which has the Analyzer Id of `OXX0001`. (You can see all IDs provided by this package [here](https://github.com/KennethHoff/Misc-Testing/blob/master/Backend/Analyzers/OXX.Backend.Analyzers/src/OXX.Backend.Analyzers/Constants/AnalyzerId.cs))
 
 ```editorconfig
 # Set the severity to `none`. This will disable the analyzer and code fixers.

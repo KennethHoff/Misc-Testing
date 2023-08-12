@@ -5,10 +5,10 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Oxx.Backend.Analyzers.Constants;
-using Oxx.Backend.Analyzers.Utilities;
+using OXX.Backend.Analyzers.Constants;
+using OXX.Backend.Analyzers.Utilities;
 
-namespace Oxx.Backend.Analyzers.Rules.OneOfExhaustiveSwitchExpression;
+namespace OXX.Backend.Analyzers.Rules.OneOfExhaustiveSwitchExpression;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 [PublicAPI("Roslyn Analyzer")]

@@ -15,13 +15,13 @@
         <Authors>Kenneth Hoff</Authors>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
-        <PackageId>Oxx.Backend.Analyzers</PackageId>
+        <PackageId>OXX.Backend.Analyzers</PackageId>
         <Description>A set of Roslyn analyzers for OXX backend projects</Description>
         <PackageTags>OXX, analyzers</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
         <None Include="./Readme.md" Pack="true" PackagePath=""/>
-        <None Include="$(MSBuildThisFileDirectory)/artifacts/bin/Oxx.Backend.Analyzers/release/" Pack="true" PackagePath="analyzers/dotnet/roslyn4.6/cs/"/>
+        <None Include="$(MSBuildThisFileDirectory)/artifacts/bin/OXX.Backend.Analyzers/release/" Pack="true" PackagePath="analyzers/dotnet/roslyn4.6/cs/"/>
     </ItemGroup>
 </Project>

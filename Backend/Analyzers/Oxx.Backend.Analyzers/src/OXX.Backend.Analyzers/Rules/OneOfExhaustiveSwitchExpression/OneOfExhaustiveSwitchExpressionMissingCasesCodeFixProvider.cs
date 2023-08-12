@@ -6,10 +6,10 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Oxx.Backend.Analyzers.Constants;
-using Oxx.Backend.Analyzers.Utilities;
+using OXX.Backend.Analyzers.Constants;
+using OXX.Backend.Analyzers.Utilities;
 
-namespace Oxx.Backend.Analyzers.Rules.OneOfExhaustiveSwitchExpression;
+namespace OXX.Backend.Analyzers.Rules.OneOfExhaustiveSwitchExpression;
 
 [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(OneOfExhaustiveSwitchExpressionMissingCasesCodeFixProvider))]
 [Shared]

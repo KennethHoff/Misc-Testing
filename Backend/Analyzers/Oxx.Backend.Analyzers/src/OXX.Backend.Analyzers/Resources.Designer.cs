@@ -7,34 +7,34 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Oxx.Backend.Analyzers {
+namespace OXX.Backend.Analyzers {
     using System;
-    
-    
+
+
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
-        
+
         private static System.Resources.ResourceManager resourceMan;
-        
+
         private static System.Globalization.CultureInfo resourceCulture;
-        
+
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Resources() {
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Oxx.Backend.Analyzers.Resources", typeof(Resources).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("OXX.Backend.Analyzers.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static System.Globalization.CultureInfo Culture {
             get {
@@ -44,133 +44,133 @@ namespace Oxx.Backend.Analyzers {
                 resourceCulture = value;
             }
         }
-        
+
         internal static string UnreachableTitle {
             get {
                 return ResourceManager.GetString("UnreachableTitle", resourceCulture);
             }
         }
-        
+
         internal static string UnreachableDescription {
             get {
                 return ResourceManager.GetString("UnreachableDescription", resourceCulture);
             }
         }
-        
+
         internal static string UnreachableMessageFormat {
             get {
                 return ResourceManager.GetString("UnreachableMessageFormat", resourceCulture);
             }
         }
-        
+
         internal static string UnreachableCodeFix {
             get {
                 return ResourceManager.GetString("UnreachableCodeFix", resourceCulture);
             }
         }
-        
+
         internal static string OXX0001Title {
             get {
                 return ResourceManager.GetString("OXX0001Title", resourceCulture);
             }
         }
-        
+
         internal static string OXX0001Description {
             get {
                 return ResourceManager.GetString("OXX0001Description", resourceCulture);
             }
         }
-        
+
         internal static string OXX0001MessageFormat {
             get {
                 return ResourceManager.GetString("OXX0001MessageFormat", resourceCulture);
             }
         }
-        
+
         internal static string OXX0001CodeFix1 {
             get {
                 return ResourceManager.GetString("OXX0001CodeFix1", resourceCulture);
             }
         }
-        
+
         internal static string OXX0001CodeFix2 {
             get {
                 return ResourceManager.GetString("OXX0001CodeFix2", resourceCulture);
             }
         }
-        
+
         internal static string OXX0001SuppressorJustification {
             get {
                 return ResourceManager.GetString("OXX0001SuppressorJustification", resourceCulture);
             }
         }
-        
+
         internal static string OXX9001Title {
             get {
                 return ResourceManager.GetString("OXX9001Title", resourceCulture);
             }
         }
-        
+
         internal static string OXX9001Description {
             get {
                 return ResourceManager.GetString("OXX9001Description", resourceCulture);
             }
         }
-        
+
         internal static string OXX9001MessageFormat {
             get {
                 return ResourceManager.GetString("OXX9001MessageFormat", resourceCulture);
             }
         }
-        
+
         internal static string OXX9001CodeFix {
             get {
                 return ResourceManager.GetString("OXX9001CodeFix", resourceCulture);
             }
         }
-        
+
         internal static string OXX9001SuppressorJustification {
             get {
                 return ResourceManager.GetString("OXX9001SuppressorJustification", resourceCulture);
             }
         }
-        
+
         internal static string OXX9002Title {
             get {
                 return ResourceManager.GetString("OXX9002Title", resourceCulture);
             }
         }
-        
+
         internal static string OXX9002TitleDiscardPattern {
             get {
                 return ResourceManager.GetString("OXX9002TitleDiscardPattern", resourceCulture);
             }
         }
-        
+
         internal static string OXX9002Description {
             get {
                 return ResourceManager.GetString("OXX9002Description", resourceCulture);
             }
         }
-        
+
         internal static string OXX9002DescriptionDiscardPattern {
             get {
                 return ResourceManager.GetString("OXX9002DescriptionDiscardPattern", resourceCulture);
             }
         }
-        
+
         internal static string OXX9002MessageFormat {
             get {
                 return ResourceManager.GetString("OXX9002MessageFormat", resourceCulture);
             }
         }
-        
+
         internal static string OXX9002MessageFormatDiscardPattern {
             get {
                 return ResourceManager.GetString("OXX9002MessageFormatDiscardPattern", resourceCulture);
             }
         }
-        
+
         internal static string OXX9002CodeFix {
             get {
                 return ResourceManager.GetString("OXX9002CodeFix", resourceCulture);

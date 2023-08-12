@@ -5,9 +5,9 @@
 // using Microsoft.CodeAnalysis;
 // using Microsoft.CodeAnalysis.CSharp.Syntax;
 // using Microsoft.CodeAnalysis.Diagnostics;
-// using Oxx.Backend.Analyzers.Constants;
+// using OXX.Backend.Analyzers.Constants;
 //
-// namespace Oxx.Backend.Analyzers.Rules.RequiredProperty;
+// namespace OXX.Backend.Analyzers.Rules.RequiredProperty;
 //
 // [DiagnosticAnalyzer(LanguageNames.CSharp)]
 // [PublicAPI("Roslyn Analyzer")]

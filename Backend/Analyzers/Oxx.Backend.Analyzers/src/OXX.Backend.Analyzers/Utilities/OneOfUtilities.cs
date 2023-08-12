@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Oxx.Backend.Analyzers.Utilities;
+namespace OXX.Backend.Analyzers.Utilities;
 
 public static class OneOfUtilities
 {

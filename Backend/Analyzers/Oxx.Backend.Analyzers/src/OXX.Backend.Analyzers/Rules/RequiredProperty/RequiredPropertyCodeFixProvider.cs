@@ -5,9 +5,9 @@
 // using Microsoft.CodeAnalysis.CodeFixes;
 // using Microsoft.CodeAnalysis.CSharp;
 // using Microsoft.CodeAnalysis.CSharp.Syntax;
-// using Oxx.Backend.Analyzers.Constants;
+// using OXX.Backend.Analyzers.Constants;
 //
-// namespace Oxx.Backend.Analyzers.Rules.RequiredProperty;
+// namespace OXX.Backend.Analyzers.Rules.RequiredProperty;
 //
 // [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RequiredPropertyCodeFixProvider)), Shared]
 // public sealed class RequiredPropertyCodeFixProvider : CodeFixProvider

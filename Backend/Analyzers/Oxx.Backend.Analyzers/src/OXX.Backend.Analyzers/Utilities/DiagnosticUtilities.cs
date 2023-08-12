@@ -2,9 +2,9 @@ using System.Text;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
-using Oxx.Backend.Analyzers.Constants;
+using OXX.Backend.Analyzers.Constants;
 
-namespace Oxx.Backend.Analyzers.Utilities;
+namespace OXX.Backend.Analyzers.Utilities;
 
 public static class DiagnosticUtilities
 {
