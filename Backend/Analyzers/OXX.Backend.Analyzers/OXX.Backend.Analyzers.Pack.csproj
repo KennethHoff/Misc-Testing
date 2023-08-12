@@ -11,7 +11,7 @@
         <DevelopmentDependency>true</DevelopmentDependency>
         <NoPackageAnalysis>true</NoPackageAnalysis>
         
-        <Version>1.0.0-beta21</Version>
+        <Version>1.0.0-beta24</Version>
         <Authors>Kenneth Hoff</Authors>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
@@ -22,6 +22,6 @@
 
     <ItemGroup>
         <None Include="./Readme.md" Pack="true" PackagePath=""/>
-        <None Include="$(MSBuildThisFileDirectory)/artifacts/bin/OXX.Backend.Analyzers/release/" Pack="true" PackagePath="analyzers/dotnet/roslyn4.6/cs/"/>
+        <None Include="$(MSBuildThisFileDirectory)/artifacts/bin/OXX.Backend.Analyzers/release/OXX.Backend.Analyzers.dll" Pack="true" PackagePath="analyzers/dotnet/roslyn4.6/cs/"/>
     </ItemGroup>
 </Project>
