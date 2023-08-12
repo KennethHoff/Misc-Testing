@@ -39,32 +39,6 @@ Suppresses [CS8509](https://learn.microsoft.com/en-us/dotnet/csharp/language-ref
     ```
     The analyzer will report no missing cases here, as both a bool and a string are present.
     This is clearly wrong, as even this simple example will throw a [SwitchExpressionException](https://learn.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.switchexpressionexception)
-- If there are multiple types with the same name in scope, the analyzer might create an invalid arm.
-  - For example, with the following code:
-    ```csharp
-    using OneOf.Types; // Includes a `NotFound` type
-    using Microsoft.AspNetCore.Http.HttpResults; // Also includes a `NotFound` type
-    
-    OneOf<NotFound, string> maybeString = "Test";
-    
-    var message = maybeString.Value switch
-    {
-        "A string" => "lol",
-        // OXX9001: Switch expression is not exhaustive. You are missing cases for [NotFound].
-    };
-    
-    /* Apply Code Fix */
-    
-    var message = maybeString.Value switch
-    {
-        "A string" => "lol",
-        // OXX9002: NotFound is not a valid case for OneOf<NotFound, KhApplicationRole>
-        NotFound => throw new NotImplementedException(),
-        // OXX9001: Switch expression is not exhaustive. You are missing cases for [NotFound].
-    };
-    ```
-    The analyzer will report no missing cases here, as both a bool and a string are present.
-    This is clearly wrong, as even this simple example will throw a [SwitchExpressionException](https://learn.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.switchexpressionexception)
 
 ## Future Plans
 
