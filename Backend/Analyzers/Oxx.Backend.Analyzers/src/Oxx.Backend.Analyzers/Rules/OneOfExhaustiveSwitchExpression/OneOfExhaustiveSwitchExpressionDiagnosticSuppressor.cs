@@ -1,9 +1,8 @@
 using System.Collections.Immutable;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Oxx.Backend.Analyzers.Utilities;
 
 namespace Oxx.Backend.Analyzers.Rules.OneOfExhaustiveSwitchExpression;
 
@@ -29,31 +28,21 @@ public sealed class OneOfExhaustiveSwitchExpressionDiagnosticSuppressor : Diagno
 		{
 			if (SuppressionDescriptors.TryGetValue(diagnostic.Id, out var descriptor))
 			{
-				HandleSuppression(diagnostic, descriptor);
+				SuppressRelevantDiagnostics(diagnostic, descriptor);
 			}
 		}
 
 		return;
 
-		void HandleSuppression(Diagnostic diagnostic, SuppressionDescriptor descriptor)
+		void SuppressRelevantDiagnostics(Diagnostic diagnostic, SuppressionDescriptor descriptor)
 		{
-			// If the diagnostic is not on a switch expression, we're not interested.
-			if (diagnostic.Location.SourceTree?.GetRoot().FindNode(diagnostic.Location.SourceSpan) is not
-			    SwitchExpressionSyntax switchExpressionSyntax)
+			if (!SwitchExpressionUtilities.HasSyntaxNodesForMemberAccess(context, diagnostic,
+				out _, out var memberAccessExpressionSyntax))
 			{
 				return;
 			}
 
-			// If it's not a MemberAccessExpression, we're not interested.
-			if (switchExpressionSyntax.GoverningExpression is not MemberAccessExpressionSyntax memberAccessExpressionSyntax)
-			{
-				return;
-			}
-
-			// If it's not a OneOf, we're not interested.
-			var semanticModel = context.GetSemanticModel(diagnostic.Location.SourceTree);
-			var typeInfo = semanticModel.GetTypeInfo(memberAccessExpressionSyntax.Expression);
-			if (typeInfo.Type is not INamedTypeSymbol { Name: "OneOf" })
+			if (!OneOfUtilities.IsOneOfTypeSymbol(context, diagnostic, memberAccessExpressionSyntax, out _))
 			{
 				return;
 			}

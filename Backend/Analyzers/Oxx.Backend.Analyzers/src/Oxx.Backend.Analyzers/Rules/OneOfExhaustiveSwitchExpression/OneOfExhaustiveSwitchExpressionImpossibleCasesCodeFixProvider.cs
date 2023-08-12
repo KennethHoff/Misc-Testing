@@ -20,13 +20,10 @@ public sealed class OneOfExhaustiveSwitchExpressionImpossibleCasesCodeFixProvide
 	public override ImmutableArray<string> FixableDiagnosticIds { get; }
 		= ImmutableArray.Create(AnalyzerId.OneOfSwitchExpressionImpossibleCases);
 
-	public override Task RegisterCodeFixesAsync(CodeFixContext context)
+	public override async Task RegisterCodeFixesAsync(CodeFixContext context)
 	{
-		return RegisterCodeFixesAsync(context, context.Diagnostics.First());
-	}
+		var diagnostic = context.Diagnostics.First();
 
-	private static async Task RegisterCodeFixesAsync(CodeFixContext context, Diagnostic diagnostic)
-	{
 		// If the document doesn't have a syntax root, we can't do anything (Impossible?)
 		if (await context.Document.GetSyntaxRootAsync(context.CancellationToken) is not { } root)
 		{

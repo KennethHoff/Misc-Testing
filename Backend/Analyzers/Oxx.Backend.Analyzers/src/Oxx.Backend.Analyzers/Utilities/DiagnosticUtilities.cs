@@ -44,6 +44,19 @@ public static class DiagnosticUtilities
 		return SourceText.From(sourceText);
 	}
 
+	public static DiagnosticDescriptor CreateRule(string id, string titleResourceName, string messageFormatResourceName, string descriptionResourceName)
+	{
+		return new DiagnosticDescriptor(
+			id,
+			new LocalizableResourceString(titleResourceName, Resources.ResourceManager, typeof(Resources)),
+			new LocalizableResourceString(messageFormatResourceName, Resources.ResourceManager, typeof(Resources)),
+			DiagnosticCategory.Design,
+			DiagnosticSeverity.Warning,
+			true,
+			new LocalizableResourceString(descriptionResourceName, Resources.ResourceManager, typeof(Resources))
+		);
+	}
+
 	public static string CreateMessageArguments(scoped ReadOnlySpan<ITypeSymbol> typeSymbols)
 	{
 		var builder = new StringBuilder();

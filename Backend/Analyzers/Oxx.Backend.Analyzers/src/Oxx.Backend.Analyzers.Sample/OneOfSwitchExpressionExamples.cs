@@ -2,6 +2,7 @@
 // Hence, we need to disable the warning for the entire file as a pretend suppressor.
 // This is not necessary for the analyzer to work, it is just to avoid the warning in the IDE.
 #pragma warning disable CS8509 // The switch expression does not handle all possible values of its input type (it is not exhaustive).
+using System.Text;
 using OneOf;
 
 
@@ -14,9 +15,10 @@ OneOf<bool, string> twoOf = "hmm";
 
 var message = twoOf.Value switch
 {
-	bool x => "Hey",
-	string x => throw new NotImplementedException()
+	true => "This is a bool",
+	"Hey" => "lol",
 };
+
 
 var hmm = randomString switch
 {

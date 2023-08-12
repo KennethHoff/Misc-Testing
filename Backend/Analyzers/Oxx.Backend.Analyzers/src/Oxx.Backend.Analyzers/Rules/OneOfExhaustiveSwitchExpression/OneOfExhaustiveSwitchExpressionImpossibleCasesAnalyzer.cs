@@ -1,7 +1,9 @@
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Oxx.Backend.Analyzers.Constants;
 using Oxx.Backend.Analyzers.Utilities;
@@ -12,38 +14,18 @@ namespace Oxx.Backend.Analyzers.Rules.OneOfExhaustiveSwitchExpression;
 [PublicAPI("Roslyn Analyzer")]
 public sealed class OneOfExhaustiveSwitchExpressionImpossibleCasesAnalyzer : DiagnosticAnalyzer
 {
-	private static readonly LocalizableString Title = new LocalizableResourceString(nameof(Resources.OXX9002Title),
-		Resources.ResourceManager, typeof(Resources));
+	private static readonly DiagnosticDescriptor Rule = DiagnosticUtilities.CreateRule(
+		AnalyzerId.OneOfSwitchExpressionImpossibleCases,
+		nameof(Resources.OXX9002Title),
+		nameof(Resources.OXX9002MessageFormat),
+		nameof(Resources.OXX9002Description));
 
-	private static readonly LocalizableString MessageFormat =
-		new LocalizableResourceString(nameof(Resources.OXX9002MessageFormat), Resources.ResourceManager,
-			typeof(Resources));
+	private static readonly DiagnosticDescriptor RuleDiscardPattern = DiagnosticUtilities.CreateRule(
+		AnalyzerId.OneOfSwitchExpressionImpossibleCases,
+		nameof(Resources.OXX9002TitleDiscardPattern),
+		nameof(Resources.OXX9002MessageFormatDiscardPattern),
+		nameof(Resources.OXX9002DescriptionDiscardPattern));
 
-	private static readonly LocalizableString Description =
-		new LocalizableResourceString(nameof(Resources.OXX9002Description), Resources.ResourceManager,
-			typeof(Resources));
-
-	private static readonly DiagnosticDescriptor Rule = new(AnalyzerId.OneOfSwitchExpressionImpossibleCases, Title,
-		MessageFormat, DiagnosticCategory.Design, DiagnosticSeverity.Warning, isEnabledByDefault: true,
-		description: Description);
-
-
-	private static readonly LocalizableString DescriptionDiscardPattern =
-		new LocalizableResourceString(nameof(Resources.OXX9002DescriptionDiscardPattern), Resources.ResourceManager,
-			typeof(Resources));
-
-	private static readonly LocalizableString MessageFormatDiscardPattern =
-		new LocalizableResourceString(nameof(Resources.OXX9002MessageFormatDiscardPattern), Resources.ResourceManager,
-			typeof(Resources));
-
-	private static readonly LocalizableString TitleDiscardPattern =
-		new LocalizableResourceString(nameof(Resources.OXX9002TitleDiscardPattern), Resources.ResourceManager,
-			typeof(Resources));
-
-	private static readonly DiagnosticDescriptor RuleDiscardPattern =
-		new(AnalyzerId.OneOfSwitchExpressionImpossibleCases, TitleDiscardPattern, MessageFormatDiscardPattern,
-			DiagnosticCategory.Design, DiagnosticSeverity.Warning, isEnabledByDefault: true,
-			description: DescriptionDiscardPattern);
 
 	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
 		ImmutableArray.Create(Rule, RuleDiscardPattern, DiagnosticUtilities.UnreachableRule);
@@ -54,67 +36,46 @@ public sealed class OneOfExhaustiveSwitchExpressionImpossibleCasesAnalyzer : Dia
 		                                       GeneratedCodeAnalysisFlags.ReportDiagnostics);
 		context.EnableConcurrentExecution();
 
-		context.RegisterSyntaxNodeAction(AnalyzeOperation, SyntaxKind.SwitchExpression);
+		context.RegisterSyntaxNodeAction(AnalyzeSwitchExpressionForImpossibleCases, SyntaxKind.SwitchExpression);
 	}
 
-	private static void AnalyzeOperation(SyntaxNodeAnalysisContext context)
+	private static void AnalyzeSwitchExpressionForImpossibleCases(SyntaxNodeAnalysisContext context)
 	{
 		// If it's not a SwitchExpression on a MemberAccessExpression, we're not interested.
-		if (SwitchExpressionUtilities.GetSyntaxNodesForMemberAccess(context) is not
-		    {
-			    SwitchExpressionSyntax: var switchExpressionSyntax,
-			    MemberAccessExpressionSyntax: var memberAccessExpressionSyntax
-		    })
+		if (!SwitchExpressionUtilities.HasSyntaxNodesForMemberAccess(context,
+			    out var switchExpressionSyntax, out var memberAccessExpressionSyntax))
 		{
 			return;
 		}
 
-		// If it's not a OneOf, we're not interested.
-		var typeInfo = context.SemanticModel.GetTypeInfo(memberAccessExpressionSyntax.Expression);
-		if (typeInfo.Type is not INamedTypeSymbol { Name: "OneOf" } oneOfTypeSymbol)
+		if (!OneOfUtilities.IsOneOfTypeSymbol(context, memberAccessExpressionSyntax,
+			    out var oneOfTypeSymbol))
 		{
 			return;
 		}
 
-		// If the switch expression has the same exact types as the OneOf, we're not interested.
-		HashSet<ITypeSymbol> requiredTypes = new(oneOfTypeSymbol.TypeArguments, SymbolEqualityComparer.Default);
-		HashSet<ITypeSymbol> currentTypes =
-			SwitchExpressionUtilities.GetComparableTypeSymbolsForArms(context.SemanticModel, switchExpressionSyntax);
-
-		var impossibleTypes = currentTypes.Except(requiredTypes).ToArray();
-
-		if (impossibleTypes.Length is 0)
+		if (!HasSwitchExpressionImpossibleTypes(context, switchExpressionSyntax, oneOfTypeSymbol,
+			    out var impossibleTypes))
 		{
 			return;
 		}
 
 		ReportDiagnosticsForImpossibleCases();
-
 		return;
 
 		void ReportDiagnosticsForImpossibleCases()
 		{
-			var indices = new List<int>();
-			for (var i = 0; i < switchExpressionSyntax.Arms.Count; i++)
-			{
-				var arm = switchExpressionSyntax.Arms[i];
-				var type = SwitchExpressionUtilities.GetTypeForArm(context.SemanticModel, arm);
-				if (type is null)
-				{
-					continue;
-				}
+			var impossibleIndices = switchExpressionSyntax.Arms
+				.Select((arm, index)
+					=> (index, type: SwitchExpressionUtilities.GetTypeForArm(context.SemanticModel, arm)))
+				.Where(t => impossibleTypes.Contains(t.type, SymbolEqualityComparer.Default))
+				.Select(t => t.index)
+				.ToArray();
 
-				if (impossibleTypes.Contains(type, SymbolEqualityComparer.Default))
-				{
-					indices.Add(i);
-				}
-			}
-
-			foreach (var index in indices)
+			foreach (var index in impossibleIndices)
 			{
 				if (SwitchExpressionUtilities.GetTypeForArm(context.SemanticModel, switchExpressionSyntax.Arms[index])
-				    is not
-				    { } impossibleType)
+				    is not { } impossibleType)
 				{
 					continue;
 				}
@@ -132,5 +93,18 @@ public sealed class OneOfExhaustiveSwitchExpressionImpossibleCasesAnalyzer : Dia
 					DiagnosticUtilities.CreateMessageArgument(oneOfTypeSymbol)));
 			}
 		}
+	}
+
+	private static bool HasSwitchExpressionImpossibleTypes(SyntaxNodeAnalysisContext context,
+		SwitchExpressionSyntax switchExpressionSyntax, INamedTypeSymbol oneOfTypeSymbol,
+		[NotNullWhen(true)] out ITypeSymbol[]? impossibleTypes)
+	{
+		var requiredTypes = oneOfTypeSymbol.TypeArguments;
+		var currentTypes =
+			SwitchExpressionUtilities.GetTypeSymbolsForArms(context.SemanticModel, switchExpressionSyntax);
+
+		impossibleTypes = currentTypes.Except(requiredTypes).ToArray();
+
+		return impossibleTypes.Length is not 0;
 	}
 }

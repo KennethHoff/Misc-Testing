@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -9,24 +10,29 @@ using Oxx.Backend.Analyzers.Utilities;
 
 namespace Oxx.Backend.Analyzers.Rules.OneOfExhaustiveSwitchExpression;
 
+// BUG: In the case of literals, the analyzer will fail to detect missing cases
+// For example, with the following code:
+// OneOf<bool, string> stringOrBool = "Test";
+// var message = stringOrBool.Value switch
+// {
+// 	true => "This is a bool",
+// 	"A string" => "lol",
+// };
+// The analyzer will report no missing cases here, as both a bool and a string are present.
+// This is clearly wrong, as even in this simple example, this will throw an exception.
+
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 [PublicAPI("Roslyn Analyzer")]
 public sealed class OneOfExhaustiveSwitchExpressionMissingCasesAnalyzer : DiagnosticAnalyzer
 {
-	private static readonly LocalizableString Title = new LocalizableResourceString(
-		nameof(Resources.OXX9001Title), Resources.ResourceManager, typeof(Resources));
+	private static readonly DiagnosticDescriptor Rule = DiagnosticUtilities.CreateRule(
+		AnalyzerId.OneOfSwitchExpressionMissingCases,
+		nameof(Resources.OXX9001Title),
+		nameof(Resources.OXX9001MessageFormat),
+		nameof(Resources.OXX9001Description));
 
-	private static readonly LocalizableString MessageFormat = new LocalizableResourceString(
-		nameof(Resources.OXX9001MessageFormat), Resources.ResourceManager, typeof(Resources));
-
-	private static readonly LocalizableString Description = new LocalizableResourceString(
-		nameof(Resources.OXX9001Description), Resources.ResourceManager, typeof(Resources));
-
-	private static readonly DiagnosticDescriptor Rule = new(AnalyzerId.OneOfSwitchExpressionMissingCases, Title,
-		MessageFormat,
-		DiagnosticCategory.Design, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
-
-	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = ImmutableArray.Create(Rule, DiagnosticUtilities.UnreachableRule);
+	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+		= ImmutableArray.Create(Rule, DiagnosticUtilities.UnreachableRule);
 
 	public override void Initialize(AnalysisContext context)
 	{
@@ -34,40 +40,41 @@ public sealed class OneOfExhaustiveSwitchExpressionMissingCasesAnalyzer : Diagno
 		                                       GeneratedCodeAnalysisFlags.ReportDiagnostics);
 		context.EnableConcurrentExecution();
 
-		context.RegisterSyntaxNodeAction(AnalyzeOperation, SyntaxKind.SwitchExpression);
+		context.RegisterSyntaxNodeAction(AnalyzeSwitchExpressionForMissingCases, SyntaxKind.SwitchExpression);
 	}
 
-	private static void AnalyzeOperation(SyntaxNodeAnalysisContext context)
+	private static void AnalyzeSwitchExpressionForMissingCases(SyntaxNodeAnalysisContext context)
 	{
 		// If it's not a SwitchExpression on a MemberAccessExpression, we're not interested.
-		if (SwitchExpressionUtilities.GetSyntaxNodesForMemberAccess(context) is not
-		    {
-			    SwitchExpressionSyntax: var switchExpressionSyntax,
-			    MemberAccessExpressionSyntax: var memberAccessExpressionSyntax
-		    })
+		if (!SwitchExpressionUtilities.HasSyntaxNodesForMemberAccess(context,
+			    out var switchExpressionSyntax, out var memberAccessExpressionSyntax))
 		{
 			return;
 		}
 
-		// If it's not a OneOf, we're not interested.
-		var typeInfo = context.SemanticModel.GetTypeInfo(memberAccessExpressionSyntax.Expression);
-		if (typeInfo.Type is not INamedTypeSymbol { Name: "OneOf" } oneOfTypeSymbol)
+		if (!OneOfUtilities.IsOneOfTypeSymbol(context, memberAccessExpressionSyntax, out var oneOfTypeSymbol))
 		{
 			return;
 		}
 
-		// If the switch expression has the same exact types as the OneOf, we're not interested.
-		HashSet<ITypeSymbol> requiredTypes = new(oneOfTypeSymbol.TypeArguments, SymbolEqualityComparer.Default);
-		HashSet<ITypeSymbol> currentTypes = SwitchExpressionUtilities.GetComparableTypeSymbolsForArms(context.SemanticModel, switchExpressionSyntax);
-
-		var missingTypes = requiredTypes.Except(currentTypes).ToArray();
-
-		if (missingTypes.Length is 0)
+		if (!IsSwitchExpressionMissingCases(context, switchExpressionSyntax, oneOfTypeSymbol, out var missingTypes))
 		{
 			return;
 		}
 
 		context.ReportDiagnostic(Diagnostic.Create(Rule, switchExpressionSyntax.GetLocation(),
 			DiagnosticUtilities.CreateMessageArguments(missingTypes)));
+	}
+
+	private static bool IsSwitchExpressionMissingCases(SyntaxNodeAnalysisContext context,
+		SwitchExpressionSyntax switchExpressionSyntax, INamedTypeSymbol oneOfTypeSymbol,
+		[NotNullWhen(true)] out ITypeSymbol[]? missingTypes)
+	{
+		var requiredTypes = oneOfTypeSymbol.TypeArguments;
+		var currentTypes = SwitchExpressionUtilities.GetTypeSymbolsForArms(context.SemanticModel, switchExpressionSyntax);
+
+		missingTypes = requiredTypes.Except(currentTypes).ToArray();
+
+		return missingTypes.Length is not 0;
 	}
 }
