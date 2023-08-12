@@ -18,7 +18,7 @@ public static class IdentityResultExtensions
 
         return null;
     }
-    
+
     public static bool HasError(this IdentityResult result, IdentityError error)
     {
         return result.Errors.Any(x => error.Code == x.Code);

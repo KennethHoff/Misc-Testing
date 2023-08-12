@@ -1,5 +1,3 @@
-using IdentityTesting.API.Identity.Extensions;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OneOf;
 using OneOf.Types;
@@ -7,63 +5,63 @@ using OneOf.Types;
 namespace IdentityTesting.API.Identity.Services;
 
 public sealed class RoleService(
-    KhRoleManager roleManager 
+    KhRoleManager roleManager
     )
 {
-    public async ValueTask<OneOf<Success, RoleAlreadyExistsResult, RoleCreationErrorResult>>
-        CreateRoleAsync(string role)
+    public async ValueTask<OneOf<Success, RoleAlreadyExists, UnknownIdentityError>> CreateRoleAsync(string roleName)
     {
+        if (await roleManager.RoleExistsAsync(roleName))
+        {
+            return new RoleAlreadyExists();
+        }
+
         var result = await roleManager.CreateAsync(new KhApplicationRole
         {
-            Name = role
+            Name = roleName
         });
 
         if (!result.Succeeded)
         {
-            if (result.HasError(roleManager.ErrorDescriber.DuplicateRoleName(role)))
-            {
-                return new RoleAlreadyExistsResult();
-            }
-            
-            return new RoleCreationErrorResult(result.Errors);
+            return new UnknownIdentityError(result.Errors);
         }
 
         return new Success();
     }
 
-    public async ValueTask<OneOf<Success, NotFound>> DeleteRoleAsync(string role)
+    public async ValueTask<OneOf<Success, RoleNotFound, UnknownIdentityError>> DeleteRoleAsync(string roleName)
     {
+        if (!await roleManager.RoleExistsAsync(roleName))
+        {
+            return new RoleNotFound();
+        }
+
         var result = await roleManager.DeleteAsync(new KhApplicationRole
         {
-            Name = role
+            Name = roleName
         });
 
         if (!result.Succeeded)
         {
-            return new NotFound();
+            return new UnknownIdentityError(result.Errors);
         }
 
         return new Success();
     }
 
-    public async Task<OneOf<List<KhApplicationRole>>> GetRolesAsync(CancellationToken ct)
+    public Task<List<KhApplicationRole>> GetRolesAsync(CancellationToken ct)
     {
-        return await roleManager.Roles.ToListAsync(ct);
+        return roleManager.Roles.ToListAsync(ct);
     }
-    
-    public async Task<OneOf<NotFound, KhApplicationRole>> GetRoleAsync(string role, CancellationToken ct)
+
+    public async Task<OneOf<NotFound, KhApplicationRole>> GetRoleAsync(string roleName)
     {
-        var roles = await roleManager.FindByNameAsync(role);
-        
-        if (roles is null)
+        if (await roleManager.FindByNameAsync(roleName) is not { } role)
         {
             return new NotFound();
         }
-        
-        return roles;
+
+        return role;
     }
 }
 
-public readonly struct RoleAlreadyExistsResult;
-
-public readonly record struct RoleCreationErrorResult(IEnumerable<IdentityError> Errors);
+public readonly struct RoleAlreadyExists;

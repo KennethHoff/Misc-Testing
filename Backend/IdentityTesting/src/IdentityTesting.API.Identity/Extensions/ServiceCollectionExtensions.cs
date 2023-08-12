@@ -1,6 +1,4 @@
 using IdentityTesting.API.Identity.Services;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +16,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<UserService>();
         services.AddAuthentication();
         services.AddAuthorizationBuilder();
-        
+
         services.AddDbContext<KhDbContext>(contextOptions =>
         {
             contextOptions.UseNpgsql(configuration.GetConnectionString("Npgsql"), npgsqlOptions =>
@@ -26,9 +24,6 @@ public static class ServiceCollectionExtensions
                 npgsqlOptions.MigrationsHistoryTable("__IdentityMigrationsHistory");
             });
         });
-
-        services.AddSingleton<IStartupFilter, MigrationStartupFilter>();
-        // services.AddScoped<IUserClaimsPrincipalFactory<KhApplicationUser>, KhUserClaimsPrincipalFactory>();
 
         services.AddSingleton<IEmailSender, LoggingEmailSender>();
 
@@ -42,18 +37,6 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
-}
-
-file sealed class MigrationStartupFilter : IStartupFilter
-{
-    public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next)
-        => app =>
-        {
-            using var scope = app.ApplicationServices.CreateScope();
-            var dbContext = scope.ServiceProvider.GetRequiredService<KhDbContext>();
-            dbContext.Database.Migrate();
-            next(app);
-        };
 }
 
 file sealed class LoggingEmailSender(ILogger<LoggingEmailSender> logger) : IEmailSender

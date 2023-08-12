@@ -2,6 +2,7 @@ using IdentityTesting.API.Identity.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using OneOf.Types;
@@ -11,38 +12,54 @@ namespace IdentityTesting.API.Identity.Endpoints;
 
 public static class RoleEndpoints
 {
+    private const string GetRolesEndpointName = "GetRoles";
+    private const string CreateRoleEndpointName = "CreateRole";
+    private const string GetRoleEndpointName = "GetRole";
+    private const string DeleteRoleEndpointName = "DeleteRole";
+
+    private static ProblemHttpResult DeleteRoleErrorResult(IEnumerable<IdentityError> errors)
+        => TypedResults.Problem(new ProblemDetails
+        {
+            Title = "Failed to delete role",
+            Extensions = { ["errors"] = errors }
+        });
+
+    private static ProblemHttpResult CreateRoleErrorResult(IEnumerable<IdentityError> errors)
+        => TypedResults.Problem(new ProblemDetails
+        {
+            Title = "Failed to create role",
+            Extensions = { ["errors"] = errors }
+        });
+
     public static RouteGroupBuilder MapRoleEndpoints(this RouteGroupBuilder group)
     {
         group.MapGet("/", GetRolesEndPointHandler)
-            .WithName("GetRoles");
+            .WithName(GetRolesEndpointName);
 
         group.MapPost("/", CreateRoleEndPointHandler)
-            .WithName("CreateRole");
+            .WithName(CreateRoleEndpointName);
 
         group.MapGet("/{role}", GetRoleEndPointHandler)
-            .WithName("GetRole");
+            .WithName(GetRoleEndpointName);
 
         group.MapDelete("/{role}", DeleteRoleEndPointHandler)
-            .WithName("DeleteRole");
+            .WithName(DeleteRoleEndpointName);
 
         return group;
     }
 
-    private static async ValueTask<Ok<List<KhApplicationRole>>> GetRolesEndPointHandler(RoleService roleService,
-        CancellationToken ct)
+    private static async ValueTask<Ok<List<KhApplicationRole>>> GetRolesEndPointHandler(
+        RoleService roleService, CancellationToken ct)
     {
         var result = await roleService.GetRolesAsync(ct);
 
-        return result.Value switch
-        {
-            List<KhApplicationRole> x => TypedResults.Ok(x)
-        };
+        return TypedResults.Ok(result);
     }
 
-    private static async ValueTask<Results<NotFound, Ok<KhApplicationRole>>> GetRoleEndPointHandler(RoleService roleService, string role,
-        CancellationToken ct)
+    private static async ValueTask<Results<NotFound, Ok<KhApplicationRole>>> GetRoleEndPointHandler(
+        RoleService roleService, string role)
     {
-        var result = await roleService.GetRoleAsync(role, ct);
+        var result = await roleService.GetRoleAsync(role);
 
         return result.Value switch
         {
@@ -58,21 +75,16 @@ public static class RoleEndpoints
 
         return result.Value switch
         {
-            Success => TypedResults.CreatedAtRoute("GetRole", new
+            Success => TypedResults.CreatedAtRoute(GetRoleEndpointName, new RouteValueDictionary
             {
-                role
+                ["role"] = role
             }),
-            RoleAlreadyExistsResult => TypedResults.Conflict(),
-            RoleCreationErrorResult errorResult => TypedResults.Problem(new ProblemDetails
-            {
-                Title = "Failed to create role",
-                Detail = string.Join(", ", errorResult.Errors.Select(e => e.Description)),
-                Status = StatusCodes.Status500InternalServerError
-            }),
+            RoleAlreadyExists => TypedResults.Conflict(),
+            UnknownIdentityError errorResult => CreateRoleErrorResult(errorResult.Errors)
         };
     }
 
-    private static async ValueTask<Results<NotFound, Ok>> DeleteRoleEndPointHandler(
+    private static async ValueTask<Results<NotFound, Ok, ProblemHttpResult>> DeleteRoleEndPointHandler(
         RoleService roleService, string role)
     {
         var result = await roleService.DeleteRoleAsync(role);
@@ -80,7 +92,8 @@ public static class RoleEndpoints
         return result.Value switch
         {
             Success => TypedResults.Ok(),
-            OneOf.Types.NotFound => TypedResults.NotFound(),
+            RoleNotFound => TypedResults.NotFound(),
+            UnknownIdentityError x => DeleteRoleErrorResult(x.Errors)
         };
     }
 }

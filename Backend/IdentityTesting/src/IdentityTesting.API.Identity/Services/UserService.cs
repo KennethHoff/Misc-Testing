@@ -10,68 +10,68 @@ public sealed class UserService(
     KhSignInManager signInManager
 )
 {
-    public async ValueTask<OneOf<Success, UserNotFound, RoleNotFound, UserAlreadyInRole, UnknownError>> AddRoleToUserAsync(
-        string userName, string role)
+    public async ValueTask<OneOf<Success, UserNotFound, RoleNotFound, UserAlreadyInRole, UnknownIdentityError>> AddRoleToUserAsync(
+        string userName, string roleName)
     {
-        if (await userManager.FindByNameAsync(userName) is not {} user)
+        if (await userManager.FindByNameAsync(userName) is not { } user)
         {
             return new UserNotFound();
         }
 
-        if (!await roleManager.RoleExistsAsync(role))
+        if (!await roleManager.RoleExistsAsync(roleName))
         {
             return new RoleNotFound();
         }
 
-        if (!await userManager.IsInRoleAsync(user, role))
+        if (await userManager.IsInRoleAsync(user, roleName))
         {
             return new UserAlreadyInRole();
         }
 
-        var addToRoleResult = await userManager.AddToRoleAsync(user, role);
+        var addToRoleResult = await userManager.AddToRoleAsync(user, roleName);
 
         if (!addToRoleResult.Succeeded)
         {
-            return new UnknownError(addToRoleResult.Errors);
+            return new UnknownIdentityError(addToRoleResult.Errors);
         }
 
         await signInManager.RefreshSignInAsync(user);
 
         return new Success();
     }
-    
-    public async ValueTask<OneOf<Success, UserNotFound, RoleNotFound, UserNotInRole, UnknownError>> RemoveRoleFromUserAsync(
-        string userName, string role)
+
+    public async ValueTask<OneOf<Success, UserNotFound, RoleNotFound, UserNotInRole, UnknownIdentityError>> RemoveRoleFromUserAsync(
+        string userName, string roleName)
     {
-        if (await userManager.FindByNameAsync(userName) is not {} user)
+        if (await userManager.FindByNameAsync(userName) is not { } user)
         {
             return new UserNotFound();
         }
 
-        if (!await roleManager.RoleExistsAsync(role))
+        if (!await roleManager.RoleExistsAsync(roleName))
         {
             return new RoleNotFound();
         }
 
-        if (!await userManager.IsInRoleAsync(user, role))
+        if (!await userManager.IsInRoleAsync(user, roleName))
         {
             return new UserNotInRole();
         }
 
-        var removeFromRoleResult = await userManager.RemoveFromRoleAsync(user, role);
+        var removeFromRoleResult = await userManager.RemoveFromRoleAsync(user, roleName);
 
         if (!removeFromRoleResult.Succeeded)
         {
-            return new UnknownError(removeFromRoleResult.Errors);
+            return new UnknownIdentityError(removeFromRoleResult.Errors);
         }
-        
+
         await signInManager.RefreshSignInAsync(user);
-        
+
         return new Success();
     }
 }
 
-public readonly record struct UnknownError(IEnumerable<IdentityError> Errors);
+public readonly record struct UnknownIdentityError(IEnumerable<IdentityError> Errors);
 
 public readonly struct UserNotFound;
 

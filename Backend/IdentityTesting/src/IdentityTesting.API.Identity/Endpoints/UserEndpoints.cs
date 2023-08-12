@@ -11,49 +11,52 @@ namespace IdentityTesting.API.Identity.Endpoints;
 
 public static class UserEndpoints
 {
+    private const string AddRoleToUserEndpointName = "AddRoleToUser";
+    private const string RemoveRoleFromUserEndpointName = "RemoveRoleFromUser";
+
     private static readonly NotFound<ApiError> UserNotFoundResult = TypedResults.NotFound(new ApiError
     {
         Code = "UserNotFound",
         Detail = "User not found"
     });
-    
+
     private static readonly NotFound<ApiError> RoleNotFoundResult = TypedResults.NotFound(new ApiError
     {
         Code = "RoleNotFound",
         Detail = "Role not found",
     });
-    
+
     private static readonly BadRequest<ApiError> UserAlreadyInRoleResult = TypedResults.BadRequest(new ApiError
     {
         Code = "UserAlreadyInRole",
         Detail = "User is already in role"
     });
-    
+
     private static readonly BadRequest<ApiError> UserNotInRoleResult = TypedResults.BadRequest(new ApiError
     {
         Code = "UserNotInRole",
         Detail = "User is not in role"
     });
-    
+
     private static ProblemHttpResult RemoveRoleFromUserErrorResult(IEnumerable<IdentityError> errors) => TypedResults.Problem(new ProblemDetails
     {
         Title = "Error removing role from user",
-        Extensions = {["errors"] = errors}
+        Extensions = { ["errors"] = errors }
     });
-    
+
     private static ProblemHttpResult AddRoleToUserErrorResult(IEnumerable<IdentityError> errors) => TypedResults.Problem(new ProblemDetails
     {
         Title = "Error adding role to user",
-        Extensions = {["errors"] = errors}
+        Extensions = { ["errors"] = errors }
     });
-    
+
     public static RouteGroupBuilder MapUserEndpoints(this RouteGroupBuilder group)
     {
         group.MapPatch("/add-role", AddRoleToUserEndPointHandler)
-            .WithName("AddRoleToUser");
+            .WithName(AddRoleToUserEndpointName);
 
         group.MapPatch("/remove-role", RemoveRoleFromUserEndPointHandler)
-            .WithName("RemoveRoleFromUser");
+            .WithName(RemoveRoleFromUserEndpointName);
 
         return group;
     }
@@ -69,7 +72,7 @@ public static class UserEndpoints
             RoleNotFound => RoleNotFoundResult,
             UserNotFound => UserNotFoundResult,
             UserAlreadyInRole => UserAlreadyInRoleResult,
-            UnknownError x => AddRoleToUserErrorResult(x.Errors)
+            UnknownIdentityError x => AddRoleToUserErrorResult(x.Errors)
         };
     }
 
@@ -84,7 +87,7 @@ public static class UserEndpoints
             RoleNotFound => RoleNotFoundResult,
             UserNotFound => UserNotFoundResult,
             UserNotInRole => UserNotInRoleResult,
-            UnknownError x => RemoveRoleFromUserErrorResult(x.Errors)
+            UnknownIdentityError x => RemoveRoleFromUserErrorResult(x.Errors)
         };
     }
 }
