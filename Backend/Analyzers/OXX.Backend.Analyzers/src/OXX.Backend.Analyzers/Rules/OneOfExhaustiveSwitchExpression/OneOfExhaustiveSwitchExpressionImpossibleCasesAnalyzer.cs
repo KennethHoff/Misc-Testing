@@ -14,19 +14,19 @@ namespace OXX.Backend.Analyzers.Rules.OneOfExhaustiveSwitchExpression;
 public sealed class OneOfExhaustiveSwitchExpressionImpossibleCasesAnalyzer : DiagnosticAnalyzer
 {
 	private static readonly DiagnosticDescriptor Rule = DiagnosticUtilities.CreateRule(
-		AnalyzerId.OneOfSwitchExpressionImpossibleCases,
+		AnalyzerId.OneOf.SwitchExpressionImpossibleCases,
 		nameof(Resources.OXX9002Title),
 		nameof(Resources.OXX9002MessageFormat),
 		nameof(Resources.OXX9002Description));
 
 	private static readonly DiagnosticDescriptor RuleDiscardPattern = DiagnosticUtilities.CreateRule(
-		AnalyzerId.OneOfSwitchExpressionImpossibleCases,
+		AnalyzerId.OneOf.SwitchExpressionImpossibleCases,
 		nameof(Resources.OXX9002TitleDiscardPattern),
 		nameof(Resources.OXX9002MessageFormatDiscardPattern),
 		nameof(Resources.OXX9002DescriptionDiscardPattern));
 
 	private static readonly DiagnosticDescriptor RuleLiteralPattern = DiagnosticUtilities.CreateRule(
-		AnalyzerId.OneOfSwitchExpressionImpossibleCases,
+		AnalyzerId.OneOf.SwitchExpressionImpossibleCases,
 		nameof(Resources.OXX9002TitleLiteralPattern),
 		nameof(Resources.OXX9002MessageFormatLiteralPattern),
 		nameof(Resources.OXX9002DescriptionLiteralPattern));

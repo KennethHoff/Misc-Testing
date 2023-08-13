@@ -12,7 +12,18 @@ public static class AnalyzerId
 	/// </summary>
 	public const string Unreachable = Prefix + "0000";
 
-	public const string RequiredProperty = Prefix + "0001";
-	public const string OneOfSwitchExpressionMissingCases = Prefix + "9001";
-	public const string OneOfSwitchExpressionImpossibleCases = Prefix + "9002";
+
+	public static class General
+	{
+		public const string RequiredProperty = Prefix + "0001";
+	}
+
+	public static class OneOf
+	{
+		public const string SwitchExpressionMissingCases = Prefix + "9001";
+		public const string SwitchExpressionImpossibleCases = Prefix + "9002";
+		public const string SwitchExpressionDiscardPattern = Prefix + "9003"; // To be split from 9002
+		public const string ConvertMatchToSwitchExpression = Prefix + "9004"; // To be implemented
+		public const string ConvertExpressionThrowingMethodToOneOfReturningMethod = Prefix + "9005"; // To be implemented
+	}
 }

@@ -15,7 +15,7 @@ namespace OXX.Backend.Analyzers.Rules.OneOfExhaustiveSwitchExpression;
 public sealed class OneOfExhaustiveSwitchExpressionMissingCasesAnalyzer : DiagnosticAnalyzer
 {
 	private static readonly DiagnosticDescriptor Rule = DiagnosticUtilities.CreateRule(
-		AnalyzerId.OneOfSwitchExpressionMissingCases,
+		AnalyzerId.OneOf.SwitchExpressionMissingCases,
 		nameof(Resources.OXX9001Title),
 		nameof(Resources.OXX9001MessageFormat),
 		nameof(Resources.OXX9001Description));

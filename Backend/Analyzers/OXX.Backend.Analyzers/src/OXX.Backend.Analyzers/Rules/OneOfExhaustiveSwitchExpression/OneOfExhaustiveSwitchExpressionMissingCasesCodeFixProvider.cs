@@ -19,7 +19,7 @@ public sealed class OneOfExhaustiveSwitchExpressionMissingCasesCodeFixProvider :
 	public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 
 	public override ImmutableArray<string> FixableDiagnosticIds { get; }
-		= ImmutableArray.Create(AnalyzerId.OneOfSwitchExpressionMissingCases);
+		= ImmutableArray.Create(AnalyzerId.OneOf.SwitchExpressionMissingCases);
 
 	public override Task RegisterCodeFixesAsync(CodeFixContext context)
 	{
