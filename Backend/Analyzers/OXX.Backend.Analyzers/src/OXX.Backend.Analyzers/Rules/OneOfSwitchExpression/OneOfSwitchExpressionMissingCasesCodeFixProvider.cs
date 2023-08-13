@@ -53,12 +53,12 @@ public sealed class OneOfSwitchExpressionMissingCasesCodeFixProvider : CodeFixPr
 		context.RegisterCodeFix(
 			CodeAction.Create(
 				title: string.Format(Resources.OXX9001CodeFix),
-				createChangedDocument: _ => AddMissingCase(context.Document, root, memberAccessExpressionSyntax, semanticModel, switchExpressionSyntax),
+				createChangedDocument: _ => AddMissingCases(context.Document, root, memberAccessExpressionSyntax, semanticModel, switchExpressionSyntax),
 				equivalenceKey: nameof(Resources.OXX9001CodeFix)),
 			diagnostic);
 	}
 
-	private static Task<Document> AddMissingCase(Document document,
+	private static Task<Document> AddMissingCases(Document document,
 		SyntaxNode root,
 		MemberAccessExpressionSyntax memberAccessExpressionSyntax,
 		SemanticModel semanticModel,
