@@ -20,11 +20,8 @@ using OneOf;
 // 	_ => throw new NotImplementedException() // Should warn
 // };
 
-
-
 // The following is the baseline for images used in the README.md file.
 // Do not edit more than necessary for the README.md file.
-
 
 OneOf<string, bool> twoOf = "hmm";
 
