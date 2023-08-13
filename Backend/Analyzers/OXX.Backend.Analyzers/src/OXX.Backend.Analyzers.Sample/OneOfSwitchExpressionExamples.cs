@@ -5,18 +5,31 @@
 using System.Xml;
 using OneOf;
 
-OneOf<string, bool, Program> twoOf = "hmm";
+// OneOf<string, bool, Program> testing = "hmm";
+//
+// var testMessage = testing.Value switch
+// {
+// 	"Hello" => "Hello!", // Should warn
+// 	true => "yo!", // Should warn
+// 	string x => "yo!", // Should not warn
+// 	bool x => throw new NotImplementedException(), // Should not warn
+// 	Program => "hmm", // Should not warn
+// 	int x => throw new NotImplementedException(), // Should warn
+// 	XmlAttribute x => throw new NotImplementedException(), // Should warn
+// 	_ => throw new NotImplementedException() // Should warn
+// };
+
+#pragma warning restore CS8509 // The switch expression does not handle all possible values of its input type (it is not exhaustive).
+
+
+// The following is the baseline for images used in the README.md file.
+// Do not edit more than necessary for the README.md file.
+
+
+OneOf<string, bool> twoOf = "hmm";
 
 var message = twoOf.Value switch
 {
-	"Hello" => "Hello!", // Should warn
-	true => "yo!", // Should warn
-	string x => "yo!", // Should not warn
-	bool x => throw new NotImplementedException(), // Should not warn
-	Program => "hmm", // Should not warn
-	int x => throw new NotImplementedException(), // Should warn
-	XmlAttribute x => throw new NotImplementedException(), // Should warn
-	_ => throw new NotImplementedException() // Should warn
+	bool x => throw new NotImplementedException(),
+	"Hallo" =>  "lol",
 };
-
-#pragma warning restore CS8509 // The switch expression does not handle all possible values of its input type (it is not exhaustive).

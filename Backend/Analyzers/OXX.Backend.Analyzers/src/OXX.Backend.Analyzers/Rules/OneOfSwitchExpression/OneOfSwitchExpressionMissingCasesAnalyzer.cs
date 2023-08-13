@@ -46,7 +46,12 @@ public sealed class OneOfSwitchExpressionMissingCasesAnalyzer : DiagnosticAnalyz
 			return;
 		}
 
-		if (!IsSwitchExpressionMissingCases(context, switchExpressionSyntax, oneOfTypeSymbol, out var missingTypes))
+		if (HasDiscard(context, switchExpressionSyntax, oneOfTypeSymbol))
+		{
+			return;
+		}
+
+		if (!HasMissingCases(context, switchExpressionSyntax, oneOfTypeSymbol, out var missingTypes))
 		{
 			return;
 		}
@@ -55,15 +60,34 @@ public sealed class OneOfSwitchExpressionMissingCasesAnalyzer : DiagnosticAnalyz
 			DiagnosticUtilities.CreateMessageArguments(missingTypes)));
 	}
 
-	private static bool IsSwitchExpressionMissingCases(SyntaxNodeAnalysisContext context,
+	private static bool HasDiscard(SyntaxNodeAnalysisContext context,
+		SwitchExpressionSyntax switchExpressionSyntax, INamedTypeSymbol oneOfTypeSymbol)
+	{
+		return switchExpressionSyntax.Arms.Any(x => x.Pattern.IsDiscard());
+	}
+
+	private static bool HasMissingCases(SyntaxNodeAnalysisContext context,
 		SwitchExpressionSyntax switchExpressionSyntax, INamedTypeSymbol oneOfTypeSymbol,
 		[NotNullWhen(true)] out ITypeSymbol[]? missingTypes)
 	{
 		var requiredTypes = oneOfTypeSymbol.TypeArguments;
-		var currentTypes = SwitchExpressionUtilities.GetTypeSymbolsForArms(context.SemanticModel,
-			switchExpressionSyntax);
 
-		missingTypes = requiredTypes.Except(currentTypes).ToArray();
+		var literals = new HashSet<ITypeSymbol>(switchExpressionSyntax.Arms
+			.Select(x => x.Pattern)
+			.Where(x => x.IsLiteral())
+			.Select(x => context.SemanticModel.GetTypeInfo(x).ConvertedType)
+			.OfType<ITypeSymbol>(), EqualityComparer<ITypeSymbol>.Default);
+
+		var nonLiterals = new HashSet<ITypeSymbol>(switchExpressionSyntax.Arms
+			.Select(x => x.Pattern)
+			.Where(x => !x.IsLiteral())
+			.Select(x => context.SemanticModel.GetTypeInfo(x).ConvertedType)
+			.OfType<ITypeSymbol>(), EqualityComparer<ITypeSymbol>.Default);
+
+		var problematicLiterals = literals
+			.Where(x => !nonLiterals.Contains(x));
+
+		missingTypes = requiredTypes.Except(nonLiterals.Except(problematicLiterals)).ToArray();
 
 		return missingTypes.Length is not 0;
 	}

@@ -21,17 +21,14 @@ public sealed class OneOfSwitchExpressionMissingCasesCodeFixProvider : CodeFixPr
 	public override ImmutableArray<string> FixableDiagnosticIds { get; }
 		= ImmutableArray.Create(AnalyzerId.OneOf.SwitchExpressionMissingCases);
 
-	public override Task RegisterCodeFixesAsync(CodeFixContext context)
+	public override async Task RegisterCodeFixesAsync(CodeFixContext context)
 	{
-		return RegisterCodeFixesAsync(context, context.Diagnostics.First());
-	}
+		var diagnostic = context.Diagnostics.First();
 
-	private static async Task RegisterCodeFixesAsync(CodeFixContext context, Diagnostic diagnostic)
-	{
 		// If the document doesn't have a syntax root, we can't do anything (Impossible(?))
 		if (await context.Document.GetSyntaxRootAsync(context.CancellationToken) is not { } root)
 		{
-			ReportImpossibleCodeFix(context, diagnostic, "No syntax root found.");
+			ReportImpossibleCodeFix(context, "No syntax root found.");
 			return;
 		}
 
@@ -45,7 +42,7 @@ public sealed class OneOfSwitchExpressionMissingCasesCodeFixProvider : CodeFixPr
 		// If there is no SemanticModel, we can't do anything (Impossible? Not sure what would cause this)
 		if (await context.Document.GetSemanticModelAsync(context.CancellationToken) is not { } semanticModel)
 		{
-			ReportImpossibleCodeFix(context, diagnostic, "No semantic model found.");
+			ReportImpossibleCodeFix(context, "No semantic model found.");
 			return;
 		}
 
@@ -53,19 +50,21 @@ public sealed class OneOfSwitchExpressionMissingCasesCodeFixProvider : CodeFixPr
 		context.RegisterCodeFix(
 			CodeAction.Create(
 				title: string.Format(Resources.OXX9001CodeFix),
-				createChangedDocument: _ => AddMissingCases(context.Document, root, memberAccessExpressionSyntax, semanticModel, switchExpressionSyntax),
+				createChangedDocument: _ => AddMissingCases(context, root, memberAccessExpressionSyntax, semanticModel,
+					switchExpressionSyntax),
 				equivalenceKey: nameof(Resources.OXX9001CodeFix)),
 			diagnostic);
 	}
 
-	private static Task<Document> AddMissingCases(Document document,
+	private static Task<Document> AddMissingCases(CodeFixContext context,
 		SyntaxNode root,
 		MemberAccessExpressionSyntax memberAccessExpressionSyntax,
 		SemanticModel semanticModel,
 		SwitchExpressionSyntax switchExpressionSyntax)
 	{
 		// We know that the MemberAccessExpressionSyntax is a OneOf, due to what the Analyzer is looking for.
-		var oneOfTypeSymbol = (INamedTypeSymbol)semanticModel.GetTypeInfo(memberAccessExpressionSyntax.Expression).Type!;
+		var oneOfTypeSymbol =
+			(INamedTypeSymbol)semanticModel.GetTypeInfo(memberAccessExpressionSyntax.Expression).ConvertedType!;
 
 		var newSwitchExpressionSyntax = AddMissingArms(semanticModel, switchExpressionSyntax, oneOfTypeSymbol);
 
@@ -73,65 +72,54 @@ public sealed class OneOfSwitchExpressionMissingCasesCodeFixProvider : CodeFixPr
 		var newRoot = root.ReplaceNode(switchExpressionSyntax, newSwitchExpressionSyntax);
 
 		// Replaces the entire document with a new one that contains the new switch expression.
-		return Task.FromResult(document.WithSyntaxRoot(newRoot));
+		return Task.FromResult(context.Document.WithSyntaxRoot(newRoot));
 	}
 
 	private static SwitchExpressionSyntax AddMissingArms(SemanticModel semanticModel,
-		SwitchExpressionSyntax switchExpressionSyntax,
-		INamedTypeSymbol oneOfTypeSymbol)
+		SwitchExpressionSyntax switchExpressionSyntax, INamedTypeSymbol oneOfTypeSymbol)
 	{
-		// If the switch expression has the same exact types as the OneOf, we're not interested.
-		HashSet<ITypeSymbol> requiredTypes = new(oneOfTypeSymbol.TypeArguments, SymbolEqualityComparer.Default);
-		HashSet<ITypeSymbol> currentTypes = SwitchExpressionUtilities.GetTypeSymbolsForArms(semanticModel,
-			switchExpressionSyntax);
+		var nonLiteralArms = switchExpressionSyntax.Arms.Where(arm => !arm.Pattern.IsLiteral());
+		var existingArms = new HashSet<ITypeSymbol>(
+			nonLiteralArms.Select(arm => SwitchExpressionUtilities.GetTypeForArm(semanticModel, arm)!),
+			EqualityComparer<ITypeSymbol>.Default);
 
-		var missingTypes = requiredTypes.Except(currentTypes).ToArray();
-		var newArms = SyntaxFactory.SeparatedList(switchExpressionSyntax.Arms);
+		var missingTypes = oneOfTypeSymbol.TypeArguments
+			.Where(type => !existingArms.Contains(type));
 
-		AddMissingArms(requiredTypes, missingTypes, ref newArms);
+		var newArms = missingTypes.Select(type => CreateSwitchExpressionArm(type, switchExpressionSyntax)).ToList();
 
-		return switchExpressionSyntax.WithArms(newArms);
+		return switchExpressionSyntax.WithArms(
+			SyntaxFactory.SeparatedList(switchExpressionSyntax.Arms.Concat(newArms)));
 	}
 
-	private static void AddMissingArms(HashSet<ITypeSymbol> requiredTypes, ITypeSymbol[] missingTypes,
-		ref SeparatedSyntaxList<SwitchExpressionArmSyntax> newArms)
+	private static SwitchExpressionArmSyntax CreateSwitchExpressionArm(ITypeSymbol type,
+		SwitchExpressionSyntax switchExpressionSyntax)
 	{
-		foreach (var missingType in missingTypes)
-		{
-			// Get the type symbol for the missing type based on the OneOf's type arguments
-			var typeSymbol = requiredTypes.First(typeSymbol => typeSymbol.Equals(missingType, SymbolEqualityComparer.Default));
+		var typeSyntax =
+			SyntaxFactory.IdentifierName(type.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat));
 
-			// Create a type syntax for the missing type symbol using a syntax format that is short and readable (e.g. "string" instead of "System.String")
-			var typeSyntax = SyntaxFactory.IdentifierName(typeSymbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat));
+		var patternSyntax = SyntaxFactory.DeclarationPattern(typeSyntax,
+			SyntaxFactory.SingleVariableDesignation(SyntaxFactory.Identifier("x")));
 
-			// Create a pattern that extracts the value from the OneOf
-			var patternSyntax = SyntaxFactory.DeclarationPattern(typeSyntax,
-				SyntaxFactory.SingleVariableDesignation(SyntaxFactory.Identifier("x")));
+		var expression = SyntaxFactory.ThrowExpression(SyntaxFactory.ObjectCreationExpression(
+			SyntaxFactory.IdentifierName("NotImplementedException"), SyntaxFactory.ArgumentList(), null));
 
-			// Create a throw expression that throws a NotImplementedException
-			var expressionSyntax = SyntaxFactory.ThrowExpression(SyntaxFactory.ObjectCreationExpression(
-				SyntaxFactory.IdentifierName("NotImplementedException"),
-				SyntaxFactory.ArgumentList(),
-				null));
-
-			var newArm = SyntaxFactory.SwitchExpressionArm(patternSyntax, expressionSyntax);
-
-			newArms = newArms.Add(newArm);
-		}
+		return SyntaxFactory.SwitchExpressionArm(patternSyntax, expression);
 	}
 
 	/// <summary>
 	/// This is a fallback CodeFix that should never be seen by the user, but useful for debugging. <br />
 	/// This cannot be moved to a separate file due to RS1022.
 	/// </summary>
-	private static void ReportImpossibleCodeFix(CodeFixContext context, Diagnostic diagnostic, string information)
+	private static void ReportImpossibleCodeFix(CodeFixContext context, string information)
 	{
 		context.RegisterCodeFix(
 			CodeAction.Create(
 				title: string.Format(Resources.UnreachableTitle),
 				createChangedDocument: c
-					=> Task.FromResult(context.Document.WithText(DiagnosticUtilities.CreateDebuggingSourceText(information))),
+					=> Task.FromResult(
+						context.Document.WithText(DiagnosticUtilities.CreateDebuggingSourceText(information))),
 				equivalenceKey: nameof(Resources.UnreachableCodeFix)),
-			diagnostic);
+			context.Diagnostics);
 	}
 }
