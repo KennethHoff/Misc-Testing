@@ -177,6 +177,12 @@ namespace OXX.Backend.Analyzers {
             }
         }
         
+        internal static string OXX9002CodeFixLiteralPattern {
+            get {
+                return ResourceManager.GetString("OXX9002CodeFixLiteralPattern", resourceCulture);
+            }
+        }
+        
         internal static string OXX9003Title {
             get {
                 return ResourceManager.GetString("OXX9003Title", resourceCulture);

@@ -27,12 +27,9 @@ Suppresses [CS8509](https://learn.microsoft.com/en-us/dotnet/csharp/language-ref
 
 ## Known Issues
 
-- ~~The analyzer will detect literal values as the type itself, and will therefore not report missing cases for their type.~~
-    - Fixed in v1.0.0-beta03
+- None at the moment
 
 ## Future Plans
-
-- I might move the Discard Pattern to a separate analyzer(OXX9003), as it's more or a design choice than a bug.
 
 - Code Fixer to convert `OneOf<T>.Match` to `OneOf<T>.Value` switch expression
   - For example, look at the following code:

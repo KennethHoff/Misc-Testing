@@ -34,6 +34,18 @@ public sealed class OneOfSwitchExpressionImpossibleCasesCodeFixProvider : CodeFi
 		// It will always be a SwitchExpression, due to the Analyzer's SyntaxKind filter.
 		var switchExpressionArmSyntax = (SwitchExpressionArmSyntax)root.FindNode(diagnostic.Location.SourceSpan);
 
+		if (switchExpressionArmSyntax.Pattern.IsLiteral())
+		{
+			// Adds a Code Fixer for removing the impossible type.
+			context.RegisterCodeFix(
+				CodeAction.Create(
+					title: string.Format(Resources.OXX9002CodeFixLiteralPattern),
+					createChangedDocument: _ => RemoveImpossibleCase(root, context.Document, switchExpressionArmSyntax),
+					equivalenceKey: nameof(Resources.OXX9002CodeFixLiteralPattern)),
+				diagnostic);
+			return;
+		}
+
 		// Adds a Code Fixer for removing the impossible type.
 		context.RegisterCodeFix(
 			CodeAction.Create(
@@ -47,9 +59,10 @@ public sealed class OneOfSwitchExpressionImpossibleCasesCodeFixProvider : CodeFi
 	{
 		// Removes the impossible type from the switch expression.
 		// If it's the last type, it will remove the entire switch expression.(?? Not sure why it's nullable)
-		if (root.RemoveNode(syntaxNode, SyntaxRemoveOptions.AddElasticMarker) is not {} newRoot)
+		if (root.RemoveNode(syntaxNode, SyntaxRemoveOptions.AddElasticMarker) is not { } newRoot)
 		{
-			return Task.FromResult(document.WithText(DiagnosticUtilities.CreateDebuggingSourceText("Root has been removed.")));
+			return Task.FromResult(
+				document.WithText(DiagnosticUtilities.CreateDebuggingSourceText("Root has been removed.")));
 		}
 
 		// Replaces the entire document with a new one that contains the new switch expression.
@@ -66,7 +79,8 @@ public sealed class OneOfSwitchExpressionImpossibleCasesCodeFixProvider : CodeFi
 			CodeAction.Create(
 				title: string.Format(Resources.UnreachableTitle),
 				createChangedDocument: c
-					=> Task.FromResult(context.Document.WithText(DiagnosticUtilities.CreateDebuggingSourceText(information))),
+					=> Task.FromResult(
+						context.Document.WithText(DiagnosticUtilities.CreateDebuggingSourceText(information))),
 				equivalenceKey: nameof(Resources.UnreachableCodeFix)),
 			diagnostic);
 	}

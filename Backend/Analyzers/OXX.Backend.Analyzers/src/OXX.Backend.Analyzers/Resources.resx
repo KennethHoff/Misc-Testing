@@ -94,6 +94,9 @@
     <data name="OXX9002CodeFix" xml:space="preserve">
         <value>Remove impossible case</value>
     </data>
+    <data name="OXX9002CodeFixLiteralPattern" xml:space="preserve">
+        <value>Remove literal pattern</value>
+    </data>
     
     <data name="OXX9003Title" xml:space="preserve">
         <value>Switch expression should be explicit about all cases</value>
