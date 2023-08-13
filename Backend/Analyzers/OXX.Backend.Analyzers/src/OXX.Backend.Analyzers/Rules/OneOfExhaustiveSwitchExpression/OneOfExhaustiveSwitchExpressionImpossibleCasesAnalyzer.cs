@@ -31,7 +31,6 @@ public sealed class OneOfExhaustiveSwitchExpressionImpossibleCasesAnalyzer : Dia
 		nameof(Resources.OXX9002MessageFormatLiteralPattern),
 		nameof(Resources.OXX9002DescriptionLiteralPattern));
 
-
 	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
 		ImmutableArray.Create(Rule, RuleDiscardPattern, RuleLiteralPattern, DiagnosticUtilities.UnreachableRule);
 
@@ -64,58 +63,56 @@ public sealed class OneOfExhaustiveSwitchExpressionImpossibleCasesAnalyzer : Dia
 			return;
 		}
 
-		ReportDiagnosticsForImpossibleCases();
-		return;
+		ReportDiagnosticsForImpossibleCases(context, switchExpressionSyntax, oneOfTypeSymbol);
+	}
 
-		void ReportDiagnosticsForImpossibleCases()
-		{
-			var impossibleIndices = switchExpressionSyntax.Arms
-				.Select((arm, index) => (arm, index))
-				.Where(tuple =>
-				{
-					if (tuple.arm.Pattern.IsLiteral() || tuple.arm.Pattern.IsDiscard())
-					{
-						return true;
-					}
-
-					if (SwitchExpressionUtilities.GetTypeForArm(context.SemanticModel, tuple.arm) is not { } armType)
-					{
-						return true;
-					}
-
-					return !oneOfTypeSymbol.TypeArguments.Contains(armType);
-				})
-				.Select(tuple => tuple.index)
-				.ToArray();
-
-			foreach (var index in impossibleIndices)
+	private static void ReportDiagnosticsForImpossibleCases(SyntaxNodeAnalysisContext context,
+		SwitchExpressionSyntax switchExpressionSyntax, INamedTypeSymbol oneOfTypeSymbol)
+	{
+		var impossibleIndices = switchExpressionSyntax.Arms
+			.Select((arm, index) => (arm, index))
+			.Where(tuple =>
 			{
-				var arm = switchExpressionSyntax.Arms[index];
-
-				if (arm.Pattern.IsLiteral())
+				if (tuple.arm.Pattern.IsLiteral() || tuple.arm.Pattern.IsDiscard())
 				{
-					context.ReportDiagnostic(Diagnostic.Create(RuleLiteralPattern, arm.GetLocation()));
-					continue;
+					return true;
 				}
 
-				if (arm.Pattern.IsDiscard())
+				if (SwitchExpressionUtilities.GetTypeForArm(context.SemanticModel, tuple.arm) is not { } armType)
 				{
-					context.ReportDiagnostic(Diagnostic.Create(RuleDiscardPattern, arm.GetLocation()));
-					continue;
+					return true;
 				}
 
-				var armType = SwitchExpressionUtilities.GetTypeForArm(context.SemanticModel, arm);
+				return !oneOfTypeSymbol.TypeArguments.Contains(armType);
+			})
+			.Select(tuple => tuple.index)
+			.ToArray();
 
-				if (armType is null)
-				{
-					context.ReportDiagnostic(Diagnostic.Create(DiagnosticUtilities.UnreachableRule, arm.GetLocation()));
-					continue;
-				}
+		foreach (var index in impossibleIndices)
+		{
+			var arm = switchExpressionSyntax.Arms[index];
 
-				context.ReportDiagnostic(Diagnostic.Create(Rule, arm.GetLocation(),
-					DiagnosticUtilities.CreateMessageArgument(armType),
-					DiagnosticUtilities.CreateMessageArgument(oneOfTypeSymbol)));
+			if (arm.Pattern.IsLiteral())
+			{
+				context.ReportDiagnostic(Diagnostic.Create(RuleLiteralPattern, arm.GetLocation()));
+				continue;
 			}
+
+			if (arm.Pattern.IsDiscard())
+			{
+				context.ReportDiagnostic(Diagnostic.Create(RuleDiscardPattern, arm.GetLocation()));
+				continue;
+			}
+
+			if (SwitchExpressionUtilities.GetTypeForArm(context.SemanticModel, arm) is not {} armType)
+			{
+				context.ReportDiagnostic(Diagnostic.Create(DiagnosticUtilities.UnreachableRule, arm.GetLocation()));
+				continue;
+			}
+
+			context.ReportDiagnostic(Diagnostic.Create(Rule, arm.GetLocation(),
+				DiagnosticUtilities.CreateMessageArgument(armType),
+				DiagnosticUtilities.CreateMessageArgument(oneOfTypeSymbol)));
 		}
 	}
 
@@ -125,16 +122,15 @@ public sealed class OneOfExhaustiveSwitchExpressionImpossibleCasesAnalyzer : Dia
 		var requiredTypes = oneOfTypeSymbol.TypeArguments;
 		var typeSymbols = switchExpressionSyntax.Arms.Select(x => x.Pattern).ToArray();
 
-		return typeSymbols
-			.Any(pattern =>
+		return typeSymbols.Any(pattern =>
+		{
+			if (pattern.IsLiteral() || pattern.IsDiscard())
 			{
-				if (pattern.IsLiteral() || pattern.IsDiscard())
-				{
-					return true;
-				}
+				return true;
+			}
 
-				var typeInfo = context.SemanticModel.GetTypeInfo(pattern);
-				return typeInfo.ConvertedType is null || !requiredTypes.Contains(typeInfo.ConvertedType);
-			});
+			var typeInfo = context.SemanticModel.GetTypeInfo(pattern);
+			return typeInfo.ConvertedType is null || !requiredTypes.Contains(typeInfo.ConvertedType);
+		});
 	}
 }
