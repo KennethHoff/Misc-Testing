@@ -9,12 +9,12 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using OXX.Backend.Analyzers.Constants;
 using OXX.Backend.Analyzers.Utilities;
 
-namespace OXX.Backend.Analyzers.Rules.OneOfExhaustiveSwitchExpression;
+namespace OXX.Backend.Analyzers.Rules.OneOfSwitchExpression;
 
-[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(OneOfExhaustiveSwitchExpressionMissingCasesCodeFixProvider))]
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(OneOfSwitchExpressionMissingCasesCodeFixProvider))]
 [Shared]
 [PublicAPI("Roslyn Analyzer")]
-public sealed class OneOfExhaustiveSwitchExpressionMissingCasesCodeFixProvider : CodeFixProvider
+public sealed class OneOfSwitchExpressionMissingCasesCodeFixProvider : CodeFixProvider
 {
 	public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 

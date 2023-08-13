@@ -4,11 +4,11 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using OXX.Backend.Analyzers.Utilities;
 
-namespace OXX.Backend.Analyzers.Rules.OneOfExhaustiveSwitchExpression;
+namespace OXX.Backend.Analyzers.Rules.OneOfSwitchExpression;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 [PublicAPI("Roslyn Analyzer")]
-public sealed class OneOfExhaustiveSwitchExpressionDiagnosticSuppressor : DiagnosticSuppressor
+public sealed class OneOfSwitchExpressionDiagnosticSuppressor : DiagnosticSuppressor
 {
 	private static readonly LocalizableString Justification = new LocalizableResourceString(
 		nameof(Resources.OXX9001SuppressorJustification), Resources.ResourceManager, typeof(Resources));

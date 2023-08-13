@@ -7,11 +7,11 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using OXX.Backend.Analyzers.Constants;
 using OXX.Backend.Analyzers.Utilities;
 
-namespace OXX.Backend.Analyzers.Rules.OneOfExhaustiveSwitchExpression;
+namespace OXX.Backend.Analyzers.Rules.OneOfSwitchExpression;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 [PublicAPI("Roslyn Analyzer")]
-public sealed class OneOfExhaustiveSwitchExpressionImpossibleCasesAnalyzer : DiagnosticAnalyzer
+public sealed class OneOfSwitchExpressionImpossibleCasesAnalyzer : DiagnosticAnalyzer
 {
 	private static readonly DiagnosticDescriptor Rule = DiagnosticUtilities.CreateRule(
 		AnalyzerId.OneOf.SwitchExpressionImpossibleCases,
