@@ -73,8 +73,7 @@ public sealed class OneOfExhaustiveSwitchExpressionImpossibleCasesAnalyzer : Dia
 				.Select((arm, index) => (arm, index))
 				.Where(tuple =>
 				{
-					if (PatternSyntaxUtilities.IsLiteral(tuple.arm.Pattern) ||
-					    PatternSyntaxUtilities.IsDiscard(tuple.arm.Pattern))
+					if (tuple.arm.Pattern.IsLiteral() || tuple.arm.Pattern.IsDiscard())
 					{
 						return true;
 					}
@@ -93,13 +92,13 @@ public sealed class OneOfExhaustiveSwitchExpressionImpossibleCasesAnalyzer : Dia
 			{
 				var arm = switchExpressionSyntax.Arms[index];
 
-				if (PatternSyntaxUtilities.IsLiteral(arm.Pattern))
+				if (arm.Pattern.IsLiteral())
 				{
 					context.ReportDiagnostic(Diagnostic.Create(RuleLiteralPattern, arm.GetLocation()));
 					continue;
 				}
 
-				if (PatternSyntaxUtilities.IsDiscard(arm.Pattern))
+				if (arm.Pattern.IsDiscard())
 				{
 					context.ReportDiagnostic(Diagnostic.Create(RuleDiscardPattern, arm.GetLocation()));
 					continue;
@@ -129,7 +128,7 @@ public sealed class OneOfExhaustiveSwitchExpressionImpossibleCasesAnalyzer : Dia
 		return typeSymbols
 			.Any(pattern =>
 			{
-				if (PatternSyntaxUtilities.IsLiteral(pattern) || PatternSyntaxUtilities.IsDiscard(pattern))
+				if (pattern.IsLiteral() || pattern.IsDiscard())
 				{
 					return true;
 				}
