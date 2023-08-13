@@ -1,5 +1,6 @@
 using IdentityTesting.API.Identity.Models;
 using IdentityTesting.API.Identity.Services.Models;
+using Microsoft.EntityFrameworkCore;
 using OneOf;
 using OneOf.Types;
 
@@ -11,6 +12,21 @@ public sealed class UserService(
     KhSignInManager signInManager
 )
 {
+    public async ValueTask<List<KhApplicationUser>> GetAllUsersAsync()
+    {
+        return await userManager.Users.ToListAsync();
+    }
+    
+    public async ValueTask<OneOf<KhApplicationUser, UserNotFound>> GetUserAsync(string userName)
+    {
+        if (await userManager.FindByNameAsync(userName) is not { } user)
+        {
+            return new UserNotFound();
+        }
+
+        return user;
+    }
+    
     public async ValueTask<OneOf<Success, UserNotFound, RoleNotFound, UserAlreadyInRole, UnknownIdentityError>> AddRoleToUserAsync(
         string userName, string roleName)
     {

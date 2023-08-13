@@ -1,3 +1,4 @@
+using IdentityTesting.API.Identity.Models;
 using IdentityTesting.API.Identity.Services;
 using IdentityTesting.API.Identity.Services.Models;
 using IdentityTesting.API.Models;
@@ -12,6 +13,8 @@ namespace IdentityTesting.API.Identity.Endpoints;
 
 public static class UserEndpoints
 {
+    private const string GetAllUsersEndpointName = "GetAllUsers";
+    private const string GetUserEndpointName = "GetUser";
     private const string AddRoleToUserEndpointName = "AddRoleToUser";
     private const string RemoveRoleFromUserEndpointName = "RemoveRoleFromUser";
 
@@ -53,6 +56,12 @@ public static class UserEndpoints
 
     public static RouteGroupBuilder MapUserEndpoints(this RouteGroupBuilder group)
     {
+        group.MapGet("/", GetAllUsersEndPointHandler)
+            .WithName(GetAllUsersEndpointName);
+        
+        group.MapGet("/{userName}", GetUserEndPointHandler)
+            .WithName(GetUserEndpointName);
+        
         group.MapPatch("/add-role", AddRoleToUserEndPointHandler)
             .WithName(AddRoleToUserEndpointName);
 
@@ -60,6 +69,24 @@ public static class UserEndpoints
             .WithName(RemoveRoleFromUserEndpointName);
 
         return group;
+    }
+    
+    private static async ValueTask<List<KhApplicationUser>>
+        GetAllUsersEndPointHandler(UserService userService, CancellationToken ct)
+    {
+        return await userService.GetAllUsersAsync();
+    }
+    
+    private static async ValueTask<Results<NotFound<ApiError>, Ok<KhApplicationUser>>>
+        GetUserEndPointHandler(UserService userService, string userName, CancellationToken ct)
+    {
+        var result = await userService.GetUserAsync(userName);
+
+        return result.Value switch
+        {
+            UserNotFound => UserNotFoundResult,
+            KhApplicationUser x => TypedResults.Ok(x),
+        };
     }
 
     private static async ValueTask<Results<NotFound<ApiError>, BadRequest<ApiError>, ProblemHttpResult, Ok>>
