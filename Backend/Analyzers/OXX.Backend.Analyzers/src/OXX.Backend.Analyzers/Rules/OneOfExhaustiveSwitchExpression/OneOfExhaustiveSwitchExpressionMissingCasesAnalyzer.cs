@@ -60,7 +60,8 @@ public sealed class OneOfExhaustiveSwitchExpressionMissingCasesAnalyzer : Diagno
 		[NotNullWhen(true)] out ITypeSymbol[]? missingTypes)
 	{
 		var requiredTypes = oneOfTypeSymbol.TypeArguments;
-		var currentTypes = SwitchExpressionUtilities.GetTypeSymbolsForArms(context.SemanticModel, switchExpressionSyntax);
+		var currentTypes = SwitchExpressionUtilities.GetTypeSymbolsForArms(context.SemanticModel,
+			switchExpressionSyntax);
 
 		missingTypes = requiredTypes.Except(currentTypes).ToArray();
 

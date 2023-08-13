@@ -27,18 +27,8 @@ Suppresses [CS8509](https://learn.microsoft.com/en-us/dotnet/csharp/language-ref
 
 ## Known Issues
 
-- The analyzer will detect literal values as the type itself, and will not report missing cases for their type.
-  - For example, with the following code:
-    ```csharp
-    OneOf<bool, string> stringOrBool = "Test";
-    var message = stringOrBool.Value switch
-    {
-        true => "This is a bool",
-        "A string" => "lol",
-    };
-    ```
-    The analyzer will report no missing cases here, as both a bool and a string are present.
-    This is clearly wrong, as even this simple example will throw a [SwitchExpressionException](https://learn.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.switchexpressionexception)
+- ~~The analyzer will detect literal values as the type itself, and will therefore not report missing cases for their type.~~
+    - Fixed in v1.0.0-beta03
 
 ## Future Plans
 

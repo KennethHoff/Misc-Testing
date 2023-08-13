@@ -82,7 +82,8 @@ public sealed class OneOfExhaustiveSwitchExpressionMissingCasesCodeFixProvider :
 	{
 		// If the switch expression has the same exact types as the OneOf, we're not interested.
 		HashSet<ITypeSymbol> requiredTypes = new(oneOfTypeSymbol.TypeArguments, SymbolEqualityComparer.Default);
-		HashSet<ITypeSymbol> currentTypes = SwitchExpressionUtilities.GetTypeSymbolsForArms(semanticModel, switchExpressionSyntax);
+		HashSet<ITypeSymbol> currentTypes = SwitchExpressionUtilities.GetTypeSymbolsForArms(semanticModel,
+			switchExpressionSyntax);
 
 		var missingTypes = requiredTypes.Except(currentTypes).ToArray();
 		var newArms = SyntaxFactory.SeparatedList(switchExpressionSyntax.Arms);
