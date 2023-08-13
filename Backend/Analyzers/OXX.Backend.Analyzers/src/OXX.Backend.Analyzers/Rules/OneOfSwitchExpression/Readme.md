@@ -2,28 +2,46 @@
 
 This analyzer will warn you if you have a switch expression on a `OneOf<T>.Value` that is not exhaustive or is checking for impossible cases.
 
+---
+
 ## [Missing cases Analyzer](OneOfSwitchExpressionMissingCasesAnalyzer.cs)
 ![Analyzer - Missing cases](assets/Analyzer_MissingCases.png)
 
 ![Analyzer - Missing cases - Partial](assets/Analyzer_MissingCases2.png)
 
-## [Impossible cases Analyzer](OneOfSwitchExpressionImpossibleCasesAnalyzer.cs)
-![Analyzer - Impossible cases](assets/Analyzer_ImpossibleCases.png)
-
-![Analyzer - Impossible cases - Discard Pattern](assets/Analyzer_ImpossibleCases2.png)
-
-## [Missing cases Code Fix](OneOfSwitchExpressionMissingCasesCodeFixProvider.cs)
+### [Code Fix](OneOfSwitchExpressionMissingCasesCodeFixProvider.cs)
 ![Code Fix - Missing cases - Fixer](assets/CodeFix_MissingCases_Fixer.png)
+
 ![Code Fix - Missing cases - Fixed](assets/CodeFix_MissingCases_Fixed.png)
 
-## [Impossible cases Code Fix](OneOfSwitchExpressionImpossibleCasesCodeFixProvider.cs)
+---
+
+## [Impossible cases Analyzer](OneOfSwitchExpressionImpossibleCasesAnalyzer.cs)
+![Analyzer - Impossible cases](assets/Analyzer_ImpossibleCases.png)
+![Analyzer - Impossible cases - Literal](assets/Analyzer_ImpossibleCases_Literal.png)
+
+### [Code Fix](OneOfSwitchExpressionImpossibleCasesCodeFixProvider.cs)
 ![Code Fix - Impossible cases - Fixer](assets/CodeFix_ImpossibleCases_Fixer.png)
+
 ![Code Fix - Impossible cases - Fixed](assets/CodeFix_ImpossibleCases_Fixed.png)
+
+---
+
+## [Discard Pattern Analyzer](OneOfSwitchExpressionDiscardPatternAnalyzer.cs)
+![Analyzer - Discard Pattern](assets/Analyzer_DiscardPattern.png)
+
+### [Code Fix](OneOfSwitchExpressionDiscardPatternCodeFixProvider.cs)
+![Code Fix - Discard Pattern - Fixer](assets/CodeFix_DiscardPattern_Fixer.png)
+
+![Code Fix - Discard Pattern - Fixed](assets/CodeFix_DiscardPattern_Fixed.png)
+
+---
 
 ## [Diagnostic Suppressor](OneOfSwitchExpressionDiagnosticSuppressor.cs)
 
 Suppresses [CS8509](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/pattern-matching-warnings) for all switch expressions on `OneOf<T>.Value`.
 
+---
 
 ## Known Issues
 
