@@ -19,12 +19,6 @@ public sealed class OneOfSwitchExpressionImpossibleCasesAnalyzer : DiagnosticAna
 		nameof(Resources.OXX9002MessageFormat),
 		nameof(Resources.OXX9002Description));
 
-	private static readonly DiagnosticDescriptor RuleDiscardPattern = DiagnosticUtilities.CreateRule(
-		AnalyzerId.OneOf.SwitchExpressionImpossibleCases,
-		nameof(Resources.OXX9002TitleDiscardPattern),
-		nameof(Resources.OXX9002MessageFormatDiscardPattern),
-		nameof(Resources.OXX9002DescriptionDiscardPattern));
-
 	private static readonly DiagnosticDescriptor RuleLiteralPattern = DiagnosticUtilities.CreateRule(
 		AnalyzerId.OneOf.SwitchExpressionImpossibleCases,
 		nameof(Resources.OXX9002TitleLiteralPattern),
@@ -32,7 +26,7 @@ public sealed class OneOfSwitchExpressionImpossibleCasesAnalyzer : DiagnosticAna
 		nameof(Resources.OXX9002DescriptionLiteralPattern));
 
 	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-		ImmutableArray.Create(Rule, RuleDiscardPattern, RuleLiteralPattern, DiagnosticUtilities.UnreachableRule);
+		ImmutableArray.Create(Rule, RuleLiteralPattern, DiagnosticUtilities.UnreachableRule);
 
 	public override void Initialize(AnalysisContext context)
 	{
@@ -58,7 +52,7 @@ public sealed class OneOfSwitchExpressionImpossibleCasesAnalyzer : DiagnosticAna
 			return;
 		}
 
-		if (!HasSwitchExpressionImpossibleArms(context, switchExpressionSyntax, oneOfTypeSymbol))
+		if (!HasImpossibleArms(context, switchExpressionSyntax, oneOfTypeSymbol))
 		{
 			return;
 		}
@@ -73,7 +67,13 @@ public sealed class OneOfSwitchExpressionImpossibleCasesAnalyzer : DiagnosticAna
 			.Select((arm, index) => (arm, index))
 			.Where(tuple =>
 			{
-				if (tuple.arm.Pattern.IsLiteral() || tuple.arm.Pattern.IsDiscard())
+				if (tuple.arm.Pattern.IsDiscard())
+				{
+					// Discard patterns are handled by OneOfSwitchExpressionDiscardPatternAnalyzer
+					return false;
+				}
+
+				if (tuple.arm.Pattern.IsLiteral())
 				{
 					return true;
 				}
@@ -98,12 +98,6 @@ public sealed class OneOfSwitchExpressionImpossibleCasesAnalyzer : DiagnosticAna
 				continue;
 			}
 
-			if (arm.Pattern.IsDiscard())
-			{
-				context.ReportDiagnostic(Diagnostic.Create(RuleDiscardPattern, arm.GetLocation()));
-				continue;
-			}
-
 			if (SwitchExpressionUtilities.GetTypeForArm(context.SemanticModel, arm) is not {} armType)
 			{
 				context.ReportDiagnostic(Diagnostic.Create(DiagnosticUtilities.UnreachableRule, arm.GetLocation()));
@@ -116,7 +110,7 @@ public sealed class OneOfSwitchExpressionImpossibleCasesAnalyzer : DiagnosticAna
 		}
 	}
 
-	private static bool HasSwitchExpressionImpossibleArms(SyntaxNodeAnalysisContext context,
+	private static bool HasImpossibleArms(SyntaxNodeAnalysisContext context,
 		SwitchExpressionSyntax switchExpressionSyntax, INamedTypeSymbol oneOfTypeSymbol)
 	{
 		var requiredTypes = oneOfTypeSymbol.TypeArguments;
@@ -124,7 +118,13 @@ public sealed class OneOfSwitchExpressionImpossibleCasesAnalyzer : DiagnosticAna
 
 		return typeSymbols.Any(pattern =>
 		{
-			if (pattern.IsLiteral() || pattern.IsDiscard())
+			if (pattern.IsDiscard())
+			{
+				// Discard patterns are handled by OneOfSwitchExpressionDiscardPatternAnalyzer
+				return false;
+			}
+
+			if (pattern.IsLiteral())
 			{
 				return true;
 			}

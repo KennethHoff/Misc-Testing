@@ -141,12 +141,6 @@ namespace OXX.Backend.Analyzers {
             }
         }
         
-        internal static string OXX9002TitleDiscardPattern {
-            get {
-                return ResourceManager.GetString("OXX9002TitleDiscardPattern", resourceCulture);
-            }
-        }
-        
         internal static string OXX9002TitleLiteralPattern {
             get {
                 return ResourceManager.GetString("OXX9002TitleLiteralPattern", resourceCulture);
@@ -156,12 +150,6 @@ namespace OXX.Backend.Analyzers {
         internal static string OXX9002Description {
             get {
                 return ResourceManager.GetString("OXX9002Description", resourceCulture);
-            }
-        }
-        
-        internal static string OXX9002DescriptionDiscardPattern {
-            get {
-                return ResourceManager.GetString("OXX9002DescriptionDiscardPattern", resourceCulture);
             }
         }
         
@@ -177,12 +165,6 @@ namespace OXX.Backend.Analyzers {
             }
         }
         
-        internal static string OXX9002MessageFormatDiscardPattern {
-            get {
-                return ResourceManager.GetString("OXX9002MessageFormatDiscardPattern", resourceCulture);
-            }
-        }
-        
         internal static string OXX9002MessageFormatLiteralPattern {
             get {
                 return ResourceManager.GetString("OXX9002MessageFormatLiteralPattern", resourceCulture);
@@ -192,6 +174,30 @@ namespace OXX.Backend.Analyzers {
         internal static string OXX9002CodeFix {
             get {
                 return ResourceManager.GetString("OXX9002CodeFix", resourceCulture);
+            }
+        }
+        
+        internal static string OXX9003Title {
+            get {
+                return ResourceManager.GetString("OXX9003Title", resourceCulture);
+            }
+        }
+        
+        internal static string OXX9003Description {
+            get {
+                return ResourceManager.GetString("OXX9003Description", resourceCulture);
+            }
+        }
+        
+        internal static string OXX9003MessageFormat {
+            get {
+                return ResourceManager.GetString("OXX9003MessageFormat", resourceCulture);
+            }
+        }
+        
+        internal static string OXX9003CodeFix {
+            get {
+                return ResourceManager.GetString("OXX9003CodeFix", resourceCulture);
             }
         }
     }

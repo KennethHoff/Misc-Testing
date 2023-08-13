@@ -22,7 +22,7 @@ public static class AnalyzerId
 	{
 		public const string SwitchExpressionMissingCases = Prefix + "9001";
 		public const string SwitchExpressionImpossibleCases = Prefix + "9002";
-		public const string SwitchExpressionDiscardPattern = Prefix + "9003"; // To be split from 9002
+		public const string SwitchExpressionDiscardPattern = Prefix + "9003";
 		public const string ConvertMatchToSwitchExpression = Prefix + "9004"; // To be implemented
 		public const string ConvertExpressionThrowingMethodToOneOfReturningMethod = Prefix + "9005"; // To be implemented
 	}

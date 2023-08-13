@@ -13,12 +13,12 @@ namespace OXX.Backend.Analyzers.Rules.OneOfSwitchExpression;
 [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(OneOfSwitchExpressionImpossibleCasesCodeFixProvider))]
 [Shared]
 [PublicAPI("Roslyn Analyzer")]
-public sealed class OneOfSwitchExpressionImpossibleCasesCodeFixProvider : CodeFixProvider
+public sealed class OneOfSwitchExpressionDiscardPatternCodeFixProvider : CodeFixProvider
 {
-	public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
-
 	public override ImmutableArray<string> FixableDiagnosticIds { get; }
-		= ImmutableArray.Create(AnalyzerId.OneOf.SwitchExpressionImpossibleCases);
+		= ImmutableArray.Create(AnalyzerId.OneOf.SwitchExpressionDiscardPattern);
+
+	public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 
 	public override async Task RegisterCodeFixesAsync(CodeFixContext context)
 	{
@@ -37,15 +37,15 @@ public sealed class OneOfSwitchExpressionImpossibleCasesCodeFixProvider : CodeFi
 		// Adds a Code Fixer for removing the impossible type.
 		context.RegisterCodeFix(
 			CodeAction.Create(
-				title: string.Format(Resources.OXX9002CodeFix),
-				createChangedDocument: _ => RemoveImpossibleCase(root, context.Document, switchExpressionArmSyntax),
-				equivalenceKey: nameof(Resources.OXX9002CodeFix)),
+				title: string.Format(Resources.OXX9003CodeFix),
+				createChangedDocument: _ => RemoveDiscardPattern(root, context.Document, switchExpressionArmSyntax),
+				equivalenceKey: nameof(Resources.OXX9003CodeFix)),
 			diagnostic);
 	}
 
-	private static Task<Document> RemoveImpossibleCase(SyntaxNode root, Document document, SyntaxNode syntaxNode)
+	private static Task<Document> RemoveDiscardPattern(SyntaxNode root, Document document, SyntaxNode syntaxNode)
 	{
-		// Removes the impossible type from the switch expression.
+		// Removes the discard pattern from the switch expression.
 		// If it's the last type, it will remove the entire switch expression.(?? Not sure why it's nullable)
 		if (root.RemoveNode(syntaxNode, SyntaxRemoveOptions.AddElasticMarker) is not {} newRoot)
 		{
@@ -66,7 +66,8 @@ public sealed class OneOfSwitchExpressionImpossibleCasesCodeFixProvider : CodeFi
 			CodeAction.Create(
 				title: string.Format(Resources.UnreachableTitle),
 				createChangedDocument: c
-					=> Task.FromResult(context.Document.WithText(DiagnosticUtilities.CreateDebuggingSourceText(information))),
+					=> Task.FromResult(
+						context.Document.WithText(DiagnosticUtilities.CreateDebuggingSourceText(information))),
 				equivalenceKey: nameof(Resources.UnreachableCodeFix)),
 			diagnostic);
 	}

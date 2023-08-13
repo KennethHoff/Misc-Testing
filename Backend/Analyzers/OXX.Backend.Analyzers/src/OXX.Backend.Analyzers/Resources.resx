@@ -75,9 +75,6 @@
     <data name="OXX9002Title" xml:space="preserve">
         <value>Switch expression is checking for an impossible case</value>
     </data>
-    <data name="OXX9002TitleDiscardPattern" xml:space="preserve">
-        <value>Switch expression should be explicit about all cases</value>
-    </data>
     <data name="OXX9002TitleLiteralPattern" xml:space="preserve">
         <value>Switch expression should not contain literal patterns</value>
     </data>
@@ -85,24 +82,30 @@
     <data name="OXX9002Description" xml:space="preserve">
         <value>Switch expression on OneOf.Value is checking for an impossible case.</value>
     </data>
-    <data name="OXX9002DescriptionDiscardPattern" xml:space="preserve">
-        <value>Switch expression on OneOf.Value should be explicit about all cases.</value>
-    </data>
     <data name="OXX9002DescriptionLiteralPattern" xml:space="preserve">
         <value>Switch expression on OneOf.Value should not contain literal patterns.</value>
     </data>
-
     <data name="OXX9002MessageFormat" xml:space="preserve">
         <value>{0} is not a valid case for {1}</value>
-    </data>
-    <data name="OXX9002MessageFormatDiscardPattern" xml:space="preserve">
-         <!-- Crazy double escaping to avoid XML parsing errors. First to escape the XML in this file, then to escape the XML in the UI -->
-        <value>Do not use discard pattern in switch expression on One&amp;lt;T&amp;gt;</value>
     </data>
     <data name="OXX9002MessageFormatLiteralPattern" xml:space="preserve">
         <value>Do not use literal pattern in switch expression on One&amp;lt;T&amp;gt;</value>
     </data>
     <data name="OXX9002CodeFix" xml:space="preserve">
         <value>Remove impossible case</value>
+    </data>
+    
+    <data name="OXX9003Title" xml:space="preserve">
+        <value>Switch expression should be explicit about all cases</value>
+    </data>
+    <data name="OXX9003Description" xml:space="preserve">
+        <value>Switch expression on OneOf.Value should be explicit about all cases.</value>
+    </data>
+    <data name="OXX9003MessageFormat" xml:space="preserve">
+         <!-- Crazy double escaping to avoid XML parsing errors. First to escape the XML in this file, then to escape the XML in the UI -->
+        <value>Do not use discard pattern in switch expression on One&amp;lt;T&amp;gt;</value>
+    </data>
+    <data name="OXX9003CodeFix" xml:space="preserve">
+        <value>Remove discard pattern</value>
     </data>
 </root>
