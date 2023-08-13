@@ -5,35 +5,44 @@ This analyzer will warn you if you have a switch expression on a `OneOf<T>.Value
 ---
 
 ## [Missing cases Analyzer](OneOfSwitchExpressionMissingCasesAnalyzer.cs)
-![Analyzer - Missing cases](assets/Analyzer_MissingCases.png)
+![Analyzer - Missing cases](assets/MissingCases_Analyzer.png)
 
-![Analyzer - Missing cases - Partial](assets/Analyzer_MissingCases2.png)
+![Analyzer - Missing cases - Partial](assets/MissingCases_2_Analyzer.png)
 
 ### [Code Fix](OneOfSwitchExpressionMissingCasesCodeFixProvider.cs)
-![Code Fix - Missing cases - Fixer](assets/CodeFix_MissingCases_Fixer.png)
+![Code Fix - Missing cases - Fixer](assets/MissingCases_CodeFix_Fixer.png)
 
-![Code Fix - Missing cases - Fixed](assets/CodeFix_MissingCases_Fixed.png)
+![Code Fix - Missing cases - Fixed](assets/MissingCases_CodeFix_Fixed.png)
 
 ---
 
 ## [Impossible cases Analyzer](OneOfSwitchExpressionImpossibleCasesAnalyzer.cs)
-![Analyzer - Impossible cases](assets/Analyzer_ImpossibleCases.png)
-![Analyzer - Impossible cases - Literal](assets/Analyzer_ImpossibleCases_Literal.png)
+![Analyzer - Impossible cases](assets/ImpossibleCases_Analyzer.png)
+
+#### Literal
+
+![Analyzer - Impossible cases - Literal](assets/ImpossibleCases_Literal_Analyzer.png)
 
 ### [Code Fix](OneOfSwitchExpressionImpossibleCasesCodeFixProvider.cs)
-![Code Fix - Impossible cases - Fixer](assets/CodeFix_ImpossibleCases_Fixer.png)
+![Code Fix - Impossible cases - Fixer](assets/ImpossibleCases_CodeFix_Fixer.png)
 
-![Code Fix - Impossible cases - Fixed](assets/CodeFix_ImpossibleCases_Fixed.png)
+![Code Fix - Impossible cases - Fixed](assets/ImpossibleCases_CodeFix_Fixed.png)
+
+#### Literal
+
+![Code Fix - Impossible cases - Literal - Fixer](assets/ImpossibleCases_Literal_CodeFix_Fixer.png)
+
+![Code Fix - Impossible cases - Literal - Fixed](assets/ImpossibleCases_CodeFix_Fixed.png)
 
 ---
 
 ## [Discard Pattern Analyzer](OneOfSwitchExpressionDiscardPatternAnalyzer.cs)
-![Analyzer - Discard Pattern](assets/Analyzer_DiscardPattern.png)
+![Analyzer - Discard Pattern](assets/DiscardPattern_Analyzer.png)
 
 ### [Code Fix](OneOfSwitchExpressionDiscardPatternCodeFixProvider.cs)
-![Code Fix - Discard Pattern - Fixer](assets/CodeFix_DiscardPattern_Fixer.png)
+![Code Fix - Discard Pattern - Fixer](assets/DiscardPattern_CodeFix_Fixer.png)
 
-![Code Fix - Discard Pattern - Fixed](assets/CodeFix_DiscardPattern_Fixed.png)
+![Code Fix - Discard Pattern - Fixed](assets/DiscardPattern_CodeFix_Fixed.png)
 
 ---
 
