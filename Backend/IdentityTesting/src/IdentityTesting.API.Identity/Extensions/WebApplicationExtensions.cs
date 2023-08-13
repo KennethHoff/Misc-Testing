@@ -21,18 +21,23 @@ public static class WebApplicationExtensions
         app.UseAuthentication();
         app.UseAuthorization();
 
-        var identityGroup = app.MapGroup("/identity")
+        return app;
+    }
+
+    public static IApplicationBuilder MapKhIdentity(this WebApplication app)
+    {
+        app.MapGroup("/identity")
+            .WithTags("Identity")
+            .MapIdentityApi<KhApplicationUser>();
+
+        app.MapGroup("/roles")
+            .WithTags("Roles")
             .RequireAuthorization(Policies.RequireAdmin)
-            .WithTags("Identity");
-
-        // We need to allow login for anonymous users... duh
-        identityGroup.MapIdentityApi<KhApplicationUser>()
-            .AllowAnonymous();
-
-        identityGroup.MapGroup("/roles")
             .MapRoleEndpoints();
 
-        identityGroup.MapGroup("/users")
+        app.MapGroup("/users")
+            .WithTags("Users")
+            .RequireAuthorization(Policies.RequireAdmin)
             .MapUserEndpoints();
 
         return app;
