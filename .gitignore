@@ -1,11 +1,8 @@
 ##### .Net Build Output #####
-
-### The new one ###
 artifacts/
-
-### The old ones ###
 bin/
 obj/
+BenchmarkDotNet.Artifacts/
 
 #### Rust Build Output ####
 target/

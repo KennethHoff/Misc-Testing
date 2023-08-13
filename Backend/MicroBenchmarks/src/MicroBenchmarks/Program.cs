@@ -1,4 +1,4 @@
 ﻿using BenchmarkDotNet.Running;
 using MicroBenchmarks;
 
-BenchmarkRunner.Run<TaskVsValueTask>();
+BenchmarkRunner.Run<OneOfMatchVsValueSwitch>();
