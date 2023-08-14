@@ -53,8 +53,5 @@ public class OneOfSwitchExpressionDiagnosticSuppressorAnalyzer
     {
         verifier.TestState.AdditionalReferences.Add(
             MetadataReference.CreateFromFile(typeof(OneOf.OneOf<>).Assembly.Location));
-
-        verifier.TestState.AdditionalReferences.Add(
-            MetadataReference.CreateFromFile(typeof(SuppressorUnderTest).Assembly.Location));
     }
 }

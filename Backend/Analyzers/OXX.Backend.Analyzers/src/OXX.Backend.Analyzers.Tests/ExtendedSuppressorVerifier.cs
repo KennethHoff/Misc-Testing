@@ -8,7 +8,8 @@ namespace OXX.Backend.Analyzers.Tests;
 
 public class ExtendedSuppressorVerifier<TSuppressor> : ExtendedSuppressorVerifier<EmptyDiagnosticAnalyzer, TSuppressor>
     where TSuppressor : DiagnosticSuppressor, new()
-{ }
+{
+}
 
 public class ExtendedSuppressorVerifier<TAnalyzer, TSuppressor> : CSharpAnalyzerTest<TAnalyzer, MSTestVerifier>
     where TAnalyzer : DiagnosticAnalyzer, new()
@@ -17,7 +18,8 @@ public class ExtendedSuppressorVerifier<TAnalyzer, TSuppressor> : CSharpAnalyzer
     protected override IEnumerable<DiagnosticAnalyzer> GetDiagnosticAnalyzers()
         => base.GetDiagnosticAnalyzers().Concat(new[] { new TSuppressor() });
 
-    public static Task VerifyAnalyzerAsync(CompilerDiagnostics compilerDiagnostics, string source, Action<CSharpAnalyzerTest<TAnalyzer, MSTestVerifier>>? configure = default,
+    public static Task VerifyAnalyzerAsync(CompilerDiagnostics compilerDiagnostics, string source,
+        Action<CSharpAnalyzerTest<TAnalyzer, MSTestVerifier>>? configure = default,
         params DiagnosticResult[] expected)
     {
         var verifier = new ExtendedSuppressorVerifier<TAnalyzer, TSuppressor>
@@ -26,11 +28,8 @@ public class ExtendedSuppressorVerifier<TAnalyzer, TSuppressor> : CSharpAnalyzer
             TestCode = source,
             ReferenceAssemblies = ReferenceAssemblies.Net.Net60,
         };
-
-        verifier.TestState.AdditionalReferences.Add(
-            MetadataReference.CreateFromFile(typeof(OneOf.OneOf<>).Assembly.Location));
-
         verifier.ExpectedDiagnostics.AddRange(expected);
+
         configure?.Invoke(verifier);
 
         return verifier.RunAsync(CancellationToken.None);
