@@ -54,6 +54,6 @@ public class OneOfSwitchExpressionDiscardPatternAnalyzerTests
     {
         configuration.ReferenceAssemblies = ReferenceAssemblies.Net.Net60;
         configuration.TestState.AdditionalReferences.Add(
-            MetadataReference.CreateFromFile(typeof(OneOf<>).GetTypeInfo().Assembly.Location));
+            MetadataReference.CreateFromFile(typeof(OneOf<>).Assembly.Location));
     }
 }

@@ -26,4 +26,9 @@ public static class AnalyzerId
 		public const string ConvertMatchToSwitchExpression = Prefix + "9004"; // To be implemented
 		public const string ConvertExpressionThrowingMethodToOneOfReturningMethod = Prefix + "9005"; // To be implemented
 	}
+
+    public static class BuiltIn
+    {
+        public const string NonExhaustiveSwitchExpression = "CS8509";
+    }
 }

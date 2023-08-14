@@ -34,31 +34,28 @@ public sealed class OneOfSwitchExpressionMissingCasesAnalyzer : DiagnosticAnalyz
 
     private static void AnalyzeSwitchExpressionForMissingCases(SyntaxNodeAnalysisContext context)
     {
-        // If it's not a SwitchExpression on a MemberAccessExpression, we're not interested.
+        // If it's not a SwitchExpression on a OneOf<T>.Value, we're not interested.
         if (!OneOfUtilities.IsSwitchExpressionOnOneOfValue(context,
                 out var switchExpressionSyntax, out var oneOfTypeSymbol, out _))
         {
             return;
         }
 
-        if (HasDiscard(context, switchExpressionSyntax, oneOfTypeSymbol))
+        // If you have a discard pattern, you don't need to have all cases
+        if (SwitchExpressionUtilities.HasDiscardPattern(switchExpressionSyntax))
         {
             return;
         }
 
+        // If you don't miss any cases, you're good to go
         if (!HasMissingCases(context, switchExpressionSyntax, oneOfTypeSymbol, out var missingTypes))
         {
             return;
         }
 
+        // Otherwise, report the missing cases
         context.ReportDiagnostic(Diagnostic.Create(Rule, switchExpressionSyntax.GetLocation(),
             DiagnosticUtilities.CreateMessageArguments(missingTypes)));
-    }
-
-    private static bool HasDiscard(SyntaxNodeAnalysisContext context,
-        SwitchExpressionSyntax switchExpressionSyntax, INamedTypeSymbol oneOfTypeSymbol)
-    {
-        return switchExpressionSyntax.Arms.Any(x => x.Pattern.IsDiscard());
     }
 
     private static bool HasMissingCases(SyntaxNodeAnalysisContext context,

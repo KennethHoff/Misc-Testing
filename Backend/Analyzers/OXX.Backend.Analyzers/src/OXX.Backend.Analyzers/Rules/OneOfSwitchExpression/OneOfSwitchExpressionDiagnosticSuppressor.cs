@@ -2,6 +2,7 @@ using System.Collections.Immutable;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
+using OXX.Backend.Analyzers.Constants;
 using OXX.Backend.Analyzers.Utilities;
 
 namespace OXX.Backend.Analyzers.Rules.OneOfSwitchExpression;
@@ -13,7 +14,7 @@ public sealed class OneOfSwitchExpressionDiagnosticSuppressor : DiagnosticSuppre
 	private static readonly LocalizableString Justification = new LocalizableResourceString(
 		nameof(Resources.OXX9001SuppressorJustification), Resources.ResourceManager, typeof(Resources));
 
-	private static readonly string[] SuppressedDiagnosticIds = { "CS8509" };
+	private static readonly string[] SuppressedDiagnosticIds = { AnalyzerId.BuiltIn.NonExhaustiveSwitchExpression };
 
 	private static readonly IReadOnlyDictionary<string, SuppressionDescriptor> SuppressionDescriptors =
 		SuppressedDiagnosticIds.ToDictionary(id => id,
@@ -36,7 +37,7 @@ public sealed class OneOfSwitchExpressionDiagnosticSuppressor : DiagnosticSuppre
                 continue;
             }
 
-            // context.ReportSuppression(Suppression.Create(descriptor, diagnostic));
+            context.ReportSuppression(Suppression.Create(descriptor, diagnostic));
         }
 	}
 }

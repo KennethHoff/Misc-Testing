@@ -32,24 +32,21 @@ public sealed class OneOfSwitchExpressionDiscardPatternAnalyzer : DiagnosticAnal
 
     private static void AnalyzeSwitchExpressionForDiscardPattern(SyntaxNodeAnalysisContext context)
     {
-        // If it's not a SwitchExpression on a MemberAccessExpression, we're not interested.
+        // If it's not a SwitchExpression on a OneOf<T>.Value, we're not interested.
         if (!OneOfUtilities.IsSwitchExpressionOnOneOfValue(context,
                 out var switchExpressionSyntax, out var oneOfTypeSymbol, out _))
         {
             return;
         }
 
-        if (!HasDiscardPattern(switchExpressionSyntax))
+        // If you don't have a discard pattern, we're not interested
+        if (!SwitchExpressionUtilities.HasDiscardPattern(switchExpressionSyntax))
         {
             return;
         }
 
+        // Otherwise, report the discard pattern
         ReportDiagnosticsForDiscardPattern(context, switchExpressionSyntax, oneOfTypeSymbol);
-    }
-
-    private static bool HasDiscardPattern(SwitchExpressionSyntax switchExpressionSyntax)
-    {
-        return switchExpressionSyntax.Arms.Any(x => x.Pattern.IsDiscard());
     }
 
     private static void ReportDiagnosticsForDiscardPattern(SyntaxNodeAnalysisContext context,

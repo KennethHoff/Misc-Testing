@@ -39,17 +39,20 @@ public sealed class OneOfSwitchExpressionImpossibleCasesAnalyzer : DiagnosticAna
 
     private static void AnalyzeSwitchExpressionForImpossibleCases(SyntaxNodeAnalysisContext context)
     {
+        // If it's not a SwitchExpression on a OneOf<T>.Value, we're not interested.
         if (!OneOfUtilities.IsSwitchExpressionOnOneOfValue(context,
                 out var switchExpressionSyntax, out var oneOfTypeSymbol, out _))
         {
             return;
         }
 
+        // If you don't have any impossible cases, you're good to go
         if (!HasImpossibleArms(context, switchExpressionSyntax, oneOfTypeSymbol))
         {
             return;
         }
 
+        // Otherwise, report the impossible cases
         ReportDiagnosticsForImpossibleCases(context, switchExpressionSyntax, oneOfTypeSymbol);
     }
 
@@ -60,22 +63,25 @@ public sealed class OneOfSwitchExpressionImpossibleCasesAnalyzer : DiagnosticAna
             .Select((arm, index) => (arm, index))
             .Where(tuple =>
             {
+                // If it's a discard pattern, we don't care as it's handled by OneOfSwitchExpressionDiscardPatternAnalyzer
                 if (tuple.arm.Pattern.IsDiscard())
                 {
-                    // Discard patterns are handled by OneOfSwitchExpressionDiscardPatternAnalyzer
                     return false;
                 }
 
+                // If it's a literal pattern, it's obviously not a Type, so it's impossible
                 if (tuple.arm.Pattern.IsLiteral())
                 {
                     return true;
                 }
 
+                // If we can't get the type for the arm, we can't check if it's impossible so we assume it is.
                 if (SwitchExpressionUtilities.GetTypeForArm(context.SemanticModel, tuple.arm) is not { } armType)
                 {
                     return true;
                 }
 
+                // Otherwise, check if the type is required
                 return !oneOfTypeSymbol.TypeArguments.Contains(armType);
             })
             .Select(tuple => tuple.index)
@@ -85,6 +91,7 @@ public sealed class OneOfSwitchExpressionImpossibleCasesAnalyzer : DiagnosticAna
         {
             var arm = switchExpressionSyntax.Arms[index];
 
+            // If it's a literal pattern, it's obviously not a Type, so it's impossible
             if (arm.Pattern.IsLiteral())
             {
                 context.ReportDiagnostic(Diagnostic.Create(RuleLiteralPattern, arm.GetLocation()));
@@ -93,7 +100,6 @@ public sealed class OneOfSwitchExpressionImpossibleCasesAnalyzer : DiagnosticAna
 
             if (SwitchExpressionUtilities.GetTypeForArm(context.SemanticModel, arm) is not { } armType)
             {
-                context.ReportDiagnostic(Diagnostic.Create(DiagnosticUtilities.UnreachableRule, arm.GetLocation()));
                 continue;
             }
 
@@ -107,21 +113,23 @@ public sealed class OneOfSwitchExpressionImpossibleCasesAnalyzer : DiagnosticAna
         SwitchExpressionSyntax switchExpressionSyntax, INamedTypeSymbol oneOfTypeSymbol)
     {
         var requiredTypes = oneOfTypeSymbol.TypeArguments;
-        var typeSymbols = switchExpressionSyntax.Arms.Select(x => x.Pattern).ToArray();
+        var currentArms = switchExpressionSyntax.Arms.Select(x => x.Pattern).ToArray();
 
-        return typeSymbols.Any(pattern =>
+        return currentArms.Any(pattern =>
         {
+            // If it's a discard pattern, we don't care as it's handled by OneOfSwitchExpressionDiscardPatternAnalyzer
             if (pattern.IsDiscard())
             {
-                // Discard patterns are handled by OneOfSwitchExpressionDiscardPatternAnalyzer
                 return false;
             }
 
+            // If it's a literal pattern, it's obviously not a Type, so it's impossible
             if (pattern.IsLiteral())
             {
                 return true;
             }
 
+            // Otherwise, check if the type is required
             var typeInfo = context.SemanticModel.GetTypeInfo(pattern);
             return typeInfo.ConvertedType is null || !requiredTypes.Contains(typeInfo.ConvertedType);
         });

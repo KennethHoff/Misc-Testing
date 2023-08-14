@@ -7,18 +7,15 @@ namespace OXX.Backend.Analyzers.Utilities;
 
 public static class SwitchExpressionUtilities
 {
-	public static HashSet<ITypeSymbol> GetTypeSymbolsForArms(SemanticModel semanticModel,
-		SwitchExpressionSyntax switchExpressionSyntax)
-	{
-		return new HashSet<ITypeSymbol>(
-			switchExpressionSyntax.Arms.Select(arm => GetTypeForArm(semanticModel, arm)).OfType<ITypeSymbol>(),
-			SymbolEqualityComparer.Default);
-	}
-
 	public static ITypeSymbol? GetTypeForArm(SemanticModel semanticModel, SwitchExpressionArmSyntax armSyntax)
 	{
 		return semanticModel.GetTypeInfo(armSyntax.Pattern).ConvertedType;
 	}
+
+    public static bool HasDiscardPattern(SwitchExpressionSyntax switchExpressionSyntax)
+    {
+        return switchExpressionSyntax.Arms.Any(x => x.Pattern.IsDiscard());
+    }
 
 	public static bool HasSyntaxNodesForMemberAccess(SyntaxNodeAnalysisContext context,
 		[NotNullWhen(true)] out SwitchExpressionSyntax? switchExpressionSyntax,
