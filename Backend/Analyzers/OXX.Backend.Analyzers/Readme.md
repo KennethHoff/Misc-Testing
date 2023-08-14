@@ -4,7 +4,7 @@
 A .NET Standard project with a few analyzers and code fix providers.
 
 - [RequiredPropertyAnalyzer](src/OXX.Backend.Analyzers/Rules/RequiredProperty): An analyzer that reports non-nullable properties that are not required.
-- [OneOfExhaustiveSwitchExpressionAnalyzer](src/OXX.Backend.Analyzers/Rules/OneOfExhaustiveSwitchExpression): An analyzer that reports when a switch expression on a OneOf type is incomplete.
+- [OneOfSwitchExpressionAnalyzer](src/OXX.Backend.Analyzers/Rules/OneOfSwitchExpression): An analyzer that reports when a switch expression on a OneOf type is incomplete.
 
 ### How to use
 
