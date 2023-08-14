@@ -16,6 +16,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OXX.Backend.Analyzers", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OXX.Backend.Analyzers.Sample", "src\OXX.Backend.Analyzers.Sample\OXX.Backend.Analyzers.Sample.csproj", "{E8C0EE76-3867-499E-AE44-EEEB97B81FF5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OXX.Backend.Analyzers.Tests", "src\OXX.Backend.Analyzers.Tests\OXX.Backend.Analyzers.Tests.csproj", "{C319522F-805D-4864-92B6-F9D6B4A92CA0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,9 +36,14 @@ Global
 		{E8C0EE76-3867-499E-AE44-EEEB97B81FF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8C0EE76-3867-499E-AE44-EEEB97B81FF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E8C0EE76-3867-499E-AE44-EEEB97B81FF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C319522F-805D-4864-92B6-F9D6B4A92CA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C319522F-805D-4864-92B6-F9D6B4A92CA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C319522F-805D-4864-92B6-F9D6B4A92CA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C319522F-805D-4864-92B6-F9D6B4A92CA0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0CE3BF5E-4EC2-4073-BCBD-A2AF84094C00} = {86E58759-358D-456C-87B9-D6FC55FF81E6}
 		{E8C0EE76-3867-499E-AE44-EEEB97B81FF5} = {86E58759-358D-456C-87B9-D6FC55FF81E6}
+		{C319522F-805D-4864-92B6-F9D6B4A92CA0} = {86E58759-358D-456C-87B9-D6FC55FF81E6}
 	EndGlobalSection
 EndGlobal

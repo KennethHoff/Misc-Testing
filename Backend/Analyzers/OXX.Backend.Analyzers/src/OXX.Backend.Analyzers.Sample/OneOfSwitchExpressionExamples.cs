@@ -3,7 +3,6 @@
 // This is not necessary for the analyzer to work, it is just to avoid the warning in the IDE.
 
 #pragma warning disable CS8509 // The switch expression does not handle all possible values of its input type (it is not exhaustive).
-using System.Xml;
 using OneOf;
 
 // OneOf<string, bool, Program> testing = "hmm";
@@ -27,8 +26,9 @@ OneOf<string, bool> twoOf = "hmm";
 
 var message = twoOf.Value switch
 {
-	bool x => "This is a boolean",
-	string x => "This is a string",
+	string x => throw new NotImplementedException(),
+    bool x => throw new NotImplementedException(),
+    int x => throw new NotImplementedException(),
 };
 
 
