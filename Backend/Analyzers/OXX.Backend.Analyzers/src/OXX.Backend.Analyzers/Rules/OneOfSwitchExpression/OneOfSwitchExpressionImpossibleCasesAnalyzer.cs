@@ -46,7 +46,7 @@ public sealed class OneOfSwitchExpressionImpossibleCasesAnalyzer : DiagnosticAna
             return;
         }
 
-        // If you don't have any impossible cases, you're good to go
+        // If there are no impossible cases, we're not interested.
         if (!HasImpossibleArms(context, switchExpressionSyntax, oneOfTypeSymbol))
         {
             return;
@@ -76,6 +76,7 @@ public sealed class OneOfSwitchExpressionImpossibleCasesAnalyzer : DiagnosticAna
                 }
 
                 // If we can't get the type for the arm, we can't check if it's impossible so we assume it is.
+                // (I don't really understand what this would be, but it's here for safety)
                 if (SwitchExpressionUtilities.GetTypeForArm(context.SemanticModel, tuple.arm) is not { } armType)
                 {
                     return true;
@@ -97,9 +98,14 @@ public sealed class OneOfSwitchExpressionImpossibleCasesAnalyzer : DiagnosticAna
                 context.ReportDiagnostic(Diagnostic.Create(RuleLiteralPattern, arm.GetLocation()));
                 continue;
             }
-
+            
+            // If we can't get the type for the arm, we can't check if it's impossible so we assume it is.
+            // We also don't know what the type is, so we just say it's UNKNOWN
             if (SwitchExpressionUtilities.GetTypeForArm(context.SemanticModel, arm) is not { } armType)
             {
+                context.ReportDiagnostic(Diagnostic.Create(Rule, arm.GetLocation(),
+                    "UNKNOWN",
+                    DiagnosticUtilities.CreateMessageArgument(oneOfTypeSymbol)));
                 continue;
             }
 

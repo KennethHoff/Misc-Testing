@@ -39,7 +39,7 @@ public sealed class OneOfSwitchExpressionDiscardPatternAnalyzer : DiagnosticAnal
             return;
         }
 
-        // If you don't have a discard pattern, we're not interested
+        // If it's not a discard pattern, we're not interested.
         if (!SwitchExpressionUtilities.HasDiscardPattern(switchExpressionSyntax))
         {
             return;

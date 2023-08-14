@@ -27,16 +27,16 @@ public sealed class OneOfSwitchExpressionDiagnosticSuppressor : DiagnosticSuppre
     {
         foreach (var diagnostic in context.ReportedDiagnostics)
         {
-            if (!SuppressionDescriptors.TryGetValue(diagnostic.Id, out var descriptor))
-            {
-                continue;
-            }
+            // It can't be anything other than the ones in the dictionary, so no need to be defensive here
+            var descriptor = SuppressionDescriptors[diagnostic.Id];
 
+            // If it's not a SwitchExpression on a OneOf<T>.Value, we're not interested.
             if (!OneOfUtilities.IsSwitchExpressionOnOneOfValue(context, diagnostic, out _, out _, out _))
             {
                 continue;
             }
-
+            
+            // Otherwise, suppress it
             context.ReportSuppression(Suppression.Create(descriptor, diagnostic));
         }
     }

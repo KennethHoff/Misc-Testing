@@ -41,13 +41,13 @@ public sealed class OneOfSwitchExpressionMissingCasesAnalyzer : DiagnosticAnalyz
             return;
         }
 
-        // If you have a discard pattern, you don't need to have all cases
+        // If it has a discard pattern, we're not interested as a discard pattern is always exhaustive
         if (SwitchExpressionUtilities.HasDiscardPattern(switchExpressionSyntax))
         {
             return;
         }
 
-        // If you don't miss any cases, you're good to go
+        // If there are no missing cases, we're not interested.
         if (!HasMissingCases(context, switchExpressionSyntax, oneOfTypeSymbol, out var missingTypes))
         {
             return;
@@ -62,8 +62,11 @@ public sealed class OneOfSwitchExpressionMissingCasesAnalyzer : DiagnosticAnalyz
         SwitchExpressionSyntax switchExpressionSyntax, INamedTypeSymbol oneOfTypeSymbol,
         [NotNullWhen(true)] out ITypeSymbol[]? missingTypes)
     {
+        // Get the required types from the OneOf<T>
         var requiredTypes = oneOfTypeSymbol.TypeArguments;
 
+        // Literals are always bad, so only non-literals count towards fulfilling the OneOf.
+        // However, their ConvertedType is the type of the literal, so we need to get them all in order to filter them out.
         var literals = new HashSet<ITypeSymbol>(switchExpressionSyntax.Arms
             .Select(x => x.Pattern)
             .Where(x => x.IsLiteral())
@@ -76,11 +79,16 @@ public sealed class OneOfSwitchExpressionMissingCasesAnalyzer : DiagnosticAnalyz
             .Select(x => context.SemanticModel.GetTypeInfo(x).ConvertedType)
             .OfType<ITypeSymbol>(), EqualityComparer<ITypeSymbol>.Default);
 
-        var problematicLiterals = literals
-            .Where(x => !nonLiterals.Contains(x));
+        // Get the types that are only present in the literals. These are problematic as they are not actually types.
+        var problematicTypes = literals.Where(x => !nonLiterals.Contains(x));
+        
+        // Get the types that are present in the non-literals. These are unproblematic as they are actually types.
+        var unproblematicTypes = nonLiterals.Except(problematicTypes);
 
-        missingTypes = requiredTypes.Except(nonLiterals.Except(problematicLiterals)).ToArray();
+        // Get the types that are required but not present in the unproblematic types. These are missing.
+        missingTypes = requiredTypes.Except(unproblematicTypes).ToArray();
 
+        // If there are no missing types, we're not interested.
         return missingTypes.Length is not 0;
     }
 }

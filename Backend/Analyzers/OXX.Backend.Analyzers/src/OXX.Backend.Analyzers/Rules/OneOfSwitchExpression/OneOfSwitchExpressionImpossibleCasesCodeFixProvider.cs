@@ -36,11 +36,11 @@ public sealed class OneOfSwitchExpressionImpossibleCasesCodeFixProvider : CodeFi
 
         if (switchExpressionArmSyntax.Pattern.IsLiteral())
         {
-            // Adds a Code Fixer for removing the impossible type.
+            // Adds a Code Fixer for removing the literal.
             context.RegisterCodeFix(
                 CodeAction.Create(
                     title: string.Format(Resources.OXX9002CodeFixLiteralPattern),
-                    createChangedDocument: _ => RemoveImpossibleCase(root, context.Document, switchExpressionArmSyntax),
+                    createChangedDocument: _ => RemoveArm(root, context.Document, switchExpressionArmSyntax),
                     equivalenceKey: nameof(Resources.OXX9002CodeFixLiteralPattern)),
                 diagnostic);
             return;
@@ -50,15 +50,14 @@ public sealed class OneOfSwitchExpressionImpossibleCasesCodeFixProvider : CodeFi
         context.RegisterCodeFix(
             CodeAction.Create(
                 title: string.Format(Resources.OXX9002CodeFix),
-                createChangedDocument: _ => RemoveImpossibleCase(root, context.Document, switchExpressionArmSyntax),
+                createChangedDocument: _ => RemoveArm(root, context.Document, switchExpressionArmSyntax),
                 equivalenceKey: nameof(Resources.OXX9002CodeFix)),
             diagnostic);
     }
 
-    private static Task<Document> RemoveImpossibleCase(SyntaxNode root, Document document, SyntaxNode syntaxNode)
+    private static Task<Document> RemoveArm(SyntaxNode root, Document document, SyntaxNode syntaxNode)
     {
-        // Removes the impossible type from the switch expression.
-        // If it's the last type, it will remove the entire switch expression.(?? Not sure why it's nullable)
+        // Removes the discard pattern from the switch expression. No idea why it's nullable.
         if (root.RemoveNode(syntaxNode, SyntaxRemoveOptions.AddElasticMarker) is not { } newRoot)
         {
             return Task.FromResult(

@@ -45,8 +45,7 @@ public sealed class OneOfSwitchExpressionDiscardPatternCodeFixProvider : CodeFix
 
     private static Task<Document> RemoveDiscardPattern(SyntaxNode root, Document document, SyntaxNode syntaxNode)
     {
-        // Removes the discard pattern from the switch expression.
-        // If it's the last type, it will remove the entire switch expression.(?? Not sure why it's nullable)
+        // Removes the discard pattern from the switch expression. No idea why it's nullable.
         if (root.RemoveNode(syntaxNode, SyntaxRemoveOptions.AddElasticMarker) is not { } newRoot)
         {
             return Task.FromResult(document.WithText(DiagnosticUtilities.CreateDebuggingSourceText("Root has been removed.")));

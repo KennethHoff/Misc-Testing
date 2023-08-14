@@ -66,6 +66,7 @@ public sealed class OneOfSwitchExpressionMissingCasesCodeFixProvider : CodeFixPr
         var oneOfTypeSymbol =
             (INamedTypeSymbol)semanticModel.GetTypeInfo(memberAccessExpressionSyntax.Expression).ConvertedType!;
 
+        // Creates a new switch expression with the missing types added.
         var newSwitchExpressionSyntax = AddMissingArms(semanticModel, switchExpressionSyntax, oneOfTypeSymbol);
 
         // Replaces the old switch expression with the new switch expression.
@@ -78,16 +79,20 @@ public sealed class OneOfSwitchExpressionMissingCasesCodeFixProvider : CodeFixPr
     private static SwitchExpressionSyntax AddMissingArms(SemanticModel semanticModel,
         SwitchExpressionSyntax switchExpressionSyntax, INamedTypeSymbol oneOfTypeSymbol)
     {
-        var nonLiteralArms = switchExpressionSyntax.Arms.Where(arm => !arm.Pattern.IsLiteral());
-        var existingArms = new HashSet<ITypeSymbol>(
-            nonLiteralArms.Select(arm => SwitchExpressionUtilities.GetTypeForArm(semanticModel, arm)!),
+        // Literals are always bad, so only non-literals count towards fulfilling the OneOf.
+        var currentNonLiteralArmTypes = new HashSet<ITypeSymbol>(switchExpressionSyntax.Arms
+                .Where(arm => !arm.Pattern.IsLiteral())
+                .Select(arm => SwitchExpressionUtilities.GetTypeForArm(semanticModel, arm)!),
             EqualityComparer<ITypeSymbol>.Default);
 
+        // Missing types are the types that we need to synthesize arms for.
         var missingTypes = oneOfTypeSymbol.TypeArguments
-            .Where(type => !existingArms.Contains(type));
+            .Where(type => !currentNonLiteralArmTypes.Contains(type));
 
+        // Create a new arm for each missing type.
         var newArms = missingTypes.Select(type => CreateSwitchExpressionArm(type, switchExpressionSyntax)).ToList();
 
+        // Return the new switch expression with the new arms added.
         return switchExpressionSyntax.WithArms(
             SyntaxFactory.SeparatedList(switchExpressionSyntax.Arms.Concat(newArms)));
     }
@@ -95,15 +100,19 @@ public sealed class OneOfSwitchExpressionMissingCasesCodeFixProvider : CodeFixPr
     private static SwitchExpressionArmSyntax CreateSwitchExpressionArm(ITypeSymbol type,
         SwitchExpressionSyntax switchExpressionSyntax)
     {
+        // Get the type syntax for the type (e.g. `string` or `int`)
         var typeSyntax =
             SyntaxFactory.IdentifierName(type.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat));
 
+        // Create a declaration pattern for the type (e.g. `string x` or `int x`)
         var patternSyntax = SyntaxFactory.DeclarationPattern(typeSyntax,
             SyntaxFactory.SingleVariableDesignation(SyntaxFactory.Identifier("x")));
 
+        // Create a throw expression for the arm (e.g. `throw new NotImplementedException()`)
         var expression = SyntaxFactory.ThrowExpression(SyntaxFactory.ObjectCreationExpression(
             SyntaxFactory.IdentifierName("NotImplementedException"), SyntaxFactory.ArgumentList(), null));
 
+        // Return the new arm.
         return SyntaxFactory.SwitchExpressionArm(patternSyntax, expression);
     }
 
