@@ -27,6 +27,25 @@ public class OneOfSwitchExpressionDiagnosticSuppressorAnalyzer
 
         await Verifier.VerifyAnalyzerAsync(CompilerDiagnostics.Warnings, text, Configure).ConfigureAwait(false);
     }
+    
+    [TestMethod]
+    public async Task WhenSwitchExpressionIsOnSomeOtherMemberOnOneOf_ThenDoNotSuppressDiagnostic()
+    {
+        var text = CodeHelper.AddUsingsAndWrapInsideClass(
+            """
+            public static void DoThing()
+            {
+                OneOf<string, bool> twoOf = "hmm";
+                string message = twoOf.Index switch { };
+            }
+            """);
+
+        var expected = DiagnosticResult.CompilerWarning(AnalyzerId.BuiltIn.NonExhaustiveSwitchExpression)
+            .WithSpan(10, 34, 10, 40)
+            .WithArguments("_");
+
+        await Verifier.VerifyAnalyzerAsync(CompilerDiagnostics.Warnings, text, Configure, expected).ConfigureAwait(false);
+    }
 
     [TestMethod]
     public async Task WhenSwitchExpressionIsNotOnOneOfValue_ThenDoNotSuppressDiagnostic()

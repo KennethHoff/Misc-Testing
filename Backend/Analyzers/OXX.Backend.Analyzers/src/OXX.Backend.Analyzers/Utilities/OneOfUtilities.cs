@@ -45,20 +45,8 @@ public static class OneOfUtilities
     {
         var typeInfo = context.SemanticModel.GetTypeInfo(memberAccessExpressionSyntax.Expression);
         namedTypeSymbol = typeInfo.Type as INamedTypeSymbol;
-
-        // If the type is not `OneOf`, we're not interested.
-        if (namedTypeSymbol is not { Name: "OneOf" })
-        {
-            return false;
-        }
-
-        // If the member is not `Value`, we're not interested.
-        if (memberAccessExpressionSyntax.Name.Identifier.Text != "Value")
-        {
-            return false;
-        }
-
-        return true;
+        
+        return IsOnValue(namedTypeSymbol, memberAccessExpressionSyntax);
     }
 
     public static bool IsOneOfTypeSymbol(SuppressionAnalysisContext context, Diagnostic diagnostic,
@@ -75,7 +63,12 @@ public static class OneOfUtilities
 
         var typeInfo = semanticModel.GetTypeInfo(memberAccessExpressionSyntax.Expression);
         namedTypeSymbol = typeInfo.Type as INamedTypeSymbol;
-
+        
+        return IsOnValue(namedTypeSymbol, memberAccessExpressionSyntax);
+    }
+    
+    private static bool IsOnValue(INamedTypeSymbol? namedTypeSymbol, MemberAccessExpressionSyntax memberAccessExpressionSyntax)
+    {
         // If the type is not `OneOf`, we're not interested.
         if (namedTypeSymbol is not { Name: "OneOf" })
         {
