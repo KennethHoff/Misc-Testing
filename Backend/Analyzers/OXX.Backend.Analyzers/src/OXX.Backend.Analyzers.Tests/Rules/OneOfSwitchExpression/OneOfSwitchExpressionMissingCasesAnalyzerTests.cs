@@ -5,12 +5,10 @@ using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Testing.Verifiers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OneOf;
-using OXX.Backend.Analyzers.Constants;
-using OXX.Backend.Analyzers.Rules.OneOfSwitchExpression;
-using Verifier = OXX.Backend.Analyzers.Tests.ExtendedAnalyzerVerifier<
-    OXX.Backend.Analyzers.Rules.OneOfSwitchExpression.OneOfSwitchExpressionMissingCasesAnalyzer>;
+using AnalyzerUnderTest = OXX.Backend.Analyzers.Rules.OneOfSwitchExpression.OneOfSwitchExpressionMissingCasesAnalyzer;
 
 namespace OXX.Backend.Analyzers.Tests.Rules.OneOfSwitchExpression;
+using Verifier = ExtendedAnalyzerVerifier<AnalyzerUnderTest>;
 
 [TestClass]
 public class OneOfSwitchExpressionMissingCasesAnalyzerTests
@@ -27,7 +25,7 @@ public class OneOfSwitchExpressionMissingCasesAnalyzerTests
             }
             """);
 
-        var expected = Verifier.Diagnostic(AnalyzerId.OneOf.SwitchExpressionMissingCases)
+        var expected = Verifier.Diagnostic(AnalyzerUnderTest.Rule)
             .WithSpan(10, 22, 10, 44)
             .WithArguments("string, bool");
 
@@ -49,7 +47,7 @@ public class OneOfSwitchExpressionMissingCasesAnalyzerTests
             }
             """);
 
-        var expected = Verifier.Diagnostic(AnalyzerId.OneOf.SwitchExpressionMissingCases)
+        var expected = Verifier.Diagnostic(AnalyzerUnderTest.Rule)
             .WithSpan(10, 22, 13, 6)
             .WithArguments("bool");
 
@@ -75,8 +73,7 @@ public class OneOfSwitchExpressionMissingCasesAnalyzerTests
         await Verifier.VerifyAnalyzerAsync(text, Configure).ConfigureAwait(false);
     }
 
-    private static void Configure(
-        CSharpAnalyzerTest<OneOfSwitchExpressionMissingCasesAnalyzer, MSTestVerifier> configuration)
+    private static void Configure(CSharpAnalyzerTest<AnalyzerUnderTest, MSTestVerifier> configuration)
     {
         configuration.ReferenceAssemblies = ReferenceAssemblies.Net.Net60;
         configuration.TestState.AdditionalReferences.Add(

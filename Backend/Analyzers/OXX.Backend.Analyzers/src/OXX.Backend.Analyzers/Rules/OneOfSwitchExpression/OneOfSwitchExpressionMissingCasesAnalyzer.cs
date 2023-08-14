@@ -14,7 +14,7 @@ namespace OXX.Backend.Analyzers.Rules.OneOfSwitchExpression;
 [PublicAPI("Roslyn Analyzer")]
 public sealed class OneOfSwitchExpressionMissingCasesAnalyzer : DiagnosticAnalyzer
 {
-	private static readonly DiagnosticDescriptor Rule = DiagnosticUtilities.CreateRule(
+	public static readonly DiagnosticDescriptor Rule = DiagnosticUtilities.CreateRule(
 		AnalyzerId.OneOf.SwitchExpressionMissingCases,
 		nameof(Resources.OXX9001Title),
 		nameof(Resources.OXX9001MessageFormat),

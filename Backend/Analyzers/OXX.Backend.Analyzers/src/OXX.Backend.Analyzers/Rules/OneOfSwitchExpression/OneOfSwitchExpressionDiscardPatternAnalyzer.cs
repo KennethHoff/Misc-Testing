@@ -12,7 +12,7 @@ namespace OXX.Backend.Analyzers.Rules.OneOfSwitchExpression;
 [DiagnosticAnalyzer(LanguageNames.CSharp), PublicAPI("Roslyn Analyzer")]
 public sealed class OneOfSwitchExpressionDiscardPatternAnalyzer : DiagnosticAnalyzer
 {
-	private static readonly DiagnosticDescriptor Rule = DiagnosticUtilities.CreateRule(
+	public static readonly DiagnosticDescriptor Rule = DiagnosticUtilities.CreateRule(
 		AnalyzerId.OneOf.SwitchExpressionDiscardPattern,
 		nameof(Resources.OXX9003Title),
 		nameof(Resources.OXX9003MessageFormat),
@@ -20,6 +20,7 @@ public sealed class OneOfSwitchExpressionDiscardPatternAnalyzer : DiagnosticAnal
 
 	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
 		= ImmutableArray.Create(Rule, DiagnosticUtilities.UnreachableRule);
+
 	public override void Initialize(AnalysisContext context)
 	{
 		context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.Analyze

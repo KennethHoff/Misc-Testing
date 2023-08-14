@@ -13,13 +13,13 @@ namespace OXX.Backend.Analyzers.Rules.OneOfSwitchExpression;
 [PublicAPI("Roslyn Analyzer")]
 public sealed class OneOfSwitchExpressionImpossibleCasesAnalyzer : DiagnosticAnalyzer
 {
-	private static readonly DiagnosticDescriptor Rule = DiagnosticUtilities.CreateRule(
+	public static readonly DiagnosticDescriptor Rule = DiagnosticUtilities.CreateRule(
 		AnalyzerId.OneOf.SwitchExpressionImpossibleCases,
 		nameof(Resources.OXX9002Title),
 		nameof(Resources.OXX9002MessageFormat),
 		nameof(Resources.OXX9002Description));
 
-	private static readonly DiagnosticDescriptor RuleLiteralPattern = DiagnosticUtilities.CreateRule(
+	public static readonly DiagnosticDescriptor RuleLiteralPattern = DiagnosticUtilities.CreateRule(
 		AnalyzerId.OneOf.SwitchExpressionImpossibleCases,
 		nameof(Resources.OXX9002TitleLiteralPattern),
 		nameof(Resources.OXX9002MessageFormatLiteralPattern),

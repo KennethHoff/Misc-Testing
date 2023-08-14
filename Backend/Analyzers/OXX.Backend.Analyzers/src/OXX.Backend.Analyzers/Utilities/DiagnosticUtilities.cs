@@ -65,7 +65,7 @@ public static class DiagnosticUtilities
 		{
 			var displayString = typeSymbols[i].ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
 
-			builder.Append(FixFormatting(displayString));
+			builder.Append(FixHtmlFormatting(displayString));
 
 			if (i < typeSymbols.Length - 1)
 			{
@@ -79,10 +79,10 @@ public static class DiagnosticUtilities
 	public static string CreateMessageArgument(ITypeSymbol typeSymbol)
 	{
 		var displayString = typeSymbol.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
-		return FixFormatting(displayString);
+		return FixHtmlFormatting(displayString);
 	}
 
-	private static string FixFormatting(string message)
+	public static string FixHtmlFormatting(string message)
 	{
 		// Replace `<` and `>` with `&lt;` and `&gt;` to avoid HTML issues.
 		message = message.Replace("<", "&lt;").Replace(">", "&gt;");

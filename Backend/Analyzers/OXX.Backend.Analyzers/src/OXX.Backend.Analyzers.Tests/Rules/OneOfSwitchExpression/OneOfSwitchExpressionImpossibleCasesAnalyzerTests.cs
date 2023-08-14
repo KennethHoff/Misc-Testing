@@ -5,37 +5,18 @@ using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Testing.Verifiers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OneOf;
-using OXX.Backend.Analyzers.Constants;
 using OXX.Backend.Analyzers.Rules.OneOfSwitchExpression;
-using Verifier = OXX.Backend.Analyzers.Tests.ExtendedAnalyzerVerifier<
-    OXX.Backend.Analyzers.Rules.OneOfSwitchExpression.OneOfSwitchExpressionMissingCasesAnalyzer>;
+using OXX.Backend.Analyzers.Utilities;
+using AnalyzerUnderTest = OXX.Backend.Analyzers.Rules.OneOfSwitchExpression.OneOfSwitchExpressionImpossibleCasesAnalyzer;
 
 namespace OXX.Backend.Analyzers.Tests.Rules.OneOfSwitchExpression;
+using Verifier = ExtendedAnalyzerVerifier<AnalyzerUnderTest>;
 
 [TestClass]
-public class OneOfSwitchExpressionMissingCasesAnalyzerTest
+public class OneOfSwitchExpressionImpossibleCasesAnalyzerTests
 {
     [TestMethod]
-    public async Task Diagnostic_WhenSwitchExpressionIsEmpty()
-    {
-        var text = CodeHelper.AddUsingsAndWrapInsideClass(
-            """
-            public static void DoThing()
-            {
-                OneOf<string, bool> twoOf = "hmm";
-                string message = twoOf.Value switch { };
-            }
-            """);
-
-        var expected = Verifier.Diagnostic(AnalyzerId.OneOf.SwitchExpressionMissingCases)
-            .WithSpan(10, 22, 10, 44)
-            .WithArguments("string, bool");
-
-        await Verifier.VerifyAnalyzerAsync(text, Configure, expected).ConfigureAwait(false);
-    }
-
-    [TestMethod]
-    public async Task Diagnostic_WhenSwitchExpressionHasMissingCases()
+    public async Task WhenExpressionChecksForNonContainedType_ReportDiagnostic()
     {
         var text = CodeHelper.AddUsingsAndWrapInsideClass(
             """
@@ -44,20 +25,41 @@ public class OneOfSwitchExpressionMissingCasesAnalyzerTest
                 OneOf<string, bool> twoOf = "hmm";
                 string message = twoOf.Value switch
                 {
-                    string s => s,
+                    int i => i.ToString(),
                 };
             }
             """);
 
-        var expected = Verifier.Diagnostic(AnalyzerId.OneOf.SwitchExpressionMissingCases)
-            .WithSpan(10, 22, 13, 6)
-            .WithArguments("bool");
+        var expected = Verifier.Diagnostic(AnalyzerUnderTest.Rule)
+            .WithSpan(12, 9, 12, 30)
+            .WithArguments("int", DiagnosticUtilities.FixHtmlFormatting("OneOf<string, bool>"));
 
         await Verifier.VerifyAnalyzerAsync(text, Configure, expected).ConfigureAwait(false);
     }
 
     [TestMethod]
-    public async Task NoDiagnostic_WhenSwitchExpressionHasAllCases()
+    public async Task WhenExpressionChecksForLiteral_ReportDiagnostic()
+    {
+        var text = CodeHelper.AddUsingsAndWrapInsideClass(
+            """
+            public static void DoThing()
+            {
+                OneOf<string, bool> twoOf = "hmm";
+                string message = twoOf.Value switch
+                {
+                    1 => "one",
+                };
+            }
+            """);
+
+        var expected = Verifier.Diagnostic(AnalyzerUnderTest.RuleLiteralPattern)
+            .WithSpan(12, 9, 12, 19);
+
+        await Verifier.VerifyAnalyzerAsync(text, Configure, expected).ConfigureAwait(false);
+    }
+
+    [TestMethod]
+    public async Task WhenNeitherLiteralNorImpossibleType_ReportNoDiagnostic()
     {
         var text = CodeHelper.AddUsingsAndWrapInsideClass(
             """
@@ -76,7 +78,7 @@ public class OneOfSwitchExpressionMissingCasesAnalyzerTest
     }
 
     private static void Configure(
-        CSharpAnalyzerTest<OneOfSwitchExpressionMissingCasesAnalyzer, MSTestVerifier> configuration)
+        CSharpAnalyzerTest<OneOfSwitchExpressionImpossibleCasesAnalyzer, MSTestVerifier> configuration)
     {
         configuration.ReferenceAssemblies = ReferenceAssemblies.Net.Net60;
         configuration.TestState.AdditionalReferences.Add(
