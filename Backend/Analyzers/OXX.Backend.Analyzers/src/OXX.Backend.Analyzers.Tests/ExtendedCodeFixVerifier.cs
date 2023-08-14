@@ -1,4 +1,6 @@
 using Microsoft.CodeAnalysis;
+
+using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Testing;
@@ -6,16 +8,18 @@ using Microsoft.CodeAnalysis.Testing.Verifiers;
 
 namespace OXX.Backend.Analyzers.Tests;
 
-public sealed class ExtendedAnalyzerVerifier<TAnalyzer> : ExtendedAnalyzerVerifier<TAnalyzer,
-    CSharpAnalyzerTest<TAnalyzer, MSTestVerifier>, MSTestVerifier>
+public sealed class ExtendedCodeFixVerifier<TAnalyzer, TCodeFix> : ExtendedCodeFixVerifier<TAnalyzer, TCodeFix,
+    CSharpCodeFixTest<TAnalyzer, TCodeFix, MSTestVerifier>, MSTestVerifier>
     where TAnalyzer : DiagnosticAnalyzer, new()
+    where TCodeFix : CodeFixProvider, new()
 {
 }
 
-public class ExtendedAnalyzerVerifier<TAnalyzer, TTest, TVerifier>
-    where TAnalyzer : DiagnosticAnalyzer, new()
-    where TTest : AnalyzerTest<TVerifier>, new()
+public class ExtendedCodeFixVerifier<TAnalyzer, TCodeFix, TTest, TVerifier>
+    where TTest : CodeFixTest<TVerifier>, new()
     where TVerifier : IVerifier, new()
+    where TAnalyzer : DiagnosticAnalyzer, new()
+    where TCodeFix : CodeFixProvider, new()
 {
     public static DiagnosticResult Diagnostic()
     {
@@ -49,7 +53,7 @@ public class ExtendedAnalyzerVerifier<TAnalyzer, TTest, TVerifier>
 
     public static DiagnosticResult Diagnostic(DiagnosticDescriptor descriptor) => new(descriptor);
 
-    public static Task VerifyAnalyzerAsync(string source, Action<TTest>? configure = default,
+    public static Task VerifyAnalyzerAsync(string source, Action<CodeFixTest<TVerifier>>? configure = default,
         params DiagnosticResult[] expected)
     {
         var test = new TTest
@@ -57,9 +61,25 @@ public class ExtendedAnalyzerVerifier<TAnalyzer, TTest, TVerifier>
             TestCode = source,
         };
 
-        test.ExpectedDiagnostics.AddRange(expected);
         configure?.Invoke(test);
 
+        test.ExpectedDiagnostics.AddRange(expected);
+        return test.RunAsync(CancellationToken.None);
+    }
+
+    public static Task VerifyCodeFixAsync(string source, string fixedSource,
+        Action<CodeFixTest<TVerifier>>? configure = default,
+        params DiagnosticResult[] expected)
+    {
+        var test = new TTest
+        {
+            TestCode = source,
+            FixedCode = fixedSource,
+        };
+
+        configure?.Invoke(test);
+
+        test.ExpectedDiagnostics.AddRange(expected);
         return test.RunAsync(CancellationToken.None);
     }
 }

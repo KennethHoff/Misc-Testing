@@ -5,17 +5,16 @@ using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Testing.Verifiers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OneOf;
-using OXX.Backend.Analyzers.Utilities;
-using AnalyzerUnderTest = OXX.Backend.Analyzers.Rules.OneOfSwitchExpression.OneOfSwitchExpressionImpossibleCasesAnalyzer;
+using AnalyzerUnderTest = OXX.Backend.Analyzers.Rules.OneOfSwitchExpression.OneOfSwitchExpressionDiscardPatternAnalyzer;
 
 namespace OXX.Backend.Analyzers.Tests.Rules.OneOfSwitchExpression;
 using Verifier = ExtendedAnalyzerVerifier<AnalyzerUnderTest>;
 
 [TestClass]
-public class OneOfSwitchExpressionImpossibleCasesAnalyzerTests
+public class OneOfSwitchExpressionDiscardPatternAnalyzerTests
 {
     [TestMethod]
-    public async Task WhenExpressionChecksForNonContainedType_ReportDiagnostic()
+    public async Task WhenExpressionChecksForDiscardPattern_ReportDiagnostic()
     {
         var text = CodeHelper.AddUsingsAndWrapInsideClass(
             """
@@ -24,52 +23,26 @@ public class OneOfSwitchExpressionImpossibleCasesAnalyzerTests
                 OneOf<string, bool> twoOf = "hmm";
                 string message = twoOf.Value switch
                 {
-                    int i => i.ToString(),
+                    _ => "one",
                 };
             }
             """);
 
         var expected = Verifier.Diagnostic(AnalyzerUnderTest.Rule)
-            .WithSpan(12, 9, 12, 30)
-            .WithArguments("int", DiagnosticUtilities.FixHtmlFormatting("OneOf<string, bool>"));
-
-        await Verifier.VerifyAnalyzerAsync(text, Configure, expected).ConfigureAwait(false);
-    }
-
-    [TestMethod]
-    public async Task WhenExpressionChecksForLiteral_ReportDiagnostic()
-    {
-        var text = CodeHelper.AddUsingsAndWrapInsideClass(
-            """
-            public static void DoThing()
-            {
-                OneOf<string, bool> twoOf = "hmm";
-                string message = twoOf.Value switch
-                {
-                    1 => "one",
-                };
-            }
-            """);
-
-        var expected = Verifier.Diagnostic(AnalyzerUnderTest.RuleLiteralPattern)
             .WithSpan(12, 9, 12, 19);
 
         await Verifier.VerifyAnalyzerAsync(text, Configure, expected).ConfigureAwait(false);
     }
 
     [TestMethod]
-    public async Task WhenNeitherLiteralNorImpossibleType_ReportNoDiagnostic()
+    public async Task WhenExpressionDoesNotCheckForDiscardPattern_ReportNoDiagnostic()
     {
         var text = CodeHelper.AddUsingsAndWrapInsideClass(
             """
             public static void DoThing()
             {
                 OneOf<string, bool> twoOf = "hmm";
-                string message = twoOf.Value switch
-                {
-                    string s => s,
-                    bool b => b.ToString(),
-                };
+                string message = twoOf.Value switch { };
             }
             """);
 
