@@ -1,4 +1,4 @@
-# OneOf\<T> switch expression analyzer
+# [OneOf\<T>](https://github.com/mcintyre321/OneOf) switch expression analyzer
 
 This analyzer will warn you if you have a switch expression on a `OneOf<T>.Value` that is not exhaustive or is checking for impossible cases.
 
@@ -57,6 +57,8 @@ Suppresses [CS8509](https://learn.microsoft.com/en-us/dotnet/csharp/language-ref
 - None at the moment
 
 ## Future Plans
+
+- Support [`OneOfBase<T>`](https://github.com/mcintyre321/OneOf)
 
 - Code Fixer to convert `OneOf<T>.Match` to `OneOf<T>.Value` switch expression
   - For example, look at the following code:
