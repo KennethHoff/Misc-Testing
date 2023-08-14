@@ -21,10 +21,7 @@ public class OneOfSwitchExpressionDiagnosticSuppressorAnalyzer
             public static void DoThing()
             {
                 OneOf<string, bool> twoOf = "hmm";
-                string message = twoOf.Value switch
-                {
-
-                };
+                string message = twoOf.Value switch { };
             }
             """);
 
