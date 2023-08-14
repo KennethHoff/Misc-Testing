@@ -25,29 +25,18 @@ public sealed class OneOfSwitchExpressionDiagnosticSuppressor : DiagnosticSuppre
 	public override void ReportSuppressions(SuppressionAnalysisContext context)
 	{
 		foreach (var diagnostic in context.ReportedDiagnostics)
-		{
-			if (SuppressionDescriptors.TryGetValue(diagnostic.Id, out var descriptor))
-			{
-				SuppressRelevantDiagnostics(diagnostic, descriptor);
-			}
-		}
+        {
+            if (!SuppressionDescriptors.TryGetValue(diagnostic.Id, out var descriptor))
+            {
+                continue;
+            }
 
-		return;
+            if (!OneOfUtilities.IsSwitchExpressionOnOneOfValue(context, diagnostic, out _, out _, out _))
+            {
+                continue;
+            }
 
-		void SuppressRelevantDiagnostics(Diagnostic diagnostic, SuppressionDescriptor descriptor)
-		{
-			if (!SwitchExpressionUtilities.HasSyntaxNodesForMemberAccess(context, diagnostic,
-				out _, out var memberAccessExpressionSyntax))
-			{
-				return;
-			}
-
-			if (!OneOfUtilities.IsOneOfTypeSymbol(context, diagnostic, memberAccessExpressionSyntax, out _))
-			{
-				return;
-			}
-
-			context.ReportSuppression(Suppression.Create(descriptor, diagnostic));
-		}
+            // context.ReportSuppression(Suppression.Create(descriptor, diagnostic));
+        }
 	}
 }

@@ -26,10 +26,8 @@ OneOf<string, bool> twoOf = "hmm";
 
 var message = twoOf.Value switch
 {
-	string x => throw new NotImplementedException(),
-    bool x => throw new NotImplementedException(),
-    int x => throw new NotImplementedException(),
+    bool x => "lol",
+    string x => throw new NotImplementedException()
 };
-
 
 #pragma warning restore CS8509 // The switch expression does not handle all possible values of its input type (it is not exhaustive).
