@@ -58,7 +58,7 @@ Suppresses [CS8509](https://learn.microsoft.com/en-us/dotnet/csharp/language-ref
 
 ## Future Plans
 
-- Support [`OneOfBase<T>`](https://github.com/mcintyre321/OneOf)
+- Support [`OneOfBase<T>`](https://github.com/mcintyre321/OneOf#reusable-oneof-types-using-oneofbase)
 
 - Code Fixer to convert `OneOf<T>.Match` to `OneOf<T>.Value` switch expression
   - For example, look at the following code:
