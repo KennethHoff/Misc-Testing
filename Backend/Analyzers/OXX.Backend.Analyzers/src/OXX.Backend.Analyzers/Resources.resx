@@ -1,114 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <root>
-    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <xsd:element name="root" msdata:IsDataSet="true">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+              xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
 
-        </xsd:element>
-    </xsd:schema>
-    <resheader name="resmimetype">
-        <value>text/microsoft-resx</value>
-    </resheader>
-    <resheader name="version">
-        <value>1.3</value>
-    </resheader>
-    <resheader name="reader">
-        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
-            PublicKeyToken=b77a5c561934e089
-        </value>
-    </resheader>
-    <resheader name="writer">
-        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
-            PublicKeyToken=b77a5c561934e089
-        </value>
-    </resheader>
-    
-    <data name="UnreachableTitle" xml:space="preserve">
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+      PublicKeyToken=b77a5c561934e089
+    </value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+      PublicKeyToken=b77a5c561934e089
+    </value>
+  </resheader>
+
+  <data name="UnreachableTitle" xml:space="preserve">
         <value>If you see this, something went wrong</value>
     </data>
-    <data name="UnreachableDescription" xml:space="preserve">
+  <data name="UnreachableDescription" xml:space="preserve">
         <value>If you see this, something went wrong. Contact the author of this analyzer.</value>
     </data>
-    <data name="UnreachableMessageFormat" xml:space="preserve">
+  <data name="UnreachableMessageFormat" xml:space="preserve">
         <value>If you see this, something went wrong at {0}: {1}. Contact the author of this analyzer.</value>
     </data>
-    <data name="UnreachableCodeFix" xml:space="preserve">
+  <data name="UnreachableCodeFix" xml:space="preserve">
         <value>If you see this, something went wrong. Contact the author of this analyzer.</value>
     </data>
 
-    <data name="OXX0001Title" xml:space="preserve">
+  <data name="OXX0001Title" xml:space="preserve">
         <value>Non-nullable property '{0}' is not required</value>
     </data>
-    <data name="OXX0001Description" xml:space="preserve">
+  <data name="OXX0001Description" xml:space="preserve">
         <value>A required property is easier to reason about than an optional one, and are therefore preferred.</value>
     </data>
-    <data name="OXX0001MessageFormat" xml:space="preserve">
+  <data name="OXX0001MessageFormat" xml:space="preserve">
         <value>Non-nullable property '{0}' is not required</value>
     </data>
-    <data name="OXX0001CodeFix1" xml:space="preserve">
+  <data name="OXX0001CodeFix1" xml:space="preserve">
         <value>Make property required</value>
     </data>
-    <data name="OXX0001CodeFix2" xml:space="preserve">
+  <data name="OXX0001CodeFix2" xml:space="preserve">
         <value>Make property nullable</value>
     </data>
-    <data name="OXX0001SuppressorJustification" xml:space="preserve">
+  <data name="OXX0001SuppressorJustification" xml:space="preserve">
         <value>Effectively superseded by OXX0001</value>
     </data>
 
-    <data name="OXX9001Title" xml:space="preserve">
+  <data name="OXX9001Title" xml:space="preserve">
         <value>Switch expression is not exhaustive</value>
     </data>
-    <data name="OXX9001Description" xml:space="preserve">
+  <data name="OXX9001Description" xml:space="preserve">
         <value>Switch expression on OneOf.Value has to be exhaustive.</value>
     </data>
-    <data name="OXX9001MessageFormat" xml:space="preserve">
+  <data name="OXX9001MessageFormat" xml:space="preserve">
         <value>Switch expression is not exhaustive. You are missing cases for [{0}].</value>
     </data>
-    <data name="OXX9001CodeFix" xml:space="preserve">
+  <data name="OXX9001CodeFix" xml:space="preserve">
         <value>Add missing cases</value>
     </data>
-    <data name="OXX9001SuppressorJustification" xml:space="preserve">
+  <data name="OXX9001SuppressorJustification" xml:space="preserve">
         <value>OXX9001 ensures switch expressions on OneOf.Value are exhaustive.</value>
     </data>
 
-    <data name="OXX9002Title" xml:space="preserve">
+  <data name="OXX9002Title" xml:space="preserve">
         <value>Switch expression is checking for an impossible case</value>
     </data>
-    <data name="OXX9002TitleLiteralPattern" xml:space="preserve">
+  <data name="OXX9002TitleLiteralPattern" xml:space="preserve">
         <value>Switch expression should not contain literal patterns</value>
     </data>
 
-    <data name="OXX9002Description" xml:space="preserve">
+  <data name="OXX9002Description" xml:space="preserve">
         <value>Switch expression on OneOf.Value is checking for an impossible case.</value>
     </data>
-    <data name="OXX9002DescriptionLiteralPattern" xml:space="preserve">
+  <data name="OXX9002DescriptionLiteralPattern" xml:space="preserve">
         <value>Switch expression on OneOf.Value should not contain literal patterns.</value>
     </data>
-    <data name="OXX9002MessageFormat" xml:space="preserve">
+  <data name="OXX9002MessageFormat" xml:space="preserve">
         <value>{0} is not a valid case for {1}</value>
     </data>
-    <data name="OXX9002MessageFormatLiteralPattern" xml:space="preserve">
+  <data name="OXX9002MessageFormatLiteralPattern" xml:space="preserve">
         <value>Do not use literal pattern in switch expression on One&amp;lt;T&amp;gt;</value>
     </data>
-    <data name="OXX9002CodeFix" xml:space="preserve">
+  <data name="OXX9002CodeFix" xml:space="preserve">
         <value>Remove impossible case</value>
     </data>
-    <data name="OXX9002CodeFixLiteralPattern" xml:space="preserve">
+  <data name="OXX9002CodeFixLiteralPattern" xml:space="preserve">
         <value>Remove literal pattern</value>
     </data>
-    
-    <data name="OXX9003Title" xml:space="preserve">
+
+  <data name="OXX9003Title" xml:space="preserve">
         <value>Switch expression should be explicit about all cases</value>
     </data>
-    <data name="OXX9003Description" xml:space="preserve">
+  <data name="OXX9003Description" xml:space="preserve">
         <value>Switch expression on OneOf.Value should be explicit about all cases.</value>
     </data>
-    <data name="OXX9003MessageFormat" xml:space="preserve">
-         <!-- Crazy double escaping to avoid XML parsing errors. First to escape the XML in this file, then to escape the XML in the UI -->
-        <value>Do not use discard pattern in switch expression on One&amp;lt;T&amp;gt;</value>
+  <data name="OXX9003MessageFormat" xml:space="preserve">
+     <!-- Crazy double escaping to avoid XML parsing errors. First to escape the XML in this file, then to escape the XML in the UI -->
+    <value>Do not use discard pattern in switch expression on One&amp;lt;T&amp;gt;</value>
     </data>
-    <data name="OXX9003CodeFix" xml:space="preserve">
+  <data name="OXX9003CodeFix" xml:space="preserve">
         <value>Remove discard pattern</value>
+    </data>
+
+  <data name="OXX9005Title" xml:space="preserve">
+        <value>Methods should not throw exceptions</value>
+    </data>
+  <data name="OXX9005Description" xml:space="preserve">
+        <value>Use OneOf instead of throwing exceptions</value>
+    </data>
+  <data name="OXX9005MessageFormat" xml:space="preserve">
+     <!-- Crazy double escaping to avoid XML parsing errors. First to escape the XML in this file, then to escape the XML in the UI -->
+    <value>Replace {0} with OneOfOne&amp;lt;Success, {0}&amp;gt;</value>
+    </data>
+  <data name="OXX9005CodeFix" xml:space="preserve">
+        <value>Replace with OneOf</value>
     </data>
 </root>

@@ -24,7 +24,7 @@ public static class AnalyzerId
         public const string SwitchExpressionImpossibleCases = Prefix + "9002";
         public const string SwitchExpressionDiscardPattern = Prefix + "9003";
         public const string ConvertMatchToSwitchExpression = Prefix + "9004"; // To be implemented
-        public const string ConvertExpressionThrowingMethodToOneOfReturningMethod = Prefix + "9005"; // To be implemented
+        public const string MethodsShouldReturnOneOfInsteadOfThrowing = Prefix + "9005";
     }
 
     public static class BuiltIn

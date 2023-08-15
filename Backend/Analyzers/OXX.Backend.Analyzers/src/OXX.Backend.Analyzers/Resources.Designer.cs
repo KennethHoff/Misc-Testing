@@ -206,5 +206,29 @@ namespace OXX.Backend.Analyzers {
                 return ResourceManager.GetString("OXX9003CodeFix", resourceCulture);
             }
         }
+        
+        internal static string OXX9005Title {
+            get {
+                return ResourceManager.GetString("OXX9005Title", resourceCulture);
+            }
+        }
+        
+        internal static string OXX9005Description {
+            get {
+                return ResourceManager.GetString("OXX9005Description", resourceCulture);
+            }
+        }
+        
+        internal static string OXX9005MessageFormat {
+            get {
+                return ResourceManager.GetString("OXX9005MessageFormat", resourceCulture);
+            }
+        }
+        
+        internal static string OXX9005CodeFix {
+            get {
+                return ResourceManager.GetString("OXX9005CodeFix", resourceCulture);
+            }
+        }
     }
 }

@@ -1,9 +1,22 @@
-using OneOf;
+// using OneOf;
+//
+// OneOf<string, bool> twoOf = "hmm";
+//
+// var message = twoOf.Value switch
+// {
+//     bool x => "lol",
+//     string x => throw new NotImplementedException()
+// };
 
-OneOf<string, bool> twoOf = "hmm";
+Hmm.MethodThatThrows();
+return;
 
-var message = twoOf.Value switch
+
+public static class Hmm
 {
-    bool x => "lol",
-    string x => throw new NotImplementedException()
-};
+    public static void MethodThatThrows()
+    {
+        throw new ArgumentException();
+    }
+}
+
