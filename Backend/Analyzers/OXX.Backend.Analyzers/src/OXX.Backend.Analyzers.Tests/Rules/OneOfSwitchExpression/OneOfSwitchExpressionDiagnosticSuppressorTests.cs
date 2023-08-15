@@ -41,7 +41,7 @@ public class OneOfSwitchExpressionDiagnosticSuppressorAnalyzer
             """);
 
         var expected = DiagnosticResult.CompilerWarning(AnalyzerId.BuiltIn.NonExhaustiveSwitchExpression)
-            .WithSpan(10, 34, 10, 40)
+            .WithSpan(11, 34, 11, 40)
             .WithArguments("_");
 
         await Verifier.VerifyAnalyzerAsync(CompilerDiagnostics.Warnings, text, Configure, expected).ConfigureAwait(false);
@@ -59,7 +59,7 @@ public class OneOfSwitchExpressionDiagnosticSuppressorAnalyzer
             """);
 
         var expected = DiagnosticResult.CompilerWarning(AnalyzerId.BuiltIn.NonExhaustiveSwitchExpression)
-            .WithSpan(9, 27, 9, 33)
+            .WithSpan(10, 27, 10, 33)
             .WithArguments("_");
 
         await Verifier.VerifyAnalyzerAsync(CompilerDiagnostics.Warnings, text, Configure, expected).ConfigureAwait(false);

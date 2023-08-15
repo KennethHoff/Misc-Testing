@@ -30,7 +30,7 @@ public class OneOfSwitchExpressionImpossibleCasesAnalyzerTests
             """);
 
         var expected = Verifier.Diagnostic(AnalyzerUnderTest.Rule)
-            .WithSpan(12, 9, 12, 30)
+            .WithSpan(13, 9, 13, 30)
             .WithArguments("int", DiagnosticUtilities.FixHtmlFormatting("OneOf<string, bool>"));
 
         await Verifier.VerifyAnalyzerAsync(text, Configure, expected).ConfigureAwait(false);
@@ -52,7 +52,7 @@ public class OneOfSwitchExpressionImpossibleCasesAnalyzerTests
             """);
 
         var expected = Verifier.Diagnostic(AnalyzerUnderTest.RuleLiteralPattern)
-            .WithSpan(12, 9, 12, 19);
+            .WithSpan(13, 9, 13, 19);
 
         await Verifier.VerifyAnalyzerAsync(text, Configure, expected).ConfigureAwait(false);
     }

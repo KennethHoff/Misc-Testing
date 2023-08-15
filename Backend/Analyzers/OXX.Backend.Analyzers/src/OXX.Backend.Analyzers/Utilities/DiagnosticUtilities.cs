@@ -43,14 +43,14 @@ public static class DiagnosticUtilities
         return SourceText.From(sourceText);
     }
 
-    public static DiagnosticDescriptor CreateRule(string id, string titleResourceName, string messageFormatResourceName, string descriptionResourceName)
+    public static DiagnosticDescriptor CreateRule(string id, string titleResourceName, string messageFormatResourceName, string descriptionResourceName, string category, DiagnosticSeverity diagnosticSeverity)
     {
         return new DiagnosticDescriptor(
             id,
             new LocalizableResourceString(titleResourceName, Resources.ResourceManager, typeof(Resources)),
             new LocalizableResourceString(messageFormatResourceName, Resources.ResourceManager, typeof(Resources)),
-            DiagnosticCategory.Design,
-            DiagnosticSeverity.Warning,
+            category,
+            diagnosticSeverity,
             true,
             new LocalizableResourceString(descriptionResourceName, Resources.ResourceManager, typeof(Resources))
         );

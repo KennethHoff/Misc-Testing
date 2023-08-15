@@ -16,7 +16,7 @@ public sealed class OneOfSwitchExpressionDiscardPatternAnalyzer : DiagnosticAnal
         AnalyzerId.OneOf.SwitchExpressionDiscardPattern,
         nameof(Resources.OXX9003Title),
         nameof(Resources.OXX9003MessageFormat),
-        nameof(Resources.OXX9003Description));
+        nameof(Resources.OXX9003Description), DiagnosticCategory.Design, DiagnosticSeverity.Warning);
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
         = ImmutableArray.Create(Rule, DiagnosticUtilities.UnreachableRule);

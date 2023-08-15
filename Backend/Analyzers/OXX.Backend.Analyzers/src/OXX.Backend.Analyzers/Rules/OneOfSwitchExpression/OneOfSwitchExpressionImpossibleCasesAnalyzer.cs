@@ -17,13 +17,13 @@ public sealed class OneOfSwitchExpressionImpossibleCasesAnalyzer : DiagnosticAna
         AnalyzerId.OneOf.SwitchExpressionImpossibleCases,
         nameof(Resources.OXX9002Title),
         nameof(Resources.OXX9002MessageFormat),
-        nameof(Resources.OXX9002Description));
+        nameof(Resources.OXX9002Description), DiagnosticCategory.Design, DiagnosticSeverity.Warning);
 
     public static readonly DiagnosticDescriptor RuleLiteralPattern = DiagnosticUtilities.CreateRule(
         AnalyzerId.OneOf.SwitchExpressionImpossibleCases,
         nameof(Resources.OXX9002TitleLiteralPattern),
         nameof(Resources.OXX9002MessageFormatLiteralPattern),
-        nameof(Resources.OXX9002DescriptionLiteralPattern));
+        nameof(Resources.OXX9002DescriptionLiteralPattern), DiagnosticCategory.Design, DiagnosticSeverity.Warning);
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
         ImmutableArray.Create(Rule, RuleLiteralPattern, DiagnosticUtilities.UnreachableRule);

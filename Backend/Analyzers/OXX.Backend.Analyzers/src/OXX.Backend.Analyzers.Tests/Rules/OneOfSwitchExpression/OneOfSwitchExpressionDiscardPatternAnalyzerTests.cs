@@ -28,7 +28,7 @@ public class OneOfSwitchExpressionDiscardPatternAnalyzerTests
             """);
 
         var expected = Verifier.Diagnostic(AnalyzerUnderTest.Rule)
-            .WithSpan(12, 9, 12, 19);
+            .WithSpan(13, 9, 13, 19);
 
         await Verifier.VerifyAnalyzerAsync(text, Configure, expected).ConfigureAwait(false);
     }

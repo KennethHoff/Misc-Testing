@@ -26,7 +26,7 @@ public class OneOfSwitchExpressionMissingCasesAnalyzerTests
             """);
 
         var expected = Verifier.Diagnostic(AnalyzerUnderTest.Rule)
-            .WithSpan(10, 22, 10, 44)
+            .WithSpan(11, 22, 11, 44)
             .WithArguments("string, bool");
 
         await Verifier.VerifyAnalyzerAsync(text, Configure, expected).ConfigureAwait(false);
@@ -48,7 +48,7 @@ public class OneOfSwitchExpressionMissingCasesAnalyzerTests
             """);
 
         var expected = Verifier.Diagnostic(AnalyzerUnderTest.Rule)
-            .WithSpan(10, 22, 13, 6)
+            .WithSpan(11, 22, 14, 6)
             .WithArguments("bool");
 
         await Verifier.VerifyAnalyzerAsync(text, Configure, expected).ConfigureAwait(false);

@@ -6,6 +6,7 @@ public static class CodeHelper
     {
         return $$"""
                  using OneOf;
+                 using System;
 
                  namespace MyCode;
 

@@ -18,7 +18,7 @@ public sealed class OneOfSwitchExpressionMissingCasesAnalyzer : DiagnosticAnalyz
         AnalyzerId.OneOf.SwitchExpressionMissingCases,
         nameof(Resources.OXX9001Title),
         nameof(Resources.OXX9001MessageFormat),
-        nameof(Resources.OXX9001Description));
+        nameof(Resources.OXX9001Description), DiagnosticCategory.Design, DiagnosticSeverity.Warning);
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
         = ImmutableArray.Create(Rule, DiagnosticUtilities.UnreachableRule);
