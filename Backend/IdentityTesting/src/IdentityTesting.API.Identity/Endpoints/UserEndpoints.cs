@@ -58,10 +58,10 @@ public static class UserEndpoints
     {
         group.MapGet("/", GetAllUsersEndPointHandler)
             .WithName(GetAllUsersEndpointName);
-        
+
         group.MapGet("/{userName}", GetUserEndPointHandler)
             .WithName(GetUserEndpointName);
-        
+
         group.MapPatch("/add-role", AddRoleToUserEndPointHandler)
             .WithName(AddRoleToUserEndpointName);
 
@@ -70,13 +70,13 @@ public static class UserEndpoints
 
         return group;
     }
-    
+
     private static async ValueTask<List<KhApplicationUser>>
         GetAllUsersEndPointHandler(UserService userService, CancellationToken ct)
     {
         return await userService.GetAllUsersAsync();
     }
-    
+
     private static async ValueTask<Results<NotFound<ApiError>, Ok<KhApplicationUser>>>
         GetUserEndPointHandler(UserService userService, string userName, CancellationToken ct)
     {

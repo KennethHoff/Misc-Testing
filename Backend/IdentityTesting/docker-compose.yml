@@ -10,8 +10,6 @@
       POSTGRES_DB: postgres
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready" ]
-    labels:
-      com.jetbrains.rider.debug: "false"
 
   api:
     build:
@@ -19,9 +17,9 @@
       dockerfile: src/IdentityTesting.API/Dockerfile
     ports:
       - "5000:80"
-    depends_on:
-      npgsql:
-        condition: service_healthy
+#    depends_on:
+#      npgsql:
+#        condition: service_healthy
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:80

@@ -16,7 +16,7 @@ public sealed class UserService(
     {
         return await userManager.Users.ToListAsync();
     }
-    
+
     public async ValueTask<OneOf<KhApplicationUser, UserNotFound>> GetUserAsync(string userName)
     {
         if (await userManager.FindByNameAsync(userName) is not { } user)
@@ -26,7 +26,7 @@ public sealed class UserService(
 
         return user;
     }
-    
+
     public async ValueTask<OneOf<Success, UserNotFound, RoleNotFound, UserAlreadyInRole, UnknownIdentityError>> AddRoleToUserAsync(
         string userName, string roleName)
     {

@@ -45,11 +45,11 @@ public static class WebApplicationExtensions
             .RequireAuthorization()
             .WithTags("Hidden");
 
-        hiddenGroup.MapGet("/secret", async (RoleService roleService, UserService userService, KhSignInManager signInManager, HttpContext context) => 
+        hiddenGroup.MapGet("/secret", async (RoleService roleService, UserService userService, KhSignInManager signInManager, HttpContext context) =>
         {
             await roleService.CreateRoleAsync("admin");
             await userService.AddRoleToUserAsync(context.User.Identity!.Name!, "admin");
-            
+
             var user = await userService.GetUserAsync(context.User.Identity!.Name!);
 
             if (user.Value is not KhApplicationUser khUser)
