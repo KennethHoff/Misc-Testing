@@ -1,16 +1,6 @@
-// using OneOf;
-//
-// OneOf<string, bool> twoOf = "hmm";
-//
-// var message = twoOf.Value switch
-// {
-//     bool x => "lol",
-//     string x => throw new NotImplementedException()
-// };
+using OneOf;
 
 Hmm.MethodThatThrows();
-return;
-
 
 public static class Hmm
 {
@@ -18,5 +8,26 @@ public static class Hmm
     {
         throw new ArgumentException();
     }
-}
 
+    public static void MethodThatDoesNotThrow()
+    {
+        OneOf<string, bool>? hmm = "hmm";
+        var huh = hmm ?? throw new Exception();
+
+        try
+        {
+            var message = hmm.Value switch
+            {
+                string x => "hmm",
+                bool x => throw new NotImplementedException(),
+            };
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
+        throw new AggregateException();
+    }
+}

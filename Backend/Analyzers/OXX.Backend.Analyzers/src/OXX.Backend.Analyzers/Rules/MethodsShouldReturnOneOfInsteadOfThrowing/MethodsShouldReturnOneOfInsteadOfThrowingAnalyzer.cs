@@ -16,7 +16,7 @@ public sealed class MethodsShouldReturnOneOfInsteadOfThrowingAnalyzer : Diagnost
         AnalyzerId.OneOf.MethodsShouldReturnOneOfInsteadOfThrowing,
         nameof(Resources.OXX9005Title),
         nameof(Resources.OXX9005MessageFormat),
-        nameof(Resources.OXX9005Description), 
+        nameof(Resources.OXX9005Description),
         DiagnosticCategory.Design, DiagnosticSeverity.Warning);
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
@@ -24,46 +24,41 @@ public sealed class MethodsShouldReturnOneOfInsteadOfThrowingAnalyzer : Diagnost
 
     public override void Initialize(AnalysisContext context)
     {
-        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.Analyze 
+        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.Analyze
                                                | GeneratedCodeAnalysisFlags.ReportDiagnostics);
         context.EnableConcurrentExecution();
-        
-        context.RegisterSyntaxNodeAction(AnalyzeMethodForThrowing, SyntaxKind.MethodDeclaration);
+
+        context.RegisterSyntaxNodeAction(AnalyzeMethodForThrowing, SyntaxKind.ThrowExpression, SyntaxKind.ThrowStatement);
+        // TODO: Figure out ThrowKeyword
+        // context.RegisterSyntaxNodeAction(AnalyzeMethodForThrowing, SyntaxKind.ThrowExpression, SyntaxKind.ThrowStatement, SyntaxKind.ThrowKeyword);
     }
 
     private void AnalyzeMethodForThrowing(SyntaxNodeAnalysisContext context)
     {
-        // It will always be a MethodDeclarationSyntax, since we're only analyzing methods. (See SyntaxKind.MethodDeclaration)
-        var methodDeclarationSyntax = (MethodDeclarationSyntax) context.Node;
-        
-        // If the method doesn't throw, we're not interested.
-        if (!MethodDeclarationUtilities.Throws(methodDeclarationSyntax, out var syntaxesThatThrow))
+        if (context.Node.IsKind(SyntaxKind.ThrowStatement))
         {
+            var throwStatementSyntax = (ThrowStatementSyntax)context.Node;
+            var exceptionTypeName = throwStatementSyntax.Expression switch
+            {
+                ObjectCreationExpressionSyntax objectCreationExpressionSyntax => objectCreationExpressionSyntax.Type.ToString(),
+                _ => throw new NotSupportedException($"The syntax node {throwStatementSyntax.Expression} is not supported.")
+            };
+
+            context.ReportDiagnostic(Diagnostic.Create(Rule, throwStatementSyntax.GetLocation(), exceptionTypeName));
             return;
         }
         
-        // Report diagnostics for the throw statements
-        ReportDiagnosticsForThrowStatements(context, methodDeclarationSyntax, syntaxesThatThrow);
-        
-        // Otherwise, report the method
-        // context.ReportDiagnostic(Diagnostic.Create(Rule, methodDeclarationSyntax.GetLocation()));
-    }
-
-    private void ReportDiagnosticsForThrowStatements(SyntaxNodeAnalysisContext context, MethodDeclarationSyntax methodDeclarationSyntax, IEnumerable<SyntaxNode> syntaxesThatThrow)
-    {
-        foreach (var syntaxThatThrows in syntaxesThatThrow)
+        if (context.Node.IsKind(SyntaxKind.ThrowExpression))
         {
-            var exceptionTypeName = syntaxThatThrows switch
+            var throwExpressionSyntax = (ThrowExpressionSyntax)context.Node;
+            var exceptionTypeName = throwExpressionSyntax.Expression switch
             {
-                ThrowStatementSyntax throwStatementSyntax => throwStatementSyntax.Expression switch
-                {
-                    ObjectCreationExpressionSyntax objectCreationExpressionSyntax => objectCreationExpressionSyntax.Type.ToString(),
-                    _ => throw new NotSupportedException($"The syntax node {syntaxThatThrows} is not supported.")
-                },
-                _ => throw new NotSupportedException($"The syntax node {syntaxThatThrows} is not supported.")
+                ObjectCreationExpressionSyntax objectCreationExpressionSyntax => objectCreationExpressionSyntax.Type.ToString(),
+                _ => throw new NotSupportedException($"The syntax node {throwExpressionSyntax.Expression} is not supported.")
             };
-            
-            context.ReportDiagnostic(Diagnostic.Create(Rule, syntaxThatThrows.GetLocation(), exceptionTypeName));
+
+            context.ReportDiagnostic(Diagnostic.Create(Rule, throwExpressionSyntax.GetLocation(), exceptionTypeName));
+            return;
         }
     }
 }

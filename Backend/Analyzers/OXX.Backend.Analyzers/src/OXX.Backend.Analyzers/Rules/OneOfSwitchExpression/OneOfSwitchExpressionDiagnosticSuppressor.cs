@@ -35,7 +35,7 @@ public sealed class OneOfSwitchExpressionDiagnosticSuppressor : DiagnosticSuppre
             {
                 continue;
             }
-            
+
             // Otherwise, suppress it
             context.ReportSuppression(Suppression.Create(descriptor, diagnostic));
         }

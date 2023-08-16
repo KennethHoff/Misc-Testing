@@ -45,7 +45,7 @@ public static class OneOfUtilities
     {
         var typeInfo = context.SemanticModel.GetTypeInfo(memberAccessExpressionSyntax.Expression);
         namedTypeSymbol = typeInfo.Type as INamedTypeSymbol;
-        
+
         return IsOnValue(namedTypeSymbol, memberAccessExpressionSyntax);
     }
 
@@ -63,10 +63,10 @@ public static class OneOfUtilities
 
         var typeInfo = semanticModel.GetTypeInfo(memberAccessExpressionSyntax.Expression);
         namedTypeSymbol = typeInfo.Type as INamedTypeSymbol;
-        
+
         return IsOnValue(namedTypeSymbol, memberAccessExpressionSyntax);
     }
-    
+
     private static bool IsOnValue(INamedTypeSymbol? namedTypeSymbol, MemberAccessExpressionSyntax memberAccessExpressionSyntax)
     {
         // If the type is not `OneOf`, we're not interested.

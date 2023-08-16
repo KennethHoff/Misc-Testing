@@ -10,7 +10,7 @@ using OXX.Backend.Analyzers.Utilities;
 
 namespace OXX.Backend.Analyzers.Rules.OneOfSwitchExpression;
 
-[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(OneOfSwitchExpressionImpossibleCasesCodeFixProvider))]
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(OneOfSwitchExpressionDiscardPatternCodeFixProvider))]
 [Shared]
 [PublicAPI("Roslyn Analyzer")]
 public sealed class OneOfSwitchExpressionDiscardPatternCodeFixProvider : CodeFixProvider

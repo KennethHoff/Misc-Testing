@@ -98,7 +98,7 @@ public sealed class OneOfSwitchExpressionImpossibleCasesAnalyzer : DiagnosticAna
                 context.ReportDiagnostic(Diagnostic.Create(RuleLiteralPattern, arm.GetLocation()));
                 continue;
             }
-            
+
             // If we can't get the type for the arm, we can't check if it's impossible so we assume it is.
             // We also don't know what the type is, so we just say it's UNKNOWN
             if (SwitchExpressionUtilities.GetTypeForArm(context.SemanticModel, arm) is not { } armType)

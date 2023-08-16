@@ -13,3 +13,11 @@ public static class MethodDeclarationUtilities
         return syntaxesThatThrow.Any();
     }
 }
+
+public static class ThrowSyntaxUtilities
+{
+    public static bool IsThrowing(this SyntaxNode syntaxNode)
+    {
+        return syntaxNode.IsKind(SyntaxKind.ThrowStatement) || syntaxNode.IsKind(SyntaxKind.ThrowExpression) || syntaxNode.IsKind(SyntaxKind.ThrowKeyword);
+    }
+}

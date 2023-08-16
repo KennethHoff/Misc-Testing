@@ -30,7 +30,26 @@ public class MethodsShouldReturnOneOfInsteadOfThrowingAnalyzerTests
 
         await Verifier.VerifyAnalyzerAsync(text, Configure, expected).ConfigureAwait(false);
     }
-    
+
+    [TestMethod]
+    public async Task WhenMethodHasThrowExpressions_ReportDiagnostic()
+    {
+        var text = CodeHelper.AddUsingsAndWrapInsideClass(
+            """
+            public static void MethodThatThrows()
+            {
+                OneOf<string, bool>? hmm = "hmm";
+                var huh = hmm ?? throw new Exception();
+            }
+            """);
+
+        var expected = Verifier.Diagnostic(AnalyzerUnderTest.Rule)
+            .WithSpan(11, 22, 11, 43)
+            .WithArguments("Exception");
+
+        await Verifier.VerifyAnalyzerAsync(text, Configure, expected).ConfigureAwait(false);
+    }
+
     [TestMethod]
     public async Task WhenMethodHasNoThrowStatements_DoNotReportDiagnostic()
     {

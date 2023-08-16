@@ -81,7 +81,7 @@ public sealed class OneOfSwitchExpressionMissingCasesAnalyzer : DiagnosticAnalyz
 
         // Get the types that are only present in the literals. These are problematic as they are not actually types.
         var problematicTypes = literals.Where(x => !nonLiterals.Contains(x));
-        
+
         // Get the types that are present in the non-literals. These are unproblematic as they are actually types.
         var unproblematicTypes = nonLiterals.Except(problematicTypes);
 

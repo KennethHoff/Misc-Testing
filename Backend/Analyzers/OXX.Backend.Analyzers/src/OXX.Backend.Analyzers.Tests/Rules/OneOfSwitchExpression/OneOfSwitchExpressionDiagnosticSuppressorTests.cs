@@ -27,7 +27,7 @@ public class OneOfSwitchExpressionDiagnosticSuppressorAnalyzer
 
         await Verifier.VerifyAnalyzerAsync(CompilerDiagnostics.Warnings, text, Configure).ConfigureAwait(false);
     }
-    
+
     [TestMethod]
     public async Task WhenSwitchExpressionIsOnSomeOtherMemberOnOneOf_ThenDoNotSuppressDiagnostic()
     {
