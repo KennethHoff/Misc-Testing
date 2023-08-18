@@ -1,4 +1,5 @@
 using IdentityTesting.API.Identity.Extensions;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Serilog;
 
 var builder = WebApplication.CreateSlimBuilder(args);
@@ -7,6 +8,7 @@ builder.Host.UseSerilog((_, _, loggerConfiguration) =>
     loggerConfiguration.WriteTo.Console();
 });
 builder.Services.AddResponseCompression();
+builder.Services.AddHealthChecks();
 
 builder.Services.AddKhIdentity(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
@@ -20,6 +22,7 @@ app.UseResponseCompression();
 
 app.UseKhIdentity();
 app.MapKhIdentity();
+app.MapHealthChecks("/health");
 
 app.UseOpenApi();
 app.UseSwaggerUi3(opt =>

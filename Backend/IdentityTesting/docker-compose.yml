@@ -1,7 +1,12 @@
-﻿services:
+﻿volumes:
+  npgsql:
+
+services:
   npgsql:
     image: postgres:latest
     restart: always
+    volumes:
+      - npgsql:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     environment:
@@ -17,10 +22,21 @@
       dockerfile: src/API/IdentityTesting.API/Dockerfile
     ports:
       - "5000:80"
-#    depends_on:
-#      npgsql:
-#        condition: service_healthy
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:80
       ConnectionStrings__Npgsql: Host=npgsql;Database=postgres;Username=postgres;Password=postgres
+    healthcheck:
+      test: [ "CMD-SHELL", "curl --fail http://localhost:80/health || exit" ]
+
+  web:
+    build:
+      context: .
+      dockerfile: src/Web/IdentityTesting.Web/Dockerfile
+    ports:
+      - "5001:80"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:80
+    healthcheck:
+      test: [ "CMD-SHELL", "curl --fail http://localhost:80/health || exit" ]

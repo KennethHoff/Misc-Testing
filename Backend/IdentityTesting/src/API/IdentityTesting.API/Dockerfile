@@ -3,6 +3,9 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
+RUN apt-get update \
+    && apt-get install -y curl
+
 FROM mcr.microsoft.com/dotnet/sdk:8.0-preview AS build
 WORKDIR /src
 COPY ["src/IdentityTesting.API/IdentityTesting.API.csproj", "src/IdentityTesting.API/"]
