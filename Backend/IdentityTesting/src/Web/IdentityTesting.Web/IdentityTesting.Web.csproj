@@ -5,5 +5,10 @@
       <Link>.dockerignore</Link>
     </Content>
   </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Blazored.FluentValidation" />
+    <PackageReference Include="FluentValidation.AspNetCore" />
+  </ItemGroup>
 
 </Project>

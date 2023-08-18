@@ -1,0 +1,31 @@
+@page "/Identity"
+@using IdentityTesting.Web.Models
+<h3>Identity</h3>
+
+<EditForm Model="_input" FormName="LoginForm" OnValidSubmit="SubmitFormAsync" OnInvalidSubmit="OnInvalidSubmit">
+    <FluentValidationValidator @ref="_validator"/>
+    <ValidationSummary/>
+    <InputText type="email" @bind-Value="_input.Email"/>
+    <InputText type="password" @bind-Value="_input.Password"/>
+    <button type="submit">Login</button>
+</EditForm>
+
+@code {
+    InputModel _input = new();
+
+    FluentValidationValidator? _validator;
+
+    private static void OnInvalidSubmit()
+    {
+        Console.WriteLine("Invalid");
+    }
+
+    private async Task SubmitFormAsync()
+    {
+        if (!await _validator!.ValidateAsync())
+        {
+            return;
+        }
+    }
+
+}

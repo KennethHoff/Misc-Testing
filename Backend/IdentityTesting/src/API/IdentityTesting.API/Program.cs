@@ -1,5 +1,4 @@
 using IdentityTesting.API.Identity.Extensions;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Serilog;
 
 var builder = WebApplication.CreateSlimBuilder(args);
