@@ -1,0 +1,17 @@
+﻿volumes:
+  npgsql:
+
+services:
+  npgsql:
+    image: postgres:latest
+    restart: always
+    volumes:
+      - npgsql:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
