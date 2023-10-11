@@ -534,16 +534,17 @@ video {
   --tw-backdrop-sepia:  ;
 }
 
-.invisible {
-  visibility: hidden;
+.absolute {
+  position: absolute;
 }
 
-.sticky {
-  position: sticky;
+.relative {
+  position: relative;
 }
 
-.top-0 {
-  top: 0px;
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .flex {
@@ -554,40 +555,20 @@ video {
   display: table;
 }
 
-.hidden {
-  display: none;
+.h-12 {
+  height: 3rem;
 }
 
 .h-6 {
   height: 1.5rem;
 }
 
-.h-screen {
-  height: 100vh;
-}
-
-.h-3 {
-  height: 0.75rem;
-}
-
-.h-12 {
-  height: 3rem;
-}
-
-.h-16 {
-  height: 4rem;
-}
-
-.h-8 {
-  height: 2rem;
-}
-
-.w-48 {
-  width: 12rem;
-}
-
 .w-6 {
   width: 1.5rem;
+}
+
+.w-\[80\%\] {
+  width: 80%;
 }
 
 .flex-row {
@@ -598,33 +579,24 @@ video {
   flex-direction: column;
 }
 
-.place-content-center {
-  place-content: center;
+.place-content-between {
+  place-content: space-between;
 }
 
 .place-items-center {
   place-items: center;
 }
 
-.gap-2 {
-  gap: 0.5rem;
+.gap-8 {
+  gap: 2rem;
 }
 
-.gap-12 {
-  gap: 3rem;
+.rounded-2xl {
+  border-radius: 1rem;
 }
 
-.rounded {
-  border-radius: 0.25rem;
-}
-
-.rounded-3xl {
-  border-radius: 1.5rem;
-}
-
-.bg-purple-950 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(59 7 100 / var(--tw-bg-opacity));
+.border {
+  border-width: 1px;
 }
 
 .bg-gray-500 {
@@ -632,8 +604,17 @@ video {
   background-color: rgb(107 114 128 / var(--tw-bg-opacity));
 }
 
+.bg-purple-950 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(59 7 100 / var(--tw-bg-opacity));
+}
+
 .bg-gradient-to-t {
   background-image: linear-gradient(to top, var(--tw-gradient-stops));
+}
+
+.bg-icon_hamburger {
+  background-image: url('/img/icon_hamburger.svg');
 }
 
 .from-blue-950 {
@@ -646,34 +627,37 @@ video {
   --tw-gradient-to: #7e22ce var(--tw-gradient-to-position);
 }
 
+.bg-center {
+  background-position: center;
+}
+
+.bg-no-repeat {
+  background-repeat: no-repeat;
+}
+
 .px-4 {
   padding-left: 1rem;
   padding-right: 1rem;
 }
 
-.text-red-50 {
-  --tw-text-opacity: 1;
-  color: rgb(254 242 242 / var(--tw-text-opacity));
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
-.text-gray-500 {
+.text-emerald-600 {
   --tw-text-opacity: 1;
-  color: rgb(107 114 128 / var(--tw-text-opacity));
-}
-
-.text-gray-50 {
-  --tw-text-opacity: 1;
-  color: rgb(249 250 251 / var(--tw-text-opacity));
-}
-
-.text-gray-200 {
-  --tw-text-opacity: 1;
-  color: rgb(229 231 235 / var(--tw-text-opacity));
+  color: rgb(5 150 105 / var(--tw-text-opacity));
 }
 
 .text-gray-300 {
   --tw-text-opacity: 1;
   color: rgb(209 213 219 / var(--tw-text-opacity));
+}
+
+* {
+  /* This is weirdly satisfying to develop with */
+  transition: all 0.2s ease-in-out;
 }
 
 .blazor-error-boundary {
@@ -700,5 +684,41 @@ video {
     position: absolute;
     right: 0.75rem;
     top: 0.5rem;
+  }
+}
+
+.peer:checked ~ .peer-checked\:block {
+  display: block;
+}
+
+@media not all and (min-width: 768px) {
+  .max-md\:hidden {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .md\:sticky {
+    position: sticky;
+  }
+
+  .md\:top-0 {
+    top: 0px;
+  }
+
+  .md\:hidden {
+    display: none;
+  }
+
+  .md\:h-screen {
+    height: 100vh;
+  }
+
+  .md\:w-48 {
+    width: 12rem;
+  }
+
+  .md\:place-content-center {
+    place-content: center;
   }
 }

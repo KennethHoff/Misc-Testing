@@ -2,7 +2,11 @@
 module.exports = {
   content: ["./Components/**/*.razor"],
   theme: {
-    extend: {},
+    extend: {
+        backgroundImage: utils => ({
+            'icon_hamburger': "url('/img/icon_hamburger.svg')",
+        }),
+    },
   },
   plugins: [],
 }
