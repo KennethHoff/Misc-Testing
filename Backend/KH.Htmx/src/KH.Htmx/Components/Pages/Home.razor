@@ -1,0 +1,11 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<div hx-sse="connect:/rn-updates">
+    <div
+        hx-trigger="sse:clock"
+        hx-get="/clock">
+        <Clock/>
+    </div>
+</div>

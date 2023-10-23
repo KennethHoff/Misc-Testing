@@ -1,0 +1,5 @@
+<Project>
+  <ItemGroup>
+    <PackageVersion Include="Lib.AspNetCore.ServerSentEvents" Version="8.3.1" />
+  </ItemGroup>
+</Project>
