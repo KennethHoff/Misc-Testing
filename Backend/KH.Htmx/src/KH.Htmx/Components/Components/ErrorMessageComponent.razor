@@ -1,0 +1,10 @@
+<p class="text-red-600">
+    @ErrorMessage
+</p>
+
+@code
+{
+    [Parameter]
+    [EditorRequired]
+    public string ErrorMessage { get; set; } = "Unknown error occurred.";
+}

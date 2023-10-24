@@ -1,4 +1,6 @@
 using System.Collections.Immutable;
+using KH.Htmx.Components.Components;
+using KH.Htmx.Extensions;
 using Lib.AspNetCore.ServerSentEvents;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -15,14 +17,17 @@ public static class CommentsEndpointExtensions
 
     public static void MapComments(this IEndpointRouteBuilder route, string endpointRoot)
     {
-        route.MapPost(endpointRoot, async Task<Results<Ok, BadRequest>> (
+        route.MapPost("/comments", async Task<Results<Ok, RazorComponentResult<ErrorMessageComponent>>> (
             IServerSentEventsService serverSentEventsService,
             CommentService commentService, 
             [FromForm] string comment) =>
         {
             if (string.IsNullOrWhiteSpace(comment))
             {
-                return TypedResults.BadRequest();
+                return TypedResults.Extensions.BadRequestRazorComponentResult<ErrorMessageComponent>(new 
+                {
+                    ErrorMessage = "Comment cannot be empty"
+                });
             }
 
             commentService.AddComment(comment);
