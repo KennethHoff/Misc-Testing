@@ -1,7 +1,8 @@
 using KH.Htmx.Components;
-using KH.Htmx.Endpoints;
+using KH.Htmx.Components.Components;
 using KH.Htmx.HostedServices;
 using Lib.AspNetCore.ServerSentEvents;
+using Microsoft.AspNetCore.Components.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,20 +14,12 @@ builder.Services.AddHostedService<ServerEventsWorker>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
-
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
 
-app.MapMiscEndpoints();
+app.MapGet("/clock", () => new RazorComponentResult<Clock>());
 app.MapServerSentEvents("/rn-updates");
 
 app.MapRazorComponents<App>();

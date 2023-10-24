@@ -1,5 +1,6 @@
 <Project>
   <ItemGroup>
     <PackageVersion Include="Lib.AspNetCore.ServerSentEvents" Version="8.3.1" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.0-rc.2.23480.1" />
   </ItemGroup>
 </Project>
