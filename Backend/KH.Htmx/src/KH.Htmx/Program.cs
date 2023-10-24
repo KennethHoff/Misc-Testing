@@ -1,10 +1,12 @@
+using KH.Htmx.Comments;
 using KH.Htmx.Components;
 using KH.Htmx.Components.Components;
 using KH.Htmx.HostedServices;
 using Lib.AspNetCore.ServerSentEvents;
-using Microsoft.AspNetCore.Components.Endpoints;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddComments();
 
 // Add services to the container.
 builder.Services.AddRazorComponents();
@@ -20,8 +22,12 @@ app.UseStaticFiles();
 app.UseAntiforgery();
 
 app.MapGet("/clock", () => new RazorComponentResult<Clock>());
+
+app.MapComments("/comments");
 app.MapServerSentEvents("/rn-updates");
 
 app.MapRazorComponents<App>();
 
 app.Run();
+
+

@@ -1,0 +1,19 @@
+@inject CommentService CommentService
+
+@foreach (var comment in Comments)
+{
+    <p>
+        @comment
+    </p>
+}
+
+@code {
+
+    private IReadOnlyList<string> Comments { get; set; } = ArraySegment<string>.Empty;
+
+    protected override Task OnInitializedAsync()
+    {
+        Comments = CommentService.GetComments();
+        return base.OnInitializedAsync();
+    }
+}

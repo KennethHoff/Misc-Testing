@@ -1,11 +1,30 @@
-﻿@page "/"
+﻿@using KH.Htmx.Comments
+@page "/"
 
 <PageTitle>Home</PageTitle>
 
 <div hx-sse="connect:/rn-updates">
+    <form
+        class="flex flex-col bg-red-400"
+        hx-post="/comments"
+        hx-boost="true"
+        hx-target="#dumping-ground"
+        hx-swap="innerHTML"
+    >
+        <AntiforgeryToken />
+
+        <!-- Comment Input-->
+        <input id="input_comment" type="text" placeholder="Comment" name="comment"/>
+        <!-- Submit Button-->
+        <button id="button_submit" type="submit">Submit</button>
+    </form>
+
     <div
-        hx-trigger="sse:clock"
-        hx-get="/clock">
-        <Clock/>
+        hx-trigger="sse:comment"
+        hx-get="/comments">
+        <CommentList />
     </div>
 </div>
+
+<!-- Dumping ground for HTMX; Haven't fully learnt HTMX yet. I want to POST without updating the page in any way.. :shrug: -->
+<div id="dumping-ground" class="invisible"></div>
