@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using Lib.AspNetCore.ServerSentEvents;
 
 namespace KH.Htmx.HostedServices;

@@ -1,24 +1,9 @@
-﻿@using KH.Htmx.Comments
-@page "/"
+﻿@page "/"
 
 <PageTitle>Home</PageTitle>
 
-<div hx-sse="connect:/rn-updates" hx-ext="response-targets">
-    <form
-        class="flex flex-col bg-red-400"
-        hx-post="/comments"
-        hx-target="#comments_result"
-        hx-target-400="#comments_result"
-        hx-swap="innerHTML">
-        <AntiforgeryToken/>
-
-        <!-- Comment Input-->
-        <input id="input_comment" type="text" placeholder="Comment" name="comment"/>
-        <!-- Submit Button-->
-        <button id="button_submit" type="submit">Submit</button>
-    </form>
-
-    <div id="comments_result"></div>
+<div hx-sse="connect:/rn-updates">
+    <CommentForm/>
 
     <div
         hx-trigger="sse:comment"

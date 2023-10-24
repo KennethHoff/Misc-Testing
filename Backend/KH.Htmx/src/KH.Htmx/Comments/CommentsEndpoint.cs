@@ -1,6 +1,5 @@
 using System.Collections.Immutable;
 using KH.Htmx.Components.Components;
-using KH.Htmx.Extensions;
 using Lib.AspNetCore.ServerSentEvents;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -17,26 +16,27 @@ public static class CommentsEndpointExtensions
 
     public static void MapComments(this IEndpointRouteBuilder route, string endpointRoot)
     {
-        route.MapPost("/comments", async Task<Results<Ok, RazorComponentResult<ErrorMessageComponent>>> (
+        route.MapPost("/comments", async Task<RazorComponentResult<CommentForm>> (
             IServerSentEventsService serverSentEventsService,
-            CommentService commentService, 
-            [FromForm] string comment) =>
+            CommentService commentService,
+            [FromForm] string? comment) =>
         {
             if (string.IsNullOrWhiteSpace(comment))
             {
-                return TypedResults.Extensions.BadRequestRazorComponentResult<ErrorMessageComponent>(new 
+                return new RazorComponentResult<CommentForm>(new
                 {
-                    ErrorMessage = "Comment cannot be empty"
+                    ErrorMessage = "Comment cannot be empty",
                 });
             }
 
             commentService.AddComment(comment);
-            
-            // This should probably be moved somewhere else. I don't know where though :(
+
+            #region SSE Stuff that should probably be moved somewhere else
+
             var clients = serverSentEventsService.GetClients();
             if (clients.Count is 0)
             {
-                return TypedResults.Ok();
+                return new RazorComponentResult<CommentForm>();
             }
 
             var comments = commentService.GetComments();
@@ -46,10 +46,10 @@ public static class CommentsEndpointExtensions
                 Type = "comment",
                 Data = comments.ToImmutableList(),
             });
-            
-            // END OF: This should probably be moved somewhere else. I don't know where though :(
 
-            return TypedResults.Ok();
+            #endregion
+
+            return new RazorComponentResult<CommentForm>();
         });
 
         route.MapGet(endpointRoot, () => new RazorComponentResult<CommentList>());
