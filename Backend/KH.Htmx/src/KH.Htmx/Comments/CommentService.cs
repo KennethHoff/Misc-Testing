@@ -1,16 +1,26 @@
+using KH.Htmx.Comments.Events;
+using MediatR;
+
 namespace KH.Htmx.Comments;
 
-public sealed class CommentService
+public interface ICommentService
 {
-    private readonly List<string> _comments = new();
+    void AddComment(Comment comment);
+    IReadOnlyList<Comment> GetComments();
+}
+
+internal sealed class CommentService(IMediator mediator) : ICommentService
+{
+    private readonly List<Comment> _comments = new();
     
-    public void AddComment(string comment)
+    public void AddComment(Comment comment)
     {
+        mediator.Publish(new CommentAddedEvent(comment));
         _comments.Add(comment);
     }
     
-    public IReadOnlyList<string> GetComments()
+    public IReadOnlyList<Comment> GetComments()
     {
-        return _comments.AsReadOnly();
+        return _comments.TakeLast(10).Reverse().ToArray().AsReadOnly();
     }
 }

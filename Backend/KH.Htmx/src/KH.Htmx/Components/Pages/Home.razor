@@ -1,13 +1,10 @@
 ﻿@page "/"
+@using KH.Htmx.Constants
 
 <PageTitle>Home</PageTitle>
 
-<div hx-sse="connect:/rn-updates">
-    <CommentForm/>
+<div hx-sse="connect:@ServerSentEventNames.SseEndpoint">
+    <CommentForm Comment="default"/>
 
-    <div
-        hx-trigger="sse:comment"
-        hx-get="/comments">
-        <CommentList/>
-    </div>
+    <CommentList/>
 </div>

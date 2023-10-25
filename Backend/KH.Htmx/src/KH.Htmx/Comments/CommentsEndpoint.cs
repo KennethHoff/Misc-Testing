@@ -1,4 +1,4 @@
-using System.Collections.Immutable;
+using FluentValidation;
 using KH.Htmx.Components.Components;
 using Lib.AspNetCore.ServerSentEvents;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -10,41 +10,54 @@ public static class CommentsEndpointExtensions
 {
     public static IServiceCollection AddComments(this IServiceCollection services)
     {
-        services.AddSingleton<CommentService>();
+        services.AddSingleton<ICommentService, CommentService>();
         return services;
     }
 
-    public static void MapComments(this IEndpointRouteBuilder route, string endpointRoot)
+    public static void MapComments(this IEndpointRouteBuilder route)
     {
         route.MapPost("/comments", async Task<RazorComponentResult<CommentForm>> (
             IServerSentEventsService serverSentEventsService,
-            CommentService commentService,
-            [FromForm] string? comment) =>
+            IValidator<CommentFormDto> validator,
+            ICommentService commentService,
+            [FromForm] string? firstName,
+            [FromForm] string? lastName,
+            [FromForm] string? text) =>
         {
-            if (string.IsNullOrWhiteSpace(comment))
+            var comment = new CommentFormDto
+            {
+                Text = text,
+                FirstName = firstName,
+                LastName = lastName,
+            };
+
+            if (await validator.ValidateAsync(comment) is { IsValid: false } validationResult)
             {
                 return new RazorComponentResult<CommentForm>(new
                 {
-                    ErrorMessage = "Comment cannot be empty",
+                    Comment = comment,
+                    Errors = validationResult.Errors.Select(x => x.ErrorMessage).ToArray(),
                 });
             }
 
-            commentService.AddComment(comment);
+            commentService.AddComment(comment.ToComment(TimeProvider.System));
 
             #region SSE Stuff that should probably be moved somewhere else
 
             var clients = serverSentEventsService.GetClients();
             if (clients.Count is 0)
             {
+                Console.WriteLine("No clients connected, not sending SSE");
                 return new RazorComponentResult<CommentForm>();
             }
 
-            var comments = commentService.GetComments();
+            Console.WriteLine($"Sending SSE to {clients.Count} clients");
+
             await serverSentEventsService.SendEventAsync(new ServerSentEvent
             {
                 Id = "comment",
                 Type = "comment",
-                Data = comments.ToImmutableList(),
+                Data = ["loL"],
             });
 
             #endregion
@@ -52,6 +65,6 @@ public static class CommentsEndpointExtensions
             return new RazorComponentResult<CommentForm>();
         });
 
-        route.MapGet(endpointRoot, () => new RazorComponentResult<CommentList>());
+        route.MapGet("/comments", () => new RazorComponentResult<CommentList>());
     }
 }

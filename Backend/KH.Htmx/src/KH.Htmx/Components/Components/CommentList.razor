@@ -1,19 +1,56 @@
-@inject CommentService CommentService
+@using Humanizer
+@using KH.Htmx.Constants
+@inject ICommentService CommentService
 
-@foreach (var comment in Comments)
-{
-    <p>
-        @comment
-    </p>
-}
+<table class="w-full text-left"
+       style="view-transition-name: comment-table"
+       hx-swap="outerHTML transition:true"
+       hx-trigger="sse:@ServerSentEventNames.CommentAdded"
+       hx-get="/comments">
+    <thead>
+    <tr class="bg-gray-600 text-white">
+        <th>Author</th>
+        <th>Text</th>
+        <th>Timestamp</th>
+    </tr>
+    </thead>
+    <tbody>
+    @if (Comments is [])
+    {
+        <tr>
+            <td colspan="3">No comments yet - be the first!</td>
+        </tr>
+    }
+    else
+    {
+        foreach (var comment in Comments)
+        {
+            <tr class="[&:nth-child(odd)]:bg-gray-300 [&:nth-child(even)]:bg-gray-100">
+                <td>
+                    @comment.Author.Name
+                </td>
+                <td>
+                    @comment.Text
+                </td>
+                <td>
+                    <time datetime="@comment.Timestamp.ToString("o")" title="@comment.Timestamp.ToString("G")">
+                        @comment.Timestamp.Humanize(DateTimeOffset.Now)
+                    </time>
+                </td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>
+
 
 @code {
-
-    private IReadOnlyList<string> Comments { get; set; } = ArraySegment<string>.Empty;
+    private IReadOnlyList<Comment> Comments { get; set; } = ArraySegment<Comment>.Empty;
 
     protected override Task OnInitializedAsync()
     {
         Comments = CommentService.GetComments();
         return base.OnInitializedAsync();
     }
+
 }

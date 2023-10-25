@@ -534,68 +534,78 @@ video {
   --tw-backdrop-sepia:  ;
 }
 
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .flex {
   display: flex;
 }
 
-.w-96 {
-  width: 24rem;
+.table {
+  display: table;
+}
+
+.w-\[min\(40rem\2c _90vw\)\] {
+  width: min(40rem, 90vw);
+}
+
+.w-full {
+  width: 100%;
 }
 
 .flex-row {
   flex-direction: row;
 }
 
-.flex-col {
-  flex-direction: column;
-}
-
-.gap-4 {
-  gap: 1rem;
-}
-
-.border-2 {
-  border-width: 2px;
-}
-
-.border-8 {
-  border-width: 8px;
-}
-
-.border-4 {
-  border-width: 4px;
-}
-
-.border-blue-300 {
-  --tw-border-opacity: 1;
-  border-color: rgb(147 197 253 / var(--tw-border-opacity));
-}
-
-.border-gray-700 {
-  --tw-border-opacity: 1;
-  border-color: rgb(55 65 81 / var(--tw-border-opacity));
-}
-
-.bg-red-400 {
+.bg-gray-600 {
   --tw-bg-opacity: 1;
-  background-color: rgb(248 113 113 / var(--tw-bg-opacity));
+  background-color: rgb(75 85 99 / var(--tw-bg-opacity));
 }
 
-.p-4 {
-  padding: 1rem;
-}
-
-.text-blue-600 {
-  --tw-text-opacity: 1;
-  color: rgb(37 99 235 / var(--tw-text-opacity));
-}
-
-.text-red-600 {
-  --tw-text-opacity: 1;
-  color: rgb(220 38 38 / var(--tw-text-opacity));
+.text-left {
+  text-align: left;
 }
 
 .text-red-800 {
   --tw-text-opacity: 1;
   color: rgb(153 27 27 / var(--tw-text-opacity));
+}
+
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+/*::view-transition-old(slide-it) {*/
+
+/*    animation: 180ms cubic-bezier(0.4, 0, 1, 1) both fade-out,*/
+
+/*    600ms cubic-bezier(0.4, 0, 0.2, 1) both slide-to-left;*/
+
+/*}*/
+
+/*::view-transition-new(slide-it) {*/
+
+/*    animation: 420ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,*/
+
+/*    600ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;*/
+
+/*}*/
+
+/*.vt_table {*/
+
+/*    view-transition-name: slide-it;*/
+
+/*}*/
+
+.\[\&\:nth-child\(even\)\]\:bg-gray-100:nth-child(even) {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+}
+
+.\[\&\:nth-child\(odd\)\]\:bg-gray-300:nth-child(odd) {
+  --tw-bg-opacity: 1;
+  background-color: rgb(209 213 219 / var(--tw-bg-opacity));
 }
