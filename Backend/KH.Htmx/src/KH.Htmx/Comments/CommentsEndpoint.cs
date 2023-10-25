@@ -17,7 +17,6 @@ public static class CommentsEndpointExtensions
     public static void MapComments(this IEndpointRouteBuilder route)
     {
         route.MapPost("/comments", async Task<RazorComponentResult<CommentForm>> (
-            IServerSentEventsService serverSentEventsService,
             IValidator<CommentFormDto> validator,
             ICommentService commentService,
             [FromForm] string? firstName,
@@ -41,26 +40,6 @@ public static class CommentsEndpointExtensions
             }
 
             commentService.AddComment(comment.ToComment(TimeProvider.System));
-
-            #region SSE Stuff that should probably be moved somewhere else
-
-            var clients = serverSentEventsService.GetClients();
-            if (clients.Count is 0)
-            {
-                Console.WriteLine("No clients connected, not sending SSE");
-                return new RazorComponentResult<CommentForm>();
-            }
-
-            Console.WriteLine($"Sending SSE to {clients.Count} clients");
-
-            await serverSentEventsService.SendEventAsync(new ServerSentEvent
-            {
-                Id = "comment",
-                Type = "comment",
-                Data = ["loL"],
-            });
-
-            #endregion
 
             return new RazorComponentResult<CommentForm>();
         });
