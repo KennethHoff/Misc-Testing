@@ -2,7 +2,9 @@ using KH.Htmx.Comments;
 
 namespace KH.Htmx.HostedServices;
 
-public sealed class AdminCommentSpamEventWorker(ICommentService commentService) : BackgroundService
+public sealed class AdminCommentSpamEventWorker(
+    ICommentService commentService
+) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -16,7 +18,7 @@ public sealed class AdminCommentSpamEventWorker(ICommentService commentService) 
                     Text = "Hello from the server! " + DateTimeOffset.UtcNow.ToString(""),
                     Timestamp = DateTimeOffset.UtcNow,
                 });
-                await Task.Delay(TimeSpan.FromMilliseconds(1000), stoppingToken);
+                await Task.Delay(TimeSpan.FromMilliseconds(3_000), stoppingToken);
             }
         }
         catch (TaskCanceledException)

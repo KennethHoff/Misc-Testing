@@ -7,9 +7,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Build.props = Directory.Build.props
 		Directory.Packages.props = Directory.Packages.props
 		.editorconfig = .editorconfig
+		nuget.config = nuget.config
+		docker-compose.yml = docker-compose.yml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KH.Htmx", "src\KH.Htmx\KH.Htmx.csproj", "{06EB62BC-C177-4854-828E-278FF40D3323}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "telemetry", "telemetry", "{FB4BA946-8045-4BAE-BA35-2CC6E887F3BA}"
+	ProjectSection(SolutionItems) = preProject
+		telemetry\prometheus.yml = telemetry\prometheus.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +31,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{06EB62BC-C177-4854-828E-278FF40D3323} = {503C6BF1-FA73-40E8-8E4C-EE0650DF7BB1}
+		{FB4BA946-8045-4BAE-BA35-2CC6E887F3BA} = {3A2E3A3F-389A-49E6-8C37-F2FDD96C7C3A}
 	EndGlobalSection
 EndGlobal

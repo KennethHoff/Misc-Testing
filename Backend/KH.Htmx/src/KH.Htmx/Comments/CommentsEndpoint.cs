@@ -1,6 +1,5 @@
 using FluentValidation;
 using KH.Htmx.Components.Components;
-using Lib.AspNetCore.ServerSentEvents;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,31 +18,22 @@ public static class CommentsEndpointExtensions
         route.MapPost("/comments", async Task<RazorComponentResult<CommentForm>> (
             IValidator<CommentFormDto> validator,
             ICommentService commentService,
-            [FromForm] string? firstName,
-            [FromForm] string? lastName,
-            [FromForm] string? text) =>
+            [FromForm] CommentFormDto dto) =>
         {
-            var comment = new CommentFormDto
-            {
-                Text = text,
-                FirstName = firstName,
-                LastName = lastName,
-            };
-
-            if (await validator.ValidateAsync(comment) is { IsValid: false } validationResult)
+            if (await validator.ValidateAsync(dto) is { IsValid: false } validationResult)
             {
                 return new RazorComponentResult<CommentForm>(new
                 {
-                    Comment = comment,
+                    Comment = dto,
                     Errors = validationResult.Errors.Select(x => x.ErrorMessage).ToArray(),
                 });
             }
 
-            commentService.AddComment(comment.ToComment(TimeProvider.System));
+            commentService.AddComment(dto.ToComment(TimeProvider.System));
 
             return new RazorComponentResult<CommentForm>();
         });
 
-        route.MapGet("/comments", () => new RazorComponentResult<CommentList>());
+        route.MapGet("/comments", () => new RazorComponentResult<CommentTable>());
     }
 }
