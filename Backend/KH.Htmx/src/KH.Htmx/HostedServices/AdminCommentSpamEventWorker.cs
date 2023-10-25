@@ -13,7 +13,7 @@ public sealed class AdminCommentSpamEventWorker(ICommentService commentService) 
                 commentService.AddComment(new Comment
                 {
                     Author = Person.Admin,
-                    Text = "Hello from the server!",
+                    Text = "Hello from the server! " + DateTimeOffset.UtcNow.ToString(""),
                     Timestamp = DateTimeOffset.UtcNow,
                 });
                 await Task.Delay(TimeSpan.FromMilliseconds(1000), stoppingToken);

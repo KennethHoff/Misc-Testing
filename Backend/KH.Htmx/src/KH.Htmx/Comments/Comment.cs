@@ -1,13 +1,8 @@
 namespace KH.Htmx.Comments;
 
-public readonly record struct CommentId(Guid Value)
-{
-    public static CommentId New() => new(Guid.NewGuid());
-}
-
 public readonly record struct Comment()
 {
-    public CommentId Id { get; private init; } = CommentId.New();
+    public Guid Id { get; private init; } = Guid.NewGuid();
     public required string Text { get; init; }
     public required DateTimeOffset Timestamp { get; init; }
     public required Person Author { get; init; }
