@@ -3,8 +3,7 @@
 @inject ICommentService CommentService
 
 <table class="w-full text-left"
-       style="view-transition-name: comment-table"
-       hx-swap="outerHTML transition:true"
+       hx-swap="outerHTML"
        hx-trigger="sse:@ServerSentEventNames.CommentAdded"
        hx-get="/comments">
     <thead>
