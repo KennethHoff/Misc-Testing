@@ -1,7 +1,9 @@
 using FluentValidation;
 using KH.Htmx.Components.Components;
+using KH.Htmx.Data;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace KH.Htmx.Comments;
 
@@ -9,7 +11,6 @@ public static class CommentsEndpointExtensions
 {
     public static IServiceCollection AddComments(this IServiceCollection services)
     {
-        services.AddSingleton<ICommentService, CommentService>();
         return services;
     }
 
@@ -17,7 +18,7 @@ public static class CommentsEndpointExtensions
     {
         route.MapPost("/comments", async Task<RazorComponentResult<CommentForm>> (
             IValidator<CommentFormDto> validator,
-            ICommentService commentService,
+            IDbContextFactory<KhDbContext> dbContextFactory,
             [FromForm] CommentFormDto dto) =>
         {
             if (await validator.ValidateAsync(dto) is { IsValid: false } validationResult)
@@ -29,7 +30,12 @@ public static class CommentsEndpointExtensions
                 });
             }
 
-            commentService.AddComment(dto.ToComment(TimeProvider.System));
+            var entity = dto.ToCommentEntity(TimeProvider.System);
+
+            await using var dbContext = await dbContextFactory.CreateDbContextAsync();
+            
+            dbContext.Add(entity);
+            await dbContext.SaveChangesAsync();
 
             return new RazorComponentResult<CommentForm>();
         });

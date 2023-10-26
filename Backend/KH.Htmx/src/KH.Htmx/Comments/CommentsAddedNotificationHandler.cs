@@ -1,18 +1,18 @@
-using KH.Htmx.Comments.Events;
 using KH.Htmx.Constants;
+using KH.Htmx.Domain.Comments.Events;
 using Lib.AspNetCore.ServerSentEvents;
 using MediatR;
 
 namespace KH.Htmx.Comments;
 
-public sealed class CommentAddedNotificationHandler(
+public sealed class CommentsAddedNotificationHandler(
         IServerSentEventsService serverSentEventsService
     )
-    : INotificationHandler<CommentAddedEvent>
+    : INotificationHandler<CommentsAddedEvent>
 {
-    public async Task Handle(CommentAddedEvent notification, CancellationToken cancellationToken)
+    public Task Handle(CommentsAddedEvent notification, CancellationToken cancellationToken)
     {
-        await serverSentEventsService.SendEventAsync(new ServerSentEvent
+        return serverSentEventsService.SendEventAsync(new ServerSentEvent
         {
             Id = ServerSentEventNames.CommentAdded,
             Type = ServerSentEventNames.CommentAdded,

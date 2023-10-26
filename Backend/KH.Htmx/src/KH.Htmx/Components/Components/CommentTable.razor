@@ -1,6 +1,11 @@
 @using Humanizer
 @using KH.Htmx.Constants
-@inject ICommentService CommentService
+@using KH.Htmx.Data
+@using KH.Htmx.Domain.Comments
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.EntityFrameworkCore.Internal
+@inject IDbContextFactory<KhDbContext> DbContextFactory
+@inject ILogger<CommentTable> Logger
 
 <table class="w-full text-left"
        hx-swap="outerHTML"
@@ -51,10 +56,15 @@
 @code {
     private IReadOnlyList<Comment> Comments { get; set; } = ArraySegment<Comment>.Empty;
 
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        Comments = CommentService.GetComments();
-        return base.OnInitializedAsync();
-    }
+        await using var dbContext = await DbContextFactory.CreateDbContextAsync();
+        Comments = await dbContext.Comments
+            .Include(comment => comment.Author)
+            .OrderByDescending(comment => comment.Timestamp)
+            .Take(10)
+            .ToListAsync();
 
+        await base.OnInitializedAsync();
+    }
 }

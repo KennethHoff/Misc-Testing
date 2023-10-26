@@ -1,4 +1,7 @@
 using FluentValidation;
+using KH.Htmx.Domain.Comments;
+using KH.Htmx.Domain.People;
+using KH.Htmx.Domain.Shared;
 
 namespace KH.Htmx.Comments;
 
@@ -8,7 +11,8 @@ public readonly record struct CommentFormDto
     public required string? FirstName { get; init; }
     public required string? LastName { get; init; }
 
-    public Comment ToComment(TimeProvider timeProvider)
+    // TODO: Use MediatR instead
+    public Comment ToCommentEntity(TimeProvider timeProvider)
         => new()
         {
             Author = new Person
@@ -23,14 +27,6 @@ public readonly record struct CommentFormDto
             },
             Text = Text ?? string.Empty,
             Timestamp = timeProvider.GetUtcNow(),
-        };
-
-    public Name FullName => string.IsNullOrWhiteSpace(FirstName) || string.IsNullOrWhiteSpace(LastName)
-        ? Name.Anonymous
-        : new Name
-        {
-            First = FirstName ?? string.Empty,
-            Last = LastName ?? string.Empty,
         };
 }
 

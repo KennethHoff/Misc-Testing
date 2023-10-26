@@ -2,10 +2,12 @@ using FluentValidation;
 using KH.Htmx.Comments;
 using KH.Htmx.Components;
 using KH.Htmx.Constants;
+using KH.Htmx.Data.Extensions;
 using KH.Htmx.HostedServices;
 using Lib.AspNetCore.ServerSentEvents;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddKhData(builder.Configuration);
 
 builder.Services.AddComments();
 
@@ -21,6 +23,7 @@ builder.Services.AddMediatR(opt =>
 });
 
 var app = builder.Build();
+app.UseKhData();
 
 app.UseHttpsRedirection();
 
