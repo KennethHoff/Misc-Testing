@@ -15,5 +15,7 @@ file sealed class OutboxMessageTypeConfiguration : IEntityTypeConfiguration<Outb
 
         builder.Property(x => x.Payload)
             .HasMaxLength(500);
+        
+        builder.HasIndex(x => x.ProcessedOnUtc);
     }
 }
