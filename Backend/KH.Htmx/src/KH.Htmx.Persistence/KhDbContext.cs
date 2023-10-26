@@ -1,15 +1,17 @@
 using KH.Htmx.Domain.Comments;
 using KH.Htmx.Domain.People;
-using KH.Htmx.Domain.Shared;
+using KH.Htmx.Domain.Primitives;
+using KH.Htmx.Persistence.Outbox;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace KH.Htmx.Data;
+namespace KH.Htmx.Persistence;
 
 public sealed class KhDbContext(DbContextOptions<KhDbContext> options) : DbContext(options)
 {
     public DbSet<Comment> Comments { get; init; } = null!;
     public DbSet<Person> People { get; init; } = null!;
+    public DbSet<OutboxMessage> OutboxMessages { get; init; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -19,6 +21,7 @@ public sealed class KhDbContext(DbContextOptions<KhDbContext> options) : DbConte
     {
         configurationBuilder.Properties<PersonId>().HaveConversion<TypedIdEfCoreValueConverter<PersonId>>();
         configurationBuilder.Properties<CommentId>().HaveConversion<TypedIdEfCoreValueConverter<CommentId>>();
+        configurationBuilder.Properties<OutboxMessageId>().HaveConversion<TypedIdEfCoreValueConverter<OutboxMessageId>>();
     }
 }
 

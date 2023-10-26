@@ -15,6 +15,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\KH.Htmx.Data\KH.Htmx.Data.csproj" />
+    <ProjectReference Include="..\KH.Htmx.Infrastructure\KH.Htmx.Infrastructure.csproj" />
+    <ProjectReference Include="..\KH.Htmx.Persistence\KH.Htmx.Persistence.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Coravel">
+      <HintPath>..\..\..\..\..\..\..\..\.nuget\packages\coravel\5.0.2\lib\net6.0\Coravel.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

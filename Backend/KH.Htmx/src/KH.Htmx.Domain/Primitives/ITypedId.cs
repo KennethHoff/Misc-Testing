@@ -1,4 +1,4 @@
-namespace KH.Htmx.Domain.Shared;
+namespace KH.Htmx.Domain.Primitives;
 
 public interface ITypedId<out TSelf>
     where TSelf : ITypedId<TSelf>

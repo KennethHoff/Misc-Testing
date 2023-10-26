@@ -2,7 +2,7 @@ using KH.Htmx.Domain.Comments;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace KH.Htmx.Data.EntityTypeConfigurations;
+namespace KH.Htmx.Persistence.EntityTypeConfigurations;
 
 file sealed class CommentTypeConfiguration : IEntityTypeConfiguration<Comment>
 {

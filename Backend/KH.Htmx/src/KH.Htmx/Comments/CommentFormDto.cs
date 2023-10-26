@@ -11,7 +11,6 @@ public readonly record struct CommentFormDto
     public required string? FirstName { get; init; }
     public required string? LastName { get; init; }
 
-    // TODO: Use MediatR instead
     public Comment ToCommentEntity(TimeProvider timeProvider)
         => new()
         {

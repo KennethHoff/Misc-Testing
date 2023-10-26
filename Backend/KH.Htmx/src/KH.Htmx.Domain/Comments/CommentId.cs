@@ -1,4 +1,4 @@
-using KH.Htmx.Domain.Shared;
+using KH.Htmx.Domain.Primitives;
 
 namespace KH.Htmx.Domain.Comments;
 
