@@ -8,9 +8,6 @@
     <PackageReference Include="Humanizer" />
     <PackageReference Include="Lib.AspNetCore.ServerSentEvents" />
     <PackageReference Include="MediatR" />
-    <PackageReference Include="OpenTelemetry.Exporter.Prometheus.AspNetCore" />
-    <PackageReference Include="OpenTelemetry.Extensions.Hosting" />
-    <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\.dockerignore">
