@@ -1,10 +1,10 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Dotnet Watch" type="RunDotNetWatch" factoryName="RunDotNetWatch">
-    <option name="exePath" value="$PROJECT_DIR$/artifacts/bin/Khtmx/debug/Khtmx" />
+    <option name="exePath" value="$PROJECT_DIR$/artifacts/bin/Khtmx.Web/debug/Khtmx.Web" />
     <option name="programParameters" value="" />
-    <option name="projectFilePath" value="$PROJECT_DIR$/src/Khtmx/Khtmx.csproj" />
+    <option name="projectFilePath" value="$PROJECT_DIR$/src/Khtmx.Web/Khtmx.Web.csproj" />
     <option name="projectTfm" value="net8.0" />
-    <option name="workingDirectory" value="$PROJECT_DIR$/src/Khtmx" />
+    <option name="workingDirectory" value="$PROJECT_DIR$/src/Khtmx.Web" />
     <method v="2" />
   </configuration>
 </component>

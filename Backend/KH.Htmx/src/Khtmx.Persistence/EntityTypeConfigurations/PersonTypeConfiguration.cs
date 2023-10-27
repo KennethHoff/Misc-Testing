@@ -19,8 +19,5 @@ file sealed class PersonTypeConfiguration : IEntityTypeConfiguration<Person>
             name.Property(x => x.Last)
                 .HasMaxLength(200);
         });
-
-        builder.HasMany(e => e.Comments)
-            .WithOne(x => x.Author);
     }
 }

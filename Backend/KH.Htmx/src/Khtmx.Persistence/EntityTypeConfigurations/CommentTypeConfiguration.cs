@@ -14,9 +14,5 @@ file sealed class CommentTypeConfiguration : IEntityTypeConfiguration<Comment>
             .HasMaxLength(500);
 
         builder.Property(e => e.Timestamp);
-
-        builder.HasOne(e => e.Author)
-            .WithMany(x => x.Comments)
-            .HasForeignKey(e => e.AuthorId);
     }
 }
