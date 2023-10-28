@@ -1,21 +1,21 @@
-using KH.Htmx.Persistence.Interceptors;
+using KH.Htmx.Data.Interceptors;
 using KH.Htmx.Domain.People;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace KH.Htmx.Persistence.Extensions;
+namespace KH.Htmx.Data.Extensions;
 
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddKhData(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
+        services.AddTransient<CommentAddedToDatabaseInterceptor>();
         services.AddDbContextFactory<KhDbContext>((serviceProvider, opt) =>
         {
             opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-            opt.AddInterceptors(serviceProvider.GetRequiredService<ConvertDomainEventsToOutboxMessagesInterceptor>());
+            opt.AddInterceptors(serviceProvider.GetRequiredService<CommentAddedToDatabaseInterceptor>());
         });
 
         return services;
@@ -29,7 +29,6 @@ public static class WebApplicationExtensions
         using var scope = app.Services.CreateScope();
         var dbContextFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<KhDbContext>>();
         using var dbContext = dbContextFactory.CreateDbContext();
-        dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
 
         if (dbContext.People.Contains(Person.Admin))

@@ -1,10 +1,9 @@
 using KH.Htmx.Domain.Comments;
-using KH.Htmx.Domain.Primitives;
 using KH.Htmx.Domain.Shared;
 
 namespace KH.Htmx.Domain.People;
 
-public sealed class Person : AggregateRoot
+public sealed record class Person
 {
     public static readonly Person Admin = new()
     {

@@ -8,9 +8,9 @@ namespace KH.Htmx.Comments;
 public sealed class CommentsAddedNotificationHandler(
         IServerSentEventsService serverSentEventsService
     )
-    : INotificationHandler<CommentCreatedDomainEvent>
+    : INotificationHandler<CommentsAddedEvent>
 {
-    public Task Handle(CommentCreatedDomainEvent notification, CancellationToken cancellationToken)
+    public Task Handle(CommentsAddedEvent notification, CancellationToken cancellationToken)
     {
         return serverSentEventsService.SendEventAsync(new ServerSentEvent
         {

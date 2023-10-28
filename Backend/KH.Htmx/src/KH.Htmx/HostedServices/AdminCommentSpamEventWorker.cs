@@ -1,4 +1,4 @@
-using KH.Htmx.Persistence;
+using KH.Htmx.Data;
 using KH.Htmx.Domain.Comments;
 using KH.Htmx.Domain.People;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +11,8 @@ public sealed class AdminCommentSpamEventWorker(
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        await Task.Delay(TimeSpan.FromMilliseconds(3_000), stoppingToken);
+
         try
         {
             while (!stoppingToken.IsCancellationRequested)
@@ -32,10 +34,10 @@ public sealed class AdminCommentSpamEventWorker(
                         Text = "Hello from the server! " + DateTimeOffset.UtcNow.ToString(""),
                         Timestamp = DateTimeOffset.UtcNow,
                     }, stoppingToken);
-
+                
                 await dbContext.SaveChangesAsync(stoppingToken);
 
-                await Task.Delay(TimeSpan.FromMilliseconds(50), stoppingToken);
+                await Task.Delay(TimeSpan.FromMilliseconds(3_000), stoppingToken);
             }
         }
         catch (TaskCanceledException)

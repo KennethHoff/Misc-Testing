@@ -1,6 +1,6 @@
 @using Humanizer
 @using KH.Htmx.Constants
-@using KH.Htmx.Persistence
+@using KH.Htmx.Data
 @using KH.Htmx.Domain.Comments
 @using Microsoft.EntityFrameworkCore
 @using Microsoft.EntityFrameworkCore.Internal
@@ -8,7 +8,7 @@
 @inject ILogger<CommentTable> Logger
 
 <table class="w-full text-left"
-       hx-swap="outerHTML transition:true"
+       hx-swap="outerHTML"
        hx-trigger="sse:@ServerSentEventNames.CommentAdded"
        hx-get="/comments">
     <colgroup>
@@ -62,7 +62,7 @@
         Comments = await dbContext.Comments
             .Include(comment => comment.Author)
             .OrderByDescending(comment => comment.Timestamp)
-            .Take(20)
+            .Take(10)
             .ToListAsync();
 
         await base.OnInitializedAsync();

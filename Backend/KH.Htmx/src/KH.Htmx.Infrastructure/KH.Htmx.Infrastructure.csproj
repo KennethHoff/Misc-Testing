@@ -1,8 +1,0 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <PackageReference Include="Coravel" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\KH.Htmx.Persistence\KH.Htmx.Persistence.csproj" />
-  </ItemGroup>
-</Project>

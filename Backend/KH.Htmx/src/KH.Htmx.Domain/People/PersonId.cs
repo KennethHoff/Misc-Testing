@@ -1,4 +1,4 @@
-using KH.Htmx.Domain.Primitives;
+using KH.Htmx.Domain.Shared;
 
 namespace KH.Htmx.Domain.People;
 

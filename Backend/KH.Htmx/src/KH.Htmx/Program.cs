@@ -1,16 +1,12 @@
-using Coravel;
 using FluentValidation;
 using KH.Htmx.Comments;
 using KH.Htmx.Components;
 using KH.Htmx.Constants;
-using KH.Htmx.Persistence.Extensions;
+using KH.Htmx.Data.Extensions;
 using KH.Htmx.HostedServices;
-using KH.Htmx.Infrastructure.BackgroundJobs;
 using Lib.AspNetCore.ServerSentEvents;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddScheduler();
-builder.Services.AddTransient<ProcessOutboxMessagesInvocable>();
 builder.Services.AddKhData(builder.Configuration);
 
 builder.Services.AddComments();
@@ -27,12 +23,6 @@ builder.Services.AddMediatR(opt =>
 });
 
 var app = builder.Build();
-app.Services.UseScheduler(scheduler =>
-{
-    scheduler
-        .Schedule<ProcessOutboxMessagesInvocable>()
-        .EverySecond();
-});
 app.UseKhData();
 
 app.UseHttpsRedirection();
