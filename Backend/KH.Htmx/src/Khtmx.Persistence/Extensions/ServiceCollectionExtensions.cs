@@ -1,5 +1,4 @@
 using Khtmx.Domain.Entities;
-using Khtmx.Domain.Primitives;
 using Khtmx.Persistence.Interceptors;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -33,12 +32,12 @@ public static class WebApplicationExtensions
         dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
 
-        if (dbContext.People.Any(x => x.Id == PersonId.Admin))
+        if (dbContext.People.Contains(Person.Admin))
         {
             return app;
         }
 
-        var personEntity = Person.Create(PersonId.Admin, new Name("Admin", "Admin"));
+        var personEntity = Person.Admin;
         dbContext.People.Add(personEntity);
         dbContext.SaveChanges();
 

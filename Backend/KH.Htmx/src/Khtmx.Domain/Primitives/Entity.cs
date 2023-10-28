@@ -1,15 +1,10 @@
 namespace Khtmx.Domain.Primitives;
 
-public abstract class Entity<TSelf, TId> : IEquatable<TSelf>
+public abstract class Entity<TSelf, TId>(TId id) : IEquatable<TSelf>
     where TSelf : Entity<TSelf, TId>
     where TId: ITypedId<TId>
 {
-    public TId Id { get; }
-
-    protected Entity(TId id)
-    {
-        Id = id;
-    }
+    public TId Id { get; } = id;
 
     public bool Equals(TSelf? other)
     {

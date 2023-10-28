@@ -1,7 +1,5 @@
 using FluentValidation;
 using Khtmx.Persistence;
-using Khtmx.Application.Comments.Commands.CreateComment;
-using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,15 +16,26 @@ public static class CommentsEndpointExtensions
     public static void MapComments(this IEndpointRouteBuilder route)
     {
         route.MapPost("/comments", async Task<RazorComponentResult<CommentForm>> (
-            ISender sender,
+            IValidator<CommentFormDto> validator,
+            IDbContextFactory<KhDbContext> dbContextFactory,
             [FromForm] CommentFormDto dto) =>
         {
-            var commentId = await publisher.Publish(new CreateCommentCommand(
-                dto.AuthorId,
-                dto.PostId,
-                dto.Text,
-                TimeProvider.System.GetUtcNow()));
+            if (await validator.ValidateAsync(dto) is { IsValid: false } validationResult)
+            {
+                return new RazorComponentResult<CommentForm>(new
+                {
+                    Comment = dto,
+                    Errors = validationResult.Errors.Select(x => x.ErrorMessage).ToArray(),
+                });
+            }
+
+            var entity = dto.ToCommentEntity(TimeProvider.System);
+
+            await using var dbContext = await dbContextFactory.CreateDbContextAsync();
             
+            dbContext.Add(entity);
+            await dbContext.SaveChangesAsync();
+
             return new RazorComponentResult<CommentForm>();
         });
 

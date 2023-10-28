@@ -1,25 +1,14 @@
+// using Khtmx.Domain.Comments.Events;
+
 using Khtmx.Domain.Primitives;
-using Khtmx.Domain.Shared;
 
 namespace Khtmx.Domain.Entities;
 
-public sealed class Comment : Entity<Comment, CommentId>
+public sealed class Comment(CommentId id) : Entity<Comment, CommentId>(id)
 {
-    public string Text { get; }
-    public DateTimeOffset Timestamp { get; }
-    public PersonId AuthorId { get; }
-
-    private Comment(CommentId id, PersonId authorId, string text, DateTimeOffset timestamp) : base(id)
-    {
-        AuthorId = authorId;
-        Text = text;
-        Timestamp = timestamp;
-    }
-
-    public static Result<Comment> Create(CommentId id, PersonId authorId, string text, DateTimeOffset timestamp)
-    {
-        return new Comment(id, authorId, text, timestamp);
-    }
+    public required string Text { get; init; }
+    public required DateTimeOffset Timestamp { get; init; }
+    public required PersonId AuthorId { get; init; }
 }
 
 public readonly record struct CommentId(Guid Value) : ITypedId<CommentId>

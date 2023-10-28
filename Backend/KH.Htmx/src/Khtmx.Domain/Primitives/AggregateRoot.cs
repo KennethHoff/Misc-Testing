@@ -6,15 +6,11 @@ public interface IAggregateRoot
     void ClearDomainEvents();
 }
 
-public abstract class AggregateRoot<TSelf, TId> : Entity<TSelf, TId>, IAggregateRoot
+public abstract class AggregateRoot<TSelf, TId>(TId id) : Entity<TSelf, TId>(id), IAggregateRoot
     where TSelf : AggregateRoot<TSelf, TId>
     where TId : ITypedId<TId>
 {
     private readonly List<IDomainEvent> _domainEvents = new();
-
-    protected AggregateRoot(TId id) : base(id)
-    {
-    }
 
     protected void RaiseDomainEvent(IDomainEvent domainEvent)
     {

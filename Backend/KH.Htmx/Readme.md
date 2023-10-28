@@ -38,10 +38,6 @@ The domain is a simple blog. It has the following entities:
   - Someone who can log in and write posts and comments.
   - A person can have zero or more posts.
   - A person can have zero or more comments.
-  - Aggregate root for [Post](#Post) and [Comment](#Comment).
-    - A person can only modify their own posts and comments.
-      - Admins can modify any post or comment.
-    - Deleting a person deletes all their posts and comments.
 
 - [Post](#Post)
   - A post is a blog post written by a person.
@@ -51,7 +47,6 @@ The domain is a simple blog. It has the following entities:
 - [Comment](#Comment)
   - A comment is a comment written by a person on a post.
   - A comment can be a reply to another comment.
-  - A comment can have zero or more replies.
 
 ### Person
 - [ ] Persons
