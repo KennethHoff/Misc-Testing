@@ -2,29 +2,16 @@ using Khtmx.Domain.Primitives;
 
 namespace Khtmx.Domain.Entities;
 
-public sealed class Person : AggregateRoot<Person, PersonId>
+public sealed class Person(PersonId id) : AggregateRoot<Person, PersonId>(id)
 {
-    private readonly List<Comment> _comments = new();
-    
-    public Name Name { get; }
-
-    private Person(PersonId id, Name name) : base(id)
+    public static readonly Person Admin = new(PersonId.Admin)
     {
-        Name = name;
-    }
-    
-    public IReadOnlyCollection<Comment> Comments => _comments.AsReadOnly();
+        Name = Name.Admin,
+    };
 
-    public static Person Create(PersonId id, Name name)
-    {
-        return new Person(id, name);
-    }
+    public required Name Name { get; init; }
 
-    public void AddComment(Comment comment)
-    {
-        RaiseDomainEvent(new CommentAddedToPersonDomainEvent(Id, comment.Id));
-        _comments.Add(comment);
-    }
+    public List<Comment> Comments { get; init; } = [];
 }
 
 public readonly record struct PersonId(Guid Value) : ITypedId<PersonId>
