@@ -6,9 +6,9 @@ K(enneth)H(off)TMX - HTMX testing
 
 - [X] HTMX-based UI
 - [X] Server-Sent Events
-- [X] Domain-driven design
+- [ ] Domain-driven design
 - [ ] Event sourcing
-- [X] CQRS
+- [ ] CQRS
 - [X] Database
   - [X] SQL Server
 - [X] ORM
@@ -38,10 +38,6 @@ The domain is a simple blog. It has the following entities:
   - Someone who can log in and write posts and comments.
   - A person can have zero or more posts.
   - A person can have zero or more comments.
-  - Aggregate root for [Post](#Post) and [Comment](#Comment).
-    - A person can only modify their own posts and comments.
-      - Admins can modify any post or comment.
-    - Deleting a person deletes all their posts and comments.
 
 - [Post](#Post)
   - A post is a blog post written by a person.
@@ -97,10 +93,10 @@ The domain is a simple blog. It has the following entities:
 
 ### Comment
 
-- [X] Create
-  - [X] Author (See [Person](#Person))
+- [ ] Create
+  - [ ] Author (See [Person](#Person))
   - [ ] Post (See [Post](#Post))
-  - [X] Content
+  - [ ] Content
   - [ ] Published
   - [ ] Modified
 - [ ] Read
