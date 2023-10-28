@@ -33,6 +33,7 @@ public sealed class ProcessOutboxMessagesInvocable(
                 if (domainEvent is null)
                 {
                     logger.LogWarning("Failed to deserialize domain event with ID {Id}", outboxMessage.Id);
+                    // How did this happen?
                     continue;
                 }
 
