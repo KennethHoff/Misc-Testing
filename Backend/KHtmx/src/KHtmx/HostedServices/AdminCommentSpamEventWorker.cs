@@ -1,4 +1,4 @@
-using KHtmx.Data;
+using KHtmx.Persistence;
 using KHtmx.Domain.Comments;
 using KHtmx.Domain.People;
 using Microsoft.EntityFrameworkCore;

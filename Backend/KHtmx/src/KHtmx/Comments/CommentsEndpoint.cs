@@ -1,6 +1,6 @@
 using FluentValidation;
 using KHtmx.Components.Comments;
-using KHtmx.Data;
+using KHtmx.Persistence;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

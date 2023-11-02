@@ -15,6 +15,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\KHtmx.Data\KHtmx.Data.csproj" />
+    <ProjectReference Include="..\KHtmx.Persistence\KHtmx.Persistence.csproj" />
   </ItemGroup>
 </Project>

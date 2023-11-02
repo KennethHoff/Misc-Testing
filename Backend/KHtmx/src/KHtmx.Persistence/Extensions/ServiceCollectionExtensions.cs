@@ -1,11 +1,11 @@
-using KHtmx.Data.Interceptors;
 using KHtmx.Domain.People;
+using KHtmx.Persistence.Interceptors;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace KHtmx.Data.Extensions;
+namespace KHtmx.Persistence.Extensions;
 
 public static class ServiceCollectionExtensions
 {

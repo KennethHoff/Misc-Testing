@@ -4,7 +4,7 @@ using KHtmx.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace KHtmx.Data;
+namespace KHtmx.Persistence;
 
 public sealed class KhDbContext(DbContextOptions<KhDbContext> options) : DbContext(options)
 {

@@ -18,7 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "telemetry", "telemetry", "{
 		telemetry\prometheus.yml = telemetry\prometheus.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KHtmx.Data", "src\KHtmx.Data\KHtmx.Data.csproj", "{A214CD7C-60FD-457E-B55C-83AECFF5A371}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KHtmx.Persistence", "src\KHtmx.Persistence\KHtmx.Persistence.csproj", "{A214CD7C-60FD-457E-B55C-83AECFF5A371}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KHtmx.Domain", "src\KHtmx.Domain\KHtmx.Domain.csproj", "{3CAC2D92-5F78-4885-9834-933D6B8081F6}"
 EndProject

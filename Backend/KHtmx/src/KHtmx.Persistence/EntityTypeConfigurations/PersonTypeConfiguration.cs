@@ -2,7 +2,7 @@ using KHtmx.Domain.People;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace KHtmx.Data.EntityTypeConfigurations;
+namespace KHtmx.Persistence.EntityTypeConfigurations;
 
 file sealed class PersonTypeConfiguration : IEntityTypeConfiguration<Person>
 {

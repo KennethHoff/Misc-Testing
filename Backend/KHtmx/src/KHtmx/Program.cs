@@ -2,7 +2,7 @@ using FluentValidation;
 using KHtmx.Comments;
 using KHtmx.Components;
 using KHtmx.Constants;
-using KHtmx.Data.Extensions;
+using KHtmx.Persistence.Extensions;
 using KHtmx.HostedServices;
 using Lib.AspNetCore.ServerSentEvents;
 

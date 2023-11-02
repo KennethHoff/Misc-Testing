@@ -4,7 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace KHtmx.Data.Interceptors;
+namespace KHtmx.Persistence.Interceptors;
 
 internal sealed class CommentAddedToDatabaseInterceptor(IMediator mediator) : SaveChangesInterceptor
 {
