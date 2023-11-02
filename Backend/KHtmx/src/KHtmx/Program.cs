@@ -3,7 +3,6 @@ using KHtmx.Comments;
 using KHtmx.Components;
 using KHtmx.Constants;
 using KHtmx.Persistence.Extensions;
-using KHtmx.HostedServices;
 using Lib.AspNetCore.ServerSentEvents;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +14,7 @@ builder.Services.AddComments();
 builder.Services.AddRazorComponents();
 
 builder.Services.AddServerSentEvents();
-builder.Services.AddHostedService<AdminCommentSpamEventWorker>();
+// builder.Services.AddHostedService<AdminCommentSpamEventWorker>();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>(includeInternalTypes: true);
 builder.Services.AddMediatR(opt =>
 {

@@ -10,7 +10,7 @@
 <table
     class="w-full text-left"
     hx-swap="outerHTML"
-    hx-trigger="sse:@ServerSentEventNames.CommentAdded"
+    hx-trigger="sse:@ServerSentEventNames.CommentAdded, sse:@ServerSentEventNames.CommentDeleted, sse:@ServerSentEventNames.CommentUpdated"
     hx-get="@CommentsEndpointExtensions.CommentsEndpoint">
     <colgroup>
         <col />

@@ -2,17 +2,44 @@
 @using KHtmx.Persistence
 @using Microsoft.EntityFrameworkCore
 @using Humanizer
+@using KHtmx.Comments
 @inject KhDbContext DbContext
 
-<SelfClosingDialog Id="comment-dialog">
+<SelfClosingDialog
+    Id="comment-dialog">
     @if (_comment is not null)
     {
         <header>
-            Written by @_comment.Author.Name <time datetime="@_comment.Timestamp" title="@_comment.Timestamp.ToString("F")">@_comment.Timestamp.Humanize()</time>
+            Written by @_comment.Author.Name
+            <time
+                datetime="@_comment.Timestamp"
+                title="@_comment.Timestamp.ToString("F")">
+                @_comment.Timestamp.Humanize()
+            </time>
         </header>
         <p>
             @_comment.Text
         </p>
+
+        <div>
+            <!-- Delete Button-->
+            <button
+                type="button"
+                class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                hx-delete="@($"{CommentsEndpointExtensions.CommentsEndpoint}/{_comment.Id}")"
+                hx-on="htmx:afterRequest:htmx.trigger('#comment-dialog', 'close')">
+                Delete
+            </button>
+
+            <!-- Edit Button-->
+            <button
+                type="button"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                hx-get="@($"{CommentsEndpointExtensions.CommentsEndpoint}/{_comment.Id}/edit")"
+                hx-target="#comment-dialog">
+                Edit
+            </button>
+        </div>
     }
     else
     {

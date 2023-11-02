@@ -11,7 +11,7 @@ public readonly record struct CommentFormDto
     public required string? FirstName { get; init; }
     public required string? LastName { get; init; }
 
-    // TODO: Use MediatR instead
+    // TODO: Use CQRS instead
     public Comment ToCommentEntity(TimeProvider timeProvider)
         => new()
         {
@@ -27,6 +27,14 @@ public readonly record struct CommentFormDto
             },
             Text = Text ?? string.Empty,
             Timestamp = timeProvider.GetUtcNow(),
+        };
+    
+    public static CommentFormDto FromCommentEntity(Comment comment)
+        => new()
+        {
+            Text = comment.Text,
+            FirstName = comment.Author.Name.First,
+            LastName = comment.Author.Name.Last,
         };
 }
 

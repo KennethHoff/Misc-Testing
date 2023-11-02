@@ -11,11 +11,11 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddKhData(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddTransient<CommentAddedToDatabaseInterceptor>();
+        services.AddTransient<CommentsSavingChangesInterceptor>();
         services.AddDbContextFactory<KhDbContext>((serviceProvider, opt) =>
         {
             opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-            opt.AddInterceptors(serviceProvider.GetRequiredService<CommentAddedToDatabaseInterceptor>());
+            opt.AddInterceptors(serviceProvider.GetRequiredService<CommentsSavingChangesInterceptor>());
         });
 
         return services;

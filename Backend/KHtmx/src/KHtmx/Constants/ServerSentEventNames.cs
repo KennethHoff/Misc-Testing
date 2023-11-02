@@ -11,4 +11,14 @@ public static class ServerSentEventNames
     /// The name of the event that is sent when a comment is added.
     /// </summary>
     public const string CommentAdded = "comment-added";
+    
+    /// <summary>
+    /// The name of the event that is sent when a comment is updated.
+    /// </summary>
+    public const string CommentUpdated = "comment-updated";
+    
+    /// <summary>
+    /// The name of the event that is sent when a comment is deleted.
+    /// </summary>
+    public const string CommentDeleted = "comment-deleted";
 }
