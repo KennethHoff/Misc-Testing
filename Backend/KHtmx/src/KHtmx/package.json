@@ -1,7 +1,4 @@
 {
-    "engines": {
-        "node": "21.1.0"
-    },
     "scripts": {
         "build:css": "npx tailwindcss -i Styles/Tailwind.css -o ./wwwroot/app.css -w"
     },
