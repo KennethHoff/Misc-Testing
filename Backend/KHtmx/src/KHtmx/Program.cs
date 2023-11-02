@@ -1,5 +1,5 @@
 using FluentValidation;
-using KH.Htmx.Components;
+using KHtmx;
 using KHtmx.Comments;
 using KHtmx.Constants;
 using KHtmx.Data.Extensions;
@@ -33,6 +33,6 @@ app.UseAntiforgery();
 app.MapComments();
 app.MapServerSentEvents(ServerSentEventNames.SseEndpoint);
 
-app.MapRazorComponents<App>();
+app.MapRazorComponents<WebAssemblyMarker>();
 
 app.Run();
