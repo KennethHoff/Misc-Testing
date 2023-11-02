@@ -1,0 +1,70 @@
+@using Humanizer
+@using KHtmx.Constants
+@using KHtmx.Data
+@using KHtmx.Domain.Comments
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.EntityFrameworkCore.Internal
+@inject IDbContextFactory<KhDbContext> DbContextFactory
+@inject ILogger<CommentTable> Logger
+
+<table class="w-full text-left"
+       hx-swap="outerHTML"
+       hx-trigger="sse:@ServerSentEventNames.CommentAdded"
+       hx-get="/comments">
+    <colgroup>
+        <col/>
+        <col/>
+        <col/>
+    </colgroup>
+    <thead>
+    <tr class="bg-gray-600 text-white">
+        <th>Author</th>
+        <th>Text</th>
+        <th>Timestamp</th>
+    </tr>
+    </thead>
+    <tbody>
+    @if (Comments is [])
+    {
+        <tr>
+            <td colspan="3">No comments yet - be the first!</td>
+        </tr>
+    }
+    else
+    {
+        foreach (var comment in Comments)
+        {
+            <tr class="[&:nth-child(odd)]:bg-gray-300 [&:nth-child(even)]:bg-gray-100">
+                <td>
+                    @comment.Author.Name
+                </td>
+                <td>
+                    @comment.Text
+                </td>
+                <td>
+                    <time datetime="@comment.Timestamp.ToString("o")" title="@comment.Timestamp.ToString("G")">
+                        @comment.Timestamp.Humanize(DateTimeOffset.Now)
+                    </time>
+                </td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>
+
+
+@code {
+    private IReadOnlyList<Comment> Comments { get; set; } = ArraySegment<Comment>.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await using var dbContext = await DbContextFactory.CreateDbContextAsync();
+        Comments = await dbContext.Comments
+            .Include(comment => comment.Author)
+            .OrderByDescending(comment => comment.Timestamp)
+            .Take(10)
+            .ToListAsync();
+
+        await base.OnInitializedAsync();
+    }
+}
