@@ -1,4 +1,5 @@
 @using Humanizer
+@using KHtmx.Comments
 @using KHtmx.Constants
 @using KHtmx.Data
 @using KHtmx.Domain.Comments
@@ -9,7 +10,7 @@
 <table class="w-full text-left"
        hx-swap="outerHTML"
        hx-trigger="sse:@ServerSentEventNames.CommentAdded"
-       hx-get="/comments">
+       hx-get="@CommentsEndpointExtensions.CommentsEndpoint">
     <colgroup>
         <col/>
         <col/>

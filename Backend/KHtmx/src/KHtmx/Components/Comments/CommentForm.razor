@@ -9,10 +9,9 @@
     }
     <form
         class="flex flex-row"
-        hx-post="/comments"
+        hx-post="@CommentsEndpointExtensions.CommentsEndpoint"
         hx-target="closest [data-wrapper]"
-        hx-swap="outerHTML"
-    >
+        hx-swap="outerHTML">
         <div class="htmx-indicator">
             Loading...
         </div>
@@ -20,6 +19,7 @@
 
         <!-- Comment Input-->
         <input type="text" placeholder="Comment" name="text" value="@Comment?.Text"/>
+
         <!-- FirstName input -->
         <input placeholder="First Name" name="firstName" value="@Comment?.FirstName"/>
 

@@ -1,5 +1,5 @@
 using FluentValidation;
-using KHtmx.Components.Components;
+using KHtmx.Components.Comments;
 using KHtmx.Data;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +9,7 @@ namespace KHtmx.Comments;
 
 public static class CommentsEndpointExtensions
 {
+    public const string CommentsEndpoint = "/comments";
     public static IServiceCollection AddComments(this IServiceCollection services)
     {
         return services;
@@ -16,7 +17,7 @@ public static class CommentsEndpointExtensions
 
     public static void MapComments(this IEndpointRouteBuilder route)
     {
-        route.MapPost("/comments", async Task<RazorComponentResult<CommentForm>> (
+        route.MapPost(CommentsEndpoint, async Task<RazorComponentResult<CommentForm>> (
             IValidator<CommentFormDto> validator,
             IDbContextFactory<KhDbContext> dbContextFactory,
             [FromForm] CommentFormDto dto) =>
@@ -40,6 +41,6 @@ public static class CommentsEndpointExtensions
             return new RazorComponentResult<CommentForm>();
         });
 
-        route.MapGet("/comments", () => new RazorComponentResult<CommentTable>());
+        route.MapGet(CommentsEndpoint, () => new RazorComponentResult<CommentTable>());
     }
 }
