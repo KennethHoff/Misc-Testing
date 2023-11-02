@@ -7,8 +7,11 @@ root = true
 indent_style = space
 
 # ReSharper properties
+resharper_html_insert_final_newline = true
+resharper_linebreak_before_all_elements = true
 resharper_max_array_initializer_elements_on_line = 1
 resharper_max_initializer_elements_on_line = 1
+resharper_no_indent_inside_elements = html,body
 resharper_place_simple_initializer_on_single_line = false
 resharper_wrap_array_initializer_style = chop_always
 resharper_wrap_object_and_collection_initializer_style = chop_always
@@ -131,8 +134,8 @@ csharp_preserve_single_line_blocks = true
 ###############################
 # dotnet Analyzers            #
 ###############################
-dotnet_diagnostic.IDE0005.severity = warning # Using directive is unnecessary.
-dotnet_diagnostic.CA2012.severity = error # Use ValueTasks correctly.
+dotnet_diagnostic.ide0005.severity = warning # Using directive is unnecessary.
+dotnet_diagnostic.ca2012.severity = error # Use ValueTasks correctly.
 
 
 [*.vb]

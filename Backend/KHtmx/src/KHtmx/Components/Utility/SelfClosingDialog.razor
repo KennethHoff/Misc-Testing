@@ -1,0 +1,21 @@
+<dialog id="@Id">
+    @ChildContent
+
+    <script type="module">
+        const dialog = document.querySelector("#@Id");
+        dialog.showModal();
+        
+        dialog.addEventListener("close", () => {
+            dialog.remove();
+        });
+    </script>
+</dialog>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public string? Id { get; init; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; init; }
+}

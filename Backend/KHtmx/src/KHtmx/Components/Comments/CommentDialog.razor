@@ -1,0 +1,37 @@
+@using KHtmx.Domain.Comments
+@using KHtmx.Persistence
+@using Microsoft.EntityFrameworkCore
+@using Humanizer
+@inject KhDbContext DbContext
+
+<SelfClosingDialog Id="comment-dialog">
+    @if (_comment is not null)
+    {
+        <header>
+            Written by @_comment.Author.Name <time datetime="@_comment.Timestamp" title="@_comment.Timestamp.ToString("F")">@_comment.Timestamp.Humanize()</time>
+        </header>
+        <p>
+            @_comment.Text
+        </p>
+    }
+    else
+    {
+        <header>
+            <h1>Comment not found</h1>
+        </header>
+    }
+</SelfClosingDialog>
+
+@code
+{
+    [Parameter, EditorRequired]
+    public CommentId Id { get; set; }
+
+    private Comment? _comment;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _comment = await DbContext.Comments
+            .FirstOrDefaultAsync(x => x.Id == Id);
+    }
+}

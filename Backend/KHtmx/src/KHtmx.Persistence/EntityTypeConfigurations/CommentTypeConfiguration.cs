@@ -17,5 +17,8 @@ file sealed class CommentTypeConfiguration : IEntityTypeConfiguration<Comment>
 
         builder.HasOne(e => e.Author)
             .WithMany(x => x.Comments);
+        
+        builder.Navigation(e => e.Author)
+            .AutoInclude();
     }
 }

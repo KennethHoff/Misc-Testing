@@ -1,5 +1,6 @@
 using FluentValidation;
 using KHtmx.Components.Comments;
+using KHtmx.Domain.Comments;
 using KHtmx.Persistence;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -42,5 +43,9 @@ public static class CommentsEndpointExtensions
         });
 
         route.MapGet(CommentsEndpoint, () => new RazorComponentResult<CommentTable>());
+        route.MapGet(CommentsEndpoint + "/{id}", ([FromRoute] CommentId id) =>
+        {
+            return new RazorComponentResult<CommentDialog>(new { Id = id });
+        });
     }
 }

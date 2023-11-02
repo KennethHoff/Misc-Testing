@@ -1,6 +1,6 @@
 namespace KHtmx.Domain.Primitives;
 
-public interface ITypedId<out TSelf>
+public interface ITypedId<TSelf> : IParsable<TSelf>
     where TSelf : ITypedId<TSelf>
 {
     Guid Value { get; }
