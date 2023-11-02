@@ -1,3 +1,4 @@
+using KHtmx.Domain.Primitives;
 using KHtmx.Domain.Shared;
 
 namespace KHtmx.Domain.Comments;
