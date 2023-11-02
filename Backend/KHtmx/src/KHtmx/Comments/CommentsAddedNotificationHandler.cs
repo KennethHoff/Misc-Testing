@@ -6,9 +6,8 @@ using MediatR;
 namespace KHtmx.Comments;
 
 public sealed class CommentsAddedNotificationHandler(
-        IServerSentEventsService serverSentEventsService
-    )
-    : INotificationHandler<CommentsAddedEvent>
+    IServerSentEventsService serverSentEventsService
+) : INotificationHandler<CommentsAddedEvent>
 {
     public Task Handle(CommentsAddedEvent notification, CancellationToken cancellationToken)
     {
