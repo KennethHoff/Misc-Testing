@@ -14,10 +14,9 @@
     <form
         class="flex flex-row gap-4 py-2"
         hx-patch="@(CommentsEndpointExtensions.CommentsEndpoint + "/" + Comment?.Id)"
-        hx-target="closest .wrapper"
-        hx-swap="outerHTML">
+        hx-on="htmx:afterRequest:htmx.trigger('#comment_dialog', 'close')">
+        
         <AntiforgeryToken />
-
 
         <!-- Hidden CommentId Input-->
         <input
