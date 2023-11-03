@@ -10,12 +10,20 @@
             @ErrorMessage
         </div>
     }
+
     <form
         class="flex flex-row gap-4 py-2"
-        hx-post="@CommentsEndpointExtensions.CommentsEndpoint"
+        hx-patch="@(CommentsEndpointExtensions.CommentsEndpoint + "/" + Comment?.Id)"
         hx-target="closest .wrapper"
         hx-swap="outerHTML">
         <AntiforgeryToken />
+
+
+        <!-- Hidden CommentId Input-->
+        <input
+            type="hidden"
+            name="id"
+            value="@Comment?.Id" />
 
         <!-- Comment Input-->
         <input
@@ -24,22 +32,10 @@
             name="text"
             value="@Comment?.Text" />
 
-        <!-- FirstName input -->
-        <input
-            placeholder="First Name"
-            name="firstName"
-            value="@Comment?.FirstName" />
-
-        <!-- LastName input -->
-        <input
-            placeholder="Last Name"
-            name="lastName"
-            value="@Comment?.LastName" />
-
         <!-- Submit Button-->
         <button
             type="submit">
-            Submit
+            Edit
         </button>
     </form>
 </div>
@@ -47,10 +43,7 @@
 @code {
 
     [Parameter]
-    public CommentFormDto? Comment { get; init; }
-
-    [Parameter]
-    public bool IsEdit { get; init; }
+    public EditCommentFormDto? Comment { get; init; }
 
     [Parameter]
     public IReadOnlyList<string> Errors { get; init; } = ArraySegment<string>.Empty;

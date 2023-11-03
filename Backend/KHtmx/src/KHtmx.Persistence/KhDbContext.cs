@@ -1,7 +1,6 @@
 using KHtmx.Domain.Comments;
 using KHtmx.Domain.People;
 using KHtmx.Domain.Primitives;
-using KHtmx.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 

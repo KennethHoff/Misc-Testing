@@ -5,7 +5,7 @@ using KHtmx.Domain.Shared;
 
 namespace KHtmx.Comments;
 
-public readonly record struct CommentFormDto
+public readonly record struct CreateCommentFormDto
 {
     public required string? Text { get; init; }
     public required string? FirstName { get; init; }
@@ -29,7 +29,7 @@ public readonly record struct CommentFormDto
             Timestamp = timeProvider.GetUtcNow(),
         };
     
-    public static CommentFormDto FromCommentEntity(Comment comment)
+    public static CreateCommentFormDto FromCommentEntity(Comment comment)
         => new()
         {
             Text = comment.Text,
@@ -38,9 +38,9 @@ public readonly record struct CommentFormDto
         };
 }
 
-internal sealed class CommentFormDtoValidator : AbstractValidator<CommentFormDto>
+internal sealed class CreateCommentFormDtoValidator : AbstractValidator<CreateCommentFormDto>
 {
-    public CommentFormDtoValidator()
+    public CreateCommentFormDtoValidator()
     {
         RuleFor(x => x.Text)
             .NotEmpty()

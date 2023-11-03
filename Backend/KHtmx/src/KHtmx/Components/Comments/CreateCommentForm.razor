@@ -1,0 +1,56 @@
+@using KHtmx.Comments
+<div
+    class="wrapper">
+    @if (Errors is not [])
+    {
+        <div
+            class="text-red-800"
+            role="alert">
+            @ErrorMessage
+        </div>
+    }
+
+    <form
+        class="flex flex-row gap-4 py-2"
+        hx-post="@CommentsEndpointExtensions.CommentsEndpoint"
+        hx-target="closest .wrapper"
+        hx-swap="outerHTML">
+        <AntiforgeryToken />
+
+        <!-- Comment Input-->
+        <input
+            type="text"
+            placeholder="Comment"
+            name="text"
+            value="@Comment?.Text" />
+
+        <!-- FirstName input -->
+        <input
+            placeholder="First Name"
+            name="firstName"
+            value="@Comment?.FirstName" />
+
+        <!-- LastName input -->
+        <input
+            placeholder="Last Name"
+            name="lastName"
+            value="@Comment?.LastName" />
+
+        <!-- Submit Button-->
+        <button
+            type="submit">
+            Create
+        </button>
+    </form>
+</div>
+
+@code {
+
+    [Parameter]
+    public CreateCommentFormDto? Comment { get; init; }
+
+    [Parameter]
+    public IReadOnlyList<string> Errors { get; init; } = ArraySegment<string>.Empty;
+
+    private string ErrorMessage => string.Join(", ", Errors);
+}
