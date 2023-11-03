@@ -1,33 +1,46 @@
 @using KHtmx.Comments
 
-<div data-wrapper>
+<div
+    class="wrapper">
     @if (Errors is not [])
     {
-        <div class="text-red-800" role="alert">
+        <div
+            class="text-red-800"
+            role="alert">
             @ErrorMessage
         </div>
     }
     <form
-        class="flex flex-row"
+        class="flex flex-row gap-4 py-2"
         hx-post="@CommentsEndpointExtensions.CommentsEndpoint"
-        hx-target="closest [data-wrapper]"
+        hx-target="closest .wrapper"
         hx-swap="outerHTML">
-        <div class="htmx-indicator">
-            Loading...
-        </div>
-        <AntiforgeryToken/>
+        <AntiforgeryToken />
 
         <!-- Comment Input-->
-        <input type="text" placeholder="Comment" name="text" value="@Comment?.Text"/>
+        <input
+            type="text"
+            placeholder="Comment"
+            name="text"
+            value="@Comment?.Text" />
 
         <!-- FirstName input -->
-        <input placeholder="First Name" name="firstName" value="@Comment?.FirstName"/>
+        <input
+            placeholder="First Name"
+            name="firstName"
+            value="@Comment?.FirstName" />
 
         <!-- LastName input -->
-        <input placeholder="Last Name" name="lastName" value="@Comment?.LastName"/>
+        <input
+            placeholder="Last Name"
+            name="lastName"
+            value="@Comment?.LastName" />
 
         <!-- Submit Button-->
-        <button type="submit">Submit</button>
+        <button
+            type="submit">
+            Submit
+        </button>
     </form>
 </div>
 
