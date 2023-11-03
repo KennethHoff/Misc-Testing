@@ -7,9 +7,9 @@ namespace KHtmx.Comments;
 
 public readonly record struct CreateCommentFormDto
 {
-    public required string? Text { get; init; }
-    public required string? FirstName { get; init; }
-    public required string? LastName { get; init; }
+    public required string Text { get; init; }
+    public required string FirstName { get; init; }
+    public required string LastName { get; init; }
 
     // TODO: Use CQRS instead
     public Comment ToCommentEntity(TimeProvider timeProvider)
@@ -17,24 +17,10 @@ public readonly record struct CreateCommentFormDto
         {
             Author = new Person
             {
-                Name = FirstName is null || LastName is null
-                    ? Name.Anonymous
-                    : new Name
-                    {
-                        First = FirstName,
-                        Last = LastName,
-                    },
+                Name = new Name(FirstName, LastName),
             },
-            Text = Text ?? string.Empty,
+            Text = Text,
             Timestamp = timeProvider.GetUtcNow(),
-        };
-    
-    public static CreateCommentFormDto FromCommentEntity(Comment comment)
-        => new()
-        {
-            Text = comment.Text,
-            FirstName = comment.Author.Name.First,
-            LastName = comment.Author.Name.Last,
         };
 }
 
