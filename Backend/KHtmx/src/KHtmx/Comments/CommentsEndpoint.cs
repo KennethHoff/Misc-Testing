@@ -2,6 +2,7 @@ using FluentValidation;
 using KHtmx.Components.Comments;
 using KHtmx.Domain.Comments;
 using KHtmx.Persistence;
+using Microsoft.AspNetCore.Components.Endpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -40,7 +41,13 @@ public static class CommentsEndpointExtensions
                 dbContext.Add(entity);
                 await dbContext.SaveChangesAsync();
 
-                return new RazorComponentResult<CommentForm>();
+                return new RazorComponentResult<CommentForm>(new
+                {
+                    Comment = dto with
+                    {
+                        Text = string.Empty,
+                    },
+                });
             })
             .WithName("AddComment");
 
