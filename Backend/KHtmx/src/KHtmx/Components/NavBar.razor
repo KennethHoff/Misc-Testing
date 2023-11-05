@@ -6,10 +6,12 @@
     <button
         class="bg-gray-800 text-white px-3 py-2 rounded-md text-sm font-medium"
         hx-trigger="click"
-        hx-get="@LinkGenerator.GetPathByName(AccountEndpointExtensions.Htmx.Login.EndpointName)"
+        hx-get="@LinkGenerator.GetPathByName(AccountEndpoints.GetRegisterDialog.EndpointName)"
         hx-target="closest nav"
         hx-swap="beforeend"
-        >
-        Login
+    >
+        Register
     </button>
+    
+    
 </nav>

@@ -3,9 +3,9 @@
 
 @* ReSharper disable once Blazor.EditorRequired *@
 <SelfClosingDialogComponent
-    Id="login-dialog">
+    Id="register-dialog">
     <form
-        hx-post="@LinkGenerator.GetPathByName(AccountEndpoints.Login.EndpointName)">
+        hx-post="@LinkGenerator.GetPathByName(AccountEndpoints.Register.EndpointName)">
         <input
             type="text"
             placeholder="Username"
@@ -18,7 +18,7 @@
 
         <button
             type="submit">
-            Login
+            Register
         </button>
     </form>
 </SelfClosingDialogComponent>

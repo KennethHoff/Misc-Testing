@@ -3,12 +3,12 @@ using KHtmx.Domain.Comments;
 
 namespace KHtmx.Comments;
 
-public readonly record struct EditCommentFormDto
+public readonly record struct CommentEditFormDto
 {
     public required Guid Id { get; init; }
     public required string Text { get; init; }
 
-    public static EditCommentFormDto FromCommentEntity(Comment comment)
+    public static CommentEditFormDto FromCommentEntity(Comment comment)
         => new()
         {
             Text = comment.Text,
@@ -16,9 +16,9 @@ public readonly record struct EditCommentFormDto
         };
 }
 
-internal sealed class EditCommentFormDtoValidator : AbstractValidator<EditCommentFormDto>
+internal sealed class CommentEditFormDtoValidator : AbstractValidator<CommentEditFormDto>
 {
-    public EditCommentFormDtoValidator()
+    public CommentEditFormDtoValidator()
     {
         RuleFor(x => x.Text)
             .NotEmpty()
