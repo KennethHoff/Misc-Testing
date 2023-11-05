@@ -11,7 +11,7 @@
     class="w-full text-left"
     hx-swap="outerHTML"
     hx-trigger="sse:@ServerSentEventNames.CommentAdded, sse:@ServerSentEventNames.CommentDeleted, sse:@ServerSentEventNames.CommentUpdated"
-    hx-get="@CommentsEndpointExtensions.CommentsEndpoint">
+    hx-get="@CreateHtmxEndpoint(CommentEndpoint)">
     <colgroup>
         <col />
         <col />
@@ -57,7 +57,7 @@
                             hx-trigger="click"
                             hx-target="#home"
                             hx-swap="beforeend"
-                            hx-get="@($"{CommentsEndpointExtensions.CommentsEndpoint}/{comment.Id}")">
+                            hx-get="@CreateHtmxEndpoint(CommentEndpoint, comment.Id)">
                             @comment.AuthorFirstName @comment.AuthorLastName
                         </button>
                     </td>
@@ -84,7 +84,7 @@
     protected override async Task OnInitializedAsync()
     {
         await using var dbContext = await DbContextFactory.CreateDbContextAsync();
-        var comments =  await dbContext.Comments
+        var comments = await dbContext.Comments
             .OrderByDescending(comment => comment.Timestamp)
             .Take(10)
             .Select(x => new
@@ -105,7 +105,7 @@
             AuthorLastName = x.Author?.LastName ?? "Unknown",
             Timestamp = x.Timestamp,
         }).ToArray();
-        
+
 
         await base.OnInitializedAsync();
     }

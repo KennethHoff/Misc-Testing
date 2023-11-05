@@ -8,6 +8,12 @@ file sealed class UserTypeConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.HasKey(e => e.Id);
+        builder.HasKey(u => u.Id);
+
+        builder.Property(u => u.FirstName)
+            .HasMaxLength(50);
+
+        builder.Property(u => u.LastName)
+            .HasMaxLength(50);
     }
 }

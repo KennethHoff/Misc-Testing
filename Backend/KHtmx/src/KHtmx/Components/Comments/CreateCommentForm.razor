@@ -12,7 +12,7 @@
 
     <form
         class="flex flex-row gap-4 py-2"
-        hx-post="@CommentsEndpointExtensions.CommentsEndpoint"
+        hx-post="@CreateHtmxEndpoint(CommentEndpoint)"
         hx-target="closest .wrapper"
         hx-swap="outerHTML">
         <AntiforgeryToken />

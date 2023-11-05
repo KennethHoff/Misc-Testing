@@ -1,5 +1,6 @@
 using FluentValidation;
 using KHtmx.Components.Comments;
+using KHtmx.Constants;
 using KHtmx.Domain.Comments;
 using KHtmx.Persistence;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -10,8 +11,6 @@ namespace KHtmx.Comments;
 
 public static class CommentsEndpointExtensions
 {
-    public const string CommentsEndpoint = "/comments";
-
     public static IServiceCollection AddComments(this IServiceCollection services)
     {
         return services;
@@ -19,22 +18,24 @@ public static class CommentsEndpointExtensions
 
     public static void MapComments(this IEndpointRouteBuilder route)
     {
-        route.MapPost(CommentsEndpoint, AddCommentEndPointHandler)
+        var htmxGroup = route.MapGroup(EndpointConstants.HtmxPrefix);
+
+        htmxGroup.MapPost(EndpointConstants.CommentEndpoint, AddCommentEndPointHandler)
             .WithName("AddComment");
 
-        route.MapDelete(CommentsEndpoint + "/{id}", DeleteCommentEndPointHandler)
+        htmxGroup.MapDelete(EndpointConstants.CommentEndpoint + "/{id}", DeleteCommentEndPointHandler)
             .WithName("DeleteComment");
 
-        route.MapGet(CommentsEndpoint, GetCommentsTableEndpointHandler)
+        htmxGroup.MapGet(EndpointConstants.CommentEndpoint, GetCommentsTableEndpointHandler)
             .WithName("GetCommentsTable");
 
-        route.MapGet(CommentsEndpoint + "/{id}", GetCommentDialogEndpointHandler)
+        htmxGroup.MapGet(EndpointConstants.CommentEndpoint + "/{id}", GetCommentDialogEndpointHandler)
             .WithName("GetCommentDialog");
 
-        route.MapGet(CommentsEndpoint + "/{id}/edit", GetCommentEditFormEndPointHandler)
+        htmxGroup.MapGet(EndpointConstants.CommentEndpoint + "/{id}/edit", GetCommentEditFormEndPointHandler)
             .WithName("GetCommentEditForm");
 
-        route.MapPatch(CommentsEndpoint + "/{id}", UpdateCommentEndPointHandler)
+        htmxGroup.MapPatch(EndpointConstants.CommentEndpoint + "/{id}", UpdateCommentEndPointHandler)
             .WithName("UpdateComment");
     }
 
@@ -54,11 +55,12 @@ public static class CommentsEndpointExtensions
                 Errors = validationResult.Errors.Select(x => x.ErrorMessage).ToArray(),
             });
         }
+
         await using var dbContext = await dbContextFactory.CreateDbContextAsync(ct);
 
         // TODO: Use CQRS instead, and use the current user
         var user = await dbContext.Users.FirstOrDefaultAsync(x => x.UserName == "admin", ct)
-            ?? throw new InvalidOperationException("Admin user not found");
+                   ?? throw new InvalidOperationException("Admin user not found");
 
         DateTimeOffset timestamp = TimeProvider.System.GetUtcNow();
         var entity = Comment.Create(dto.Text, timestamp, user.Id);
