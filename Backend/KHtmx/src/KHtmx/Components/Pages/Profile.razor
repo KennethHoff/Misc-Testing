@@ -1,5 +1,6 @@
 @page "/profile"
 @using KHtmx.Comments
+@using KHtmx.Constants
 @using KHtmx.Domain.People
 @using KHtmx.Persistence
 @using Microsoft.AspNetCore.Identity
@@ -10,12 +11,18 @@
 
 <PageTitle>Profile</PageTitle>
 
-<h3>
-    Your most recent comments
-</h3>
+@* <div *@
+@*     hx-sse="connect:@ServerSentEventNames.SseEndpoint" *@
+@*     > *@
+<div>
 
-<CommentTableComponent
-    Comments="_comments" />
+    <h3>
+        Your most recent comments
+    </h3>
+
+    <CommentTableComponent
+        Comments="_comments" />
+</div>
 
 
 @code {
