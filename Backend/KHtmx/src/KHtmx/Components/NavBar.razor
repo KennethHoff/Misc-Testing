@@ -1,17 +1,51 @@
 @using Microsoft.Identity.Client
 @using KHtmx.Account
 @inject LinkGenerator LinkGenerator
+@inject IHttpContextAccessor HttpContextAccessor
 
 <nav>
-    <button
-        class="bg-gray-800 text-white px-3 py-2 rounded-md text-sm font-medium"
-        hx-trigger="click"
-        hx-get="@LinkGenerator.GetPathByName(AccountEndpoints.GetRegisterDialog.EndpointName)"
-        hx-target="closest nav"
-        hx-swap="beforeend"
-    >
-        Register
-    </button>
-    
-    
+    @if (!IsAuthenticated)
+    {
+        <button
+            class="bg-gray-800 text-white px-3 py-2 rounded-md text-sm font-medium"
+            hx-trigger="click"
+            hx-get="@LinkGenerator.GetPathByName(AccountEndpoints.GetRegisterDialog.EndpointName)"
+            hx-target="closest nav"
+            hx-swap="beforeend">
+            Register
+        </button>
+        <button
+            class="bg-gray-800 text-white px-3 py-2 rounded-md text-sm font-medium"
+            hx-trigger="click"
+            hx-get="@LinkGenerator.GetPathByName(AccountEndpoints.GetLoginDialog.EndpointName)"
+            hx-target="closest nav"
+            hx-swap="beforeend">
+            Login
+        </button>
+    }
+    else
+    {
+        <p>
+            Hello, @UserName
+        </p>
+    }
 </nav>
+
+@code {
+
+    private string? UserName;
+
+    private bool IsAuthenticated;
+
+    protected override void OnInitialized()
+    {
+        if (HttpContextAccessor.HttpContext?.User is not {} user)
+        {
+            return;
+        }
+
+        IsAuthenticated = user.Identity?.IsAuthenticated ?? false;
+        UserName = user.Identity?.Name;
+    }
+
+}

@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace KHtmx.Persistence.EntityTypeConfigurations;
 
-file sealed class UserTypeConfiguration : IEntityTypeConfiguration<User>
+file sealed class UserTypeConfiguration : IEntityTypeConfiguration<KhtmxUser>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    public void Configure(EntityTypeBuilder<KhtmxUser> builder)
     {
         builder.HasKey(u => u.Id);
 

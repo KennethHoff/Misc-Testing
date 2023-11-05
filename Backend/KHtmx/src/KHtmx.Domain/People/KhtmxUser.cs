@@ -2,17 +2,13 @@ using Microsoft.AspNetCore.Identity;
 
 namespace KHtmx.Domain.People;
 
-public sealed class User : IdentityUser<Guid>
+public sealed class KhtmxUser : IdentityUser<Guid>
 {
     [ProtectedPersonalData] public string FirstName { get; init; } = string.Empty;
 
     [ProtectedPersonalData] public string LastName { get; init; } = string.Empty;
 
-    public User()
-    {
-    }
-
-    public static User Create(string firstName, string lastName, string userName, string email)
+    public static KhtmxUser Create(string userName, string email, string firstName, string lastName)
         => new()
         {
             FirstName = firstName,

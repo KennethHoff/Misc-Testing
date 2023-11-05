@@ -11,13 +11,12 @@ using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddKhData(builder.Configuration);
-builder.Services.AddIdentity<User, Role>()
+builder.Services.AddIdentity<KhtmxUser, KhtmxRole>()
     .AddEntityFrameworkStores<KhDbContext>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddComments();
 
-// Add services to the container.
 builder.Services.AddRazorComponents();
 
 builder.Services.AddServerSentEvents();

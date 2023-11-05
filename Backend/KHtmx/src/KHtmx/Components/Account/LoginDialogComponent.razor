@@ -6,16 +6,42 @@
     Id="login-dialog">
     <form
         hx-post="@LinkGenerator.GetPathByName(AccountEndpoints.Login.EndpointName)">
+        <AntiforgeryToken />
+        
+        <!-- Username Input-->
         <input
             type="text"
             placeholder="Username"
+            name="username"
             autocomplete="username" />
 
+        <!-- Password Input-->
         <input
             type="password"
             placeholder="Password"
+            name="password"
             autocomplete="current-password" />
 
+        <!-- Remember Me Input-->
+        <label
+            for="remember-me">
+            Remember me
+        </label>
+
+        <input
+            id="remember-me"
+            type="checkbox"
+            name="rememberMe"
+            value="true"
+            placeholder="Remember me">
+
+        <!-- Why is this necessary, AspNetCore >_> -->
+        <input
+            type="hidden"
+            name="rememberMe"
+            value="false" />
+        
+        <!-- Login Button -->
         <button
             type="submit">
             Login

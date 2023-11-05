@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KHtmx.Persistence;
 
-public sealed class KhDbContext(DbContextOptions<KhDbContext> options) : IdentityDbContext<User, Role, Guid>(options)
+public sealed class KhDbContext(DbContextOptions<KhDbContext> options) : IdentityDbContext<KhtmxUser, KhtmxRole, Guid>(options)
 {
     public DbSet<Comment> Comments { get; init; } = null!;
 

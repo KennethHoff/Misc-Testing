@@ -23,7 +23,7 @@ public sealed record class Comment
     public Guid AuthorId { get; private init; }
 
     [ForeignKey(nameof(AuthorId))]
-    public User Author { get; } = null!;
+    public KhtmxUser Author { get; } = null!;
 
     public static Comment Create(string text, DateTimeOffset timestamp, Guid authorId)
         => new(text, timestamp, authorId);

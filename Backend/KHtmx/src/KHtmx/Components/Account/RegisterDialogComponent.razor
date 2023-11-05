@@ -1,20 +1,74 @@
 @using KHtmx.Account
+@using Microsoft.AspNetCore.Identity
 @inject LinkGenerator LinkGenerator
 
 @* ReSharper disable once Blazor.EditorRequired *@
 <SelfClosingDialogComponent
     Id="register-dialog">
+
+    @if (Errors is not [])
+    {
+        <div>
+            <ul>
+                @foreach (var error in Errors)
+                {
+                    <li>@error.Description</li>
+                }
+            </ul>
+        </div>
+    }
+
     <form
-        hx-post="@LinkGenerator.GetPathByName(AccountEndpoints.Register.EndpointName)">
+        hx-post="@LinkGenerator.GetPathByName(AccountEndpoints.Register.EndpointName)"
+        hx-target="#register-dialog"
+        hx-swap="outerHTML"
+        >
+        <AntiforgeryToken />
+        <!-- username input -->
         <input
             type="text"
             placeholder="Username"
-            autocomplete="username" />
+            autocomplete="username"
+            value="@FormData?.Username"
+            name="username" />
 
+        <!-- email input -->
+        <input
+            type="email"
+            placeholder="Email"
+            autocomplete="email"
+            value="@FormData?.Email"
+            name="email" />
+
+        <!-- FirstName input -->
+        <input
+            type="text"
+            placeholder="First Name"
+            autocomplete="given-name"
+            value="@FormData?.FirstName"
+            name="firstName" />
+
+        <!-- LastName input -->
+        <input
+            type="text"
+            placeholder="Last Name"
+            autocomplete="family-name"
+            value="@FormData?.LastName"
+            name="lastName" />
+
+        <!-- Password input -->
         <input
             type="password"
             placeholder="Password"
-            autocomplete="current-password" />
+            autocomplete="new-password"
+            name="password" />
+
+        <!-- ConfirmPassword input -->
+        <input
+            type="password"
+            placeholder="Confirm Password"
+            autocomplete="new-password"
+            name="confirmPassword" />
 
         <button
             type="submit">
@@ -22,3 +76,14 @@
         </button>
     </form>
 </SelfClosingDialogComponent>
+
+@code
+{
+
+    [Parameter]
+    public IReadOnlyList<IdentityError> Errors { get; set; } = [];
+
+    [Parameter]
+    public RegisterFormDto? FormData { get; set; }
+
+}
