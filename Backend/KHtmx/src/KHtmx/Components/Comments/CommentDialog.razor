@@ -2,8 +2,8 @@
 @using Microsoft.EntityFrameworkCore
 @using KHtmx.Comments
 @using Humanizer
-@using KHtmx.Constants
 @inject KhDbContext DbContext
+@inject LinkGenerator LinkGenerator
 
 @* ReSharper disable once Blazor.EditorRequired *@
 <SelfClosingDialog
@@ -30,7 +30,7 @@
                 <button
                     type="button"
                     class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-dotted focus:outline-blue-500"
-                    hx-delete="@CreateHtmxEndpoint(CommentEndpoint, _comment.Id)"
+                    hx-delete="@LinkGenerator.GetPathByName(CommentsEndpointExtensions.DeleteCommentEndpointName, new { id = _comment.Id })"
                     hx-on="htmx:afterRequest:htmx.trigger('#comment_dialog', 'close')">
                     Delete
                 </button>
@@ -39,7 +39,7 @@
                 <button
                     type="button"
                     class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-dotted focus:outline-red-500"
-                    hx-get="@CreateHtmxEndpoint(CommentEndpoint, _comment.Id, "edit")"
+                    hx-get="@LinkGenerator.GetPathByName(CommentsEndpointExtensions.GetCommentEditFormEndpointName, new { id = _comment.Id })"
                     hx-target="#comment_dialog-body">
                     Edit
                 </button>

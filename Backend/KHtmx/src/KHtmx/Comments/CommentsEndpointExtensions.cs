@@ -11,6 +11,14 @@ namespace KHtmx.Comments;
 
 public static class CommentsEndpointExtensions
 {
+    private const string CommentEndpoint = "comments";
+    public const string CreateCommentEndpointName = "CreateComment";
+    public const string DeleteCommentEndpointName = "DeleteComment";
+    public const string GetCommentsTableEndpointName = "GetCommentsTable";
+    public const string GetCommentDialogEndpointName = "GetCommentDialog";
+    public const string GetCommentEditFormEndpointName = "GetCommentEditForm";
+    public const string UpdateCommentEndpointName = "UpdateComment";
+
     public static IServiceCollection AddComments(this IServiceCollection services)
     {
         return services;
@@ -20,26 +28,26 @@ public static class CommentsEndpointExtensions
     {
         var htmxGroup = route.MapGroup(EndpointConstants.HtmxPrefix);
 
-        htmxGroup.MapPost(EndpointConstants.CommentEndpoint, AddCommentEndPointHandler)
-            .WithName("AddComment");
+        route.MapPost(CommentEndpoint, CreateCommentEndPointHandler)
+            .WithName(CreateCommentEndpointName);
 
-        htmxGroup.MapDelete(EndpointConstants.CommentEndpoint + "/{id}", DeleteCommentEndPointHandler)
-            .WithName("DeleteComment");
+        route.MapDelete(CommentEndpoint + "/{id}", DeleteCommentEndPointHandler)
+            .WithName(DeleteCommentEndpointName);
 
-        htmxGroup.MapGet(EndpointConstants.CommentEndpoint, GetCommentsTableEndpointHandler)
-            .WithName("GetCommentsTable");
+        route.MapPatch(CommentEndpoint + "/{id}", UpdateCommentEndPointHandler)
+            .WithName(UpdateCommentEndpointName);
 
-        htmxGroup.MapGet(EndpointConstants.CommentEndpoint + "/{id}", GetCommentDialogEndpointHandler)
-            .WithName("GetCommentDialog");
+        htmxGroup.MapGet(CommentEndpoint, GetCommentsTableEndpointHandler)
+            .WithName(GetCommentsTableEndpointName);
 
-        htmxGroup.MapGet(EndpointConstants.CommentEndpoint + "/{id}/edit", GetCommentEditFormEndPointHandler)
-            .WithName("GetCommentEditForm");
+        htmxGroup.MapGet(CommentEndpoint + "/{id}", GetCommentDialogEndpointHandler)
+            .WithName(GetCommentDialogEndpointName);
 
-        htmxGroup.MapPatch(EndpointConstants.CommentEndpoint + "/{id}", UpdateCommentEndPointHandler)
-            .WithName("UpdateComment");
+        htmxGroup.MapGet(CommentEndpoint + "/{id}/edit", GetCommentEditFormEndPointHandler)
+            .WithName(GetCommentEditFormEndpointName);
     }
 
-    private static async ValueTask<RazorComponentResult<CreateCommentForm>> AddCommentEndPointHandler
+    private static async ValueTask<RazorComponentResult<CreateCommentForm>> CreateCommentEndPointHandler
     (
         IValidator<CreateCommentFormDto> validator,
         IDbContextFactory<KhDbContext> dbContextFactory,

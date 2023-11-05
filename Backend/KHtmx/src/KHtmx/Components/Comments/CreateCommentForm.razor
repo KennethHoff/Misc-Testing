@@ -1,4 +1,5 @@
 @using KHtmx.Comments
+@inject LinkGenerator LinkGenerator
 <div
     class="wrapper">
     @if (Errors is not [])
@@ -12,7 +13,7 @@
 
     <form
         class="flex flex-row gap-4 py-2"
-        hx-post="@CreateHtmxEndpoint(CommentEndpoint)"
+        hx-post="@LinkGenerator.GetPathByName(CommentsEndpointExtensions.CreateCommentEndpointName)"
         hx-target="closest .wrapper"
         hx-swap="outerHTML">
         <AntiforgeryToken />

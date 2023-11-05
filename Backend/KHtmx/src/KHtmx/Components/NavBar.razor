@@ -1,11 +1,12 @@
-<nav>
-    <button 
-        class="bg-gray-800"
-        hx-trigger="click"
-        hx-get=""
-            >Login</button>
-</nav>
+@using Microsoft.Identity.Client
+@using KHtmx.Account
+@inject LinkGenerator LinkGenerator
 
-@code {
-    
-}
+<nav>
+    <button
+        class="bg-gray-800 text-white px-3 py-2 rounded-md text-sm font-medium"
+        hx-trigger="click"
+        hx-get="@LinkGenerator.GetPathByName(AccountEndpointExtensions.GetLoginEndpointName)">
+        Login
+    </button>
+</nav>
