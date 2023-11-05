@@ -4,7 +4,6 @@ using KHtmx.Comments;
 using KHtmx.Components;
 using KHtmx.Constants;
 using KHtmx.Domain.People;
-using KHtmx.HostedServices;
 using KHtmx.Persistence;
 using KHtmx.Persistence.Extensions;
 using Lib.AspNetCore.ServerSentEvents;
