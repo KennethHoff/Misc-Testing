@@ -58,7 +58,7 @@
                             hx-target="#home"
                             hx-swap="beforeend"
                             hx-get="@($"{CommentsEndpointExtensions.CommentsEndpoint}/{comment.Id}")">
-                            @comment.Author.Name
+                            @comment.AuthorFirstName @comment.AuthorLastName
                         </button>
                     </td>
                     <td>
@@ -79,16 +79,33 @@
 
 
 @code {
-    private IReadOnlyList<Comment> Comments { get; set; } = ArraySegment<Comment>.Empty;
+    private IReadOnlyList<CommentTableDto> Comments { get; set; } = ArraySegment<CommentTableDto>.Empty;
 
     protected override async Task OnInitializedAsync()
     {
         await using var dbContext = await DbContextFactory.CreateDbContextAsync();
-        Comments = await dbContext.Comments
-            .Include(comment => comment.Author)
+        var comments =  await dbContext.Comments
             .OrderByDescending(comment => comment.Timestamp)
             .Take(10)
+            .Select(x => new
+            {
+                Id = x.Id,
+                Text = x.Text,
+                Author = dbContext.Users
+                    .FirstOrDefault(user => user.Id == x.AuthorId),
+                Timestamp = x.Timestamp
+            })
             .ToListAsync();
+
+        Comments = comments.Select(x => new CommentTableDto
+        {
+            Id = x.Id,
+            Text = x.Text,
+            AuthorFirstName = x.Author?.FirstName ?? "Unknown",
+            AuthorLastName = x.Author?.LastName ?? "Unknown",
+            Timestamp = x.Timestamp,
+        }).ToArray();
+        
 
         await base.OnInitializedAsync();
     }

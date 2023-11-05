@@ -1,8 +1,7 @@
-@using KHtmx.Domain.Comments
 @using KHtmx.Persistence
 @using Microsoft.EntityFrameworkCore
-@using Humanizer
 @using KHtmx.Comments
+@using Humanizer
 @inject KhDbContext DbContext
 
 @* ReSharper disable once Blazor.EditorRequired *@
@@ -13,7 +12,7 @@
         @if (_comment is not null)
         {
             <header>
-                Written by @_comment.Author.Name
+                Written by @_comment.AuthorFirstName @_comment.AuthorLastName
                 <time
                     datetime="@_comment.Timestamp"
                     title="@_comment.Timestamp.ToString("F")">
@@ -57,13 +56,22 @@
 @code
 {
     [Parameter, EditorRequired]
-    public CommentId Id { get; set; }
+    public Guid Id { get; set; }
 
-    private Comment? _comment;
+    private CommentDialogDto? _comment;
 
     protected override async Task OnInitializedAsync()
     {
         _comment = await DbContext.Comments
-            .FirstOrDefaultAsync(x => x.Id == Id);
+            .Where(c => c.Id == Id)
+            .Select(c => new CommentDialogDto
+            {
+                Text = c.Text,
+                Id = c.Id,
+                Timestamp = c.Timestamp,
+                AuthorFirstName = c.Author.FirstName,
+                AuthorLastName = c.Author.LastName,
+            })
+            .FirstOrDefaultAsync();
     }
 }

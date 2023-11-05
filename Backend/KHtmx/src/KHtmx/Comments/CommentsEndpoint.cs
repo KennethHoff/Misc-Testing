@@ -54,10 +54,14 @@ public static class CommentsEndpointExtensions
                 Errors = validationResult.Errors.Select(x => x.ErrorMessage).ToArray(),
             });
         }
-
-        var entity = dto.ToCommentEntity(TimeProvider.System);
-
         await using var dbContext = await dbContextFactory.CreateDbContextAsync(ct);
+
+        // TODO: Use CQRS instead, and use the current user
+        var user = await dbContext.Users.FirstOrDefaultAsync(x => x.UserName == "admin", ct)
+            ?? throw new InvalidOperationException("Admin user not found");
+
+        DateTimeOffset timestamp = TimeProvider.System.GetUtcNow();
+        var entity = Comment.Create(dto.Text, timestamp, user.Id);
 
         dbContext.Add(entity);
         await dbContext.SaveChangesAsync(ct);
@@ -74,7 +78,7 @@ public static class CommentsEndpointExtensions
     private static async ValueTask<Results<NotFound, NoContent>> DeleteCommentEndPointHandler
     (
         IDbContextFactory<KhDbContext> dbContextFactory,
-        CommentId id,
+        Guid id,
         CancellationToken ct
     )
     {
@@ -97,7 +101,7 @@ public static class CommentsEndpointExtensions
     }
 
     private static RazorComponentResult<CommentDialog> GetCommentDialogEndpointHandler
-        (CommentId id)
+        (Guid id)
     {
         return new RazorComponentResult<CommentDialog>(new
         {
@@ -108,7 +112,7 @@ public static class CommentsEndpointExtensions
     private static async ValueTask<Results<NotFound, RazorComponentResult<EditCommentForm>>> GetCommentEditFormEndPointHandler
     (
         IDbContextFactory<KhDbContext> dbContextFactory,
-        CommentId id,
+        Guid id,
         CancellationToken ct
     )
     {
@@ -130,7 +134,7 @@ public static class CommentsEndpointExtensions
     (
         IValidator<EditCommentFormDto> validator,
         IDbContextFactory<KhDbContext> dbContextFactory,
-        CommentId id,
+        Guid id,
         [FromForm] EditCommentFormDto dto,
         CancellationToken ct)
     {
@@ -149,7 +153,7 @@ public static class CommentsEndpointExtensions
             return TypedResults.NotFound();
         }
 
-        entity.Text = dto.Text;
+        entity.ChangeText(dto.Text);
 
         await dbContext.SaveChangesAsync(ct);
 

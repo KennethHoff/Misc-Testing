@@ -8,17 +8,16 @@ file sealed class CommentTypeConfiguration : IEntityTypeConfiguration<Comment>
 {
     public void Configure(EntityTypeBuilder<Comment> builder)
     {
-        builder.HasKey(e => e.Id);
+        builder.HasKey(c => c.Id);
 
-        builder.Property(e => e.Text)
+        builder.Property(c => c.Text)
             .HasMaxLength(500);
 
-        builder.Property(e => e.Timestamp);
+        builder.Property(c => c.Timestamp);
 
-        builder.HasOne(e => e.Author)
-            .WithMany(x => x.Comments);
-        
-        builder.Navigation(e => e.Author)
-            .AutoInclude();
+        builder.HasOne(c => c.Author)
+            .WithMany()
+            .HasForeignKey(c => c.AuthorId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
