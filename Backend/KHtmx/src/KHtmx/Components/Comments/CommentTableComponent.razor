@@ -5,14 +5,14 @@
 @using KHtmx.Domain.Comments
 @using Microsoft.EntityFrameworkCore
 @inject IDbContextFactory<KhDbContext> DbContextFactory
-@inject ILogger<CommentTable> Logger
+@inject ILogger<CommentTableComponent> Logger
 @inject LinkGenerator LinkGenerator
 
 <table
     class="w-full text-left"
     hx-swap="outerHTML"
     hx-trigger="sse:@ServerSentEventNames.CommentAdded, sse:@ServerSentEventNames.CommentDeleted, sse:@ServerSentEventNames.CommentUpdated"
-    hx-get="@LinkGenerator.GetPathByName(CommentsEndpointExtensions.GetCommentsTableEndpointName)">
+    hx-get="@LinkGenerator.GetPathByName(CommentsEndpointExtensions.Htmx.CommentTable.EndpointName)">
     <colgroup>
         <col />
         <col />
@@ -58,7 +58,7 @@
                             hx-trigger="click"
                             hx-target="#home"
                             hx-swap="beforeend"
-                            hx-get="@LinkGenerator.GetPathByName(CommentsEndpointExtensions.GetCommentDialogEndpointName, new { id = comment.Id })">
+                            hx-get="@LinkGenerator.GetPathByName(CommentsEndpointExtensions.Htmx.CommentDialog.EndpointName, new { id = comment.Id })">
                             @comment.AuthorFirstName @comment.AuthorLastName
                         </button>
                     </td>

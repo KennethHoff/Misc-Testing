@@ -1,4 +1,5 @@
 using FluentValidation;
+using KHtmx.Account;
 using KHtmx.Comments;
 using KHtmx.Components;
 using KHtmx.Constants;
@@ -10,8 +11,7 @@ using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddKhData(builder.Configuration);
-builder.Services.AddIdentityApiEndpoints<User>()
-    .AddRoles<Role>()
+builder.Services.AddIdentity<User, Role>()
     .AddEntityFrameworkStores<KhDbContext>()
     .AddDefaultTokenProviders();
 
@@ -36,9 +36,9 @@ app.UseStaticFiles();
 app.UseAntiforgery();
 
 app.MapComments();
+app.MapAccount();
 app.MapServerSentEvents(ServerSentEventNames.SseEndpoint);
 
 app.MapRazorComponents<App>();
-app.MapIdentityApi<User>();
 
 app.Run();

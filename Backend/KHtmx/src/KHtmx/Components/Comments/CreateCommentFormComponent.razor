@@ -1,6 +1,5 @@
 @using KHtmx.Comments
 @inject LinkGenerator LinkGenerator
-
 <div
     class="wrapper">
     @if (Errors is not [])
@@ -14,16 +13,10 @@
 
     <form
         class="flex flex-row gap-4 py-2"
-        hx-patch="@LinkGenerator.GetPathByName(CommentsEndpointExtensions.UpdateCommentEndpointName, new { id = Comment?.Id })"
-        hx-on="htmx:afterRequest:htmx.trigger('#comment_dialog', 'close')">
-        
+        hx-post="@LinkGenerator.GetPathByName(CommentsEndpointExtensions.Api.CreateComment.EndpointName)"
+        hx-target="closest .wrapper"
+        hx-swap="outerHTML">
         <AntiforgeryToken />
-
-        <!-- Hidden CommentId Input-->
-        <input
-            type="hidden"
-            name="id"
-            value="@Comment?.Id" />
 
         <!-- Comment Input-->
         <input
@@ -32,10 +25,22 @@
             name="text"
             value="@Comment?.Text" />
 
+        <!-- FirstName input -->
+        <input
+            placeholder="First Name"
+            name="firstName"
+            value="@Comment?.FirstName" />
+
+        <!-- LastName input -->
+        <input
+            placeholder="Last Name"
+            name="lastName"
+            value="@Comment?.LastName" />
+
         <!-- Submit Button-->
         <button
             type="submit">
-            Edit
+            Create
         </button>
     </form>
 </div>
@@ -43,7 +48,7 @@
 @code {
 
     [Parameter]
-    public EditCommentFormDto? Comment { get; init; }
+    public CreateCommentFormDto? Comment { get; init; }
 
     [Parameter]
     public IReadOnlyList<string> Errors { get; init; } = ArraySegment<string>.Empty;

@@ -6,7 +6,10 @@
     <button
         class="bg-gray-800 text-white px-3 py-2 rounded-md text-sm font-medium"
         hx-trigger="click"
-        hx-get="@LinkGenerator.GetPathByName(AccountEndpointExtensions.GetLoginEndpointName)">
+        hx-get="@LinkGenerator.GetPathByName(AccountEndpointExtensions.Htmx.Login.EndpointName)"
+        hx-target="closest nav"
+        hx-swap="beforeend"
+        >
         Login
     </button>
 </nav>

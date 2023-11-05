@@ -6,22 +6,47 @@ namespace KHtmx.Account;
 
 public static class AccountEndpointExtensions
 {
-    public const string GetLoginEndpointName = "GetLogin";
-
     public static void MapAccount(this IEndpointRouteBuilder route)
     {
+        route.MapPost("login", Api.Login.Handler)
+            .WithName(Api.Login.EndpointName);
+
         var htmxGroup = route.MapGroup(EndpointConstants.HtmxPrefix);
 
-        htmxGroup.MapGet(GetLoginEndpointName, GetLoginEndpointHandler)
-            .WithName(GetLoginEndpointName);
+        htmxGroup.MapGet("login", Htmx.Login.Handler)
+            .WithName(Htmx.Login.EndpointName);
     }
 
-
-    private static RazorComponentResult<LoginForm> GetLoginEndpointHandler
-    (
-        CancellationToken ct
-    )
+    public static class Htmx
     {
-        return new RazorComponentResult<LoginForm>();
+        public static class Login
+        {
+            public const string EndpointName = "Htmx_Login";
+
+            public static RazorComponentResult<LoginDialogComponent> Handler
+            (
+                CancellationToken ct
+            )
+            {
+                return new RazorComponentResult<LoginDialogComponent>();
+            }
+        }
+    }
+
+    private static class Api
+    {
+        public static class Login
+        {
+            public const string EndpointName = "Api_Login";
+
+            // TODO: Implement login
+            public static Ok Handler
+            (
+                CancellationToken ct
+            )
+            {
+                return TypedResults.Ok();
+            }
+        }
     }
 }

@@ -1,0 +1,25 @@
+@using KHtmx.Account
+@inject LinkGenerator LinkGenerator
+
+@* ReSharper disable once Blazor.EditorRequired *@
+<SelfClosingDialogComponent
+    Id="login-dialog">
+    <form
+        hx-post="@LinkGenerator.GetPathByName(AccountEndpointExtensions.Htmx.Login.EndpointName)"
+        >
+        <input
+            type="text"
+            placeholder="Username"
+            autocomplete="username" />
+
+        <input
+            type="password"
+            placeholder="Password"
+            autocomplete="current-password" />
+
+        <button
+            type="submit">
+            Login
+        </button>
+    </form>
+</SelfClosingDialogComponent>

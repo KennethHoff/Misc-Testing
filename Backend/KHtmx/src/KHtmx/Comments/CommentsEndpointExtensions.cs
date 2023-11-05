@@ -12,12 +12,6 @@ namespace KHtmx.Comments;
 public static class CommentsEndpointExtensions
 {
     private const string CommentEndpoint = "comments";
-    public const string CreateCommentEndpointName = "CreateComment";
-    public const string DeleteCommentEndpointName = "DeleteComment";
-    public const string GetCommentsTableEndpointName = "GetCommentsTable";
-    public const string GetCommentDialogEndpointName = "GetCommentDialog";
-    public const string GetCommentEditFormEndpointName = "GetCommentEditForm";
-    public const string UpdateCommentEndpointName = "UpdateComment";
 
     public static IServiceCollection AddComments(this IServiceCollection services)
     {
@@ -26,147 +20,184 @@ public static class CommentsEndpointExtensions
 
     public static void MapComments(this IEndpointRouteBuilder route)
     {
+        route.MapPost(CommentEndpoint, Api.CreateComment.Handler)
+            .WithName(Api.CreateComment.EndpointName);
+
+        route.MapDelete(CommentEndpoint + "/{id}", Api.DeleteComment.Handler)
+            .WithName(Api.DeleteComment.EndpointName);
+
+        route.MapPatch(CommentEndpoint + "/{id}", Api.UpdateComment.Handler)
+            .WithName(Api.UpdateComment.EndpointName);
+
         var htmxGroup = route.MapGroup(EndpointConstants.HtmxPrefix);
 
-        route.MapPost(CommentEndpoint, CreateCommentEndPointHandler)
-            .WithName(CreateCommentEndpointName);
+        htmxGroup.MapGet(CommentEndpoint, Htmx.CommentTable.Handler)
+            .WithName(Htmx.CommentTable.EndpointName);
 
-        route.MapDelete(CommentEndpoint + "/{id}", DeleteCommentEndPointHandler)
-            .WithName(DeleteCommentEndpointName);
+        htmxGroup.MapGet(CommentEndpoint + "/{id}", Htmx.CommentDialog.Handler)
+            .WithName(Htmx.CommentDialog.EndpointName);
 
-        route.MapPatch(CommentEndpoint + "/{id}", UpdateCommentEndPointHandler)
-            .WithName(UpdateCommentEndpointName);
-
-        htmxGroup.MapGet(CommentEndpoint, GetCommentsTableEndpointHandler)
-            .WithName(GetCommentsTableEndpointName);
-
-        htmxGroup.MapGet(CommentEndpoint + "/{id}", GetCommentDialogEndpointHandler)
-            .WithName(GetCommentDialogEndpointName);
-
-        htmxGroup.MapGet(CommentEndpoint + "/{id}/edit", GetCommentEditFormEndPointHandler)
-            .WithName(GetCommentEditFormEndpointName);
+        htmxGroup.MapGet(CommentEndpoint + "/{id}/edit", Htmx.EditCommentForm.Handler)
+            .WithName(Htmx.EditCommentForm.EndpointName);
     }
 
-    private static async ValueTask<RazorComponentResult<CreateCommentForm>> CreateCommentEndPointHandler
-    (
-        IValidator<CreateCommentFormDto> validator,
-        IDbContextFactory<KhDbContext> dbContextFactory,
-        [FromForm] CreateCommentFormDto dto,
-        CancellationToken ct
-    )
+
+    public static class Htmx
     {
-        if (await validator.ValidateAsync(dto, ct) is { IsValid: false } validationResult)
+        public static class CommentTable
         {
-            return new RazorComponentResult<CreateCommentForm>(new
+            public const string EndpointName = "Htmx_CommentsTable";
+
+            public static RazorComponentResult<CommentTableComponent> Handler
+                ()
             {
-                Comment = dto,
-                Errors = validationResult.Errors.Select(x => x.ErrorMessage).ToArray(),
-            });
+                return new RazorComponentResult<CommentTableComponent>();
+            }
         }
 
-        await using var dbContext = await dbContextFactory.CreateDbContextAsync(ct);
-
-        // TODO: Use CQRS instead, and use the current user
-        var user = await dbContext.Users.FirstOrDefaultAsync(x => x.UserName == "admin", ct)
-                   ?? throw new InvalidOperationException("Admin user not found");
-
-        DateTimeOffset timestamp = TimeProvider.System.GetUtcNow();
-        var entity = Comment.Create(dto.Text, timestamp, user.Id);
-
-        dbContext.Add(entity);
-        await dbContext.SaveChangesAsync(ct);
-
-        return new RazorComponentResult<CreateCommentForm>(new
+        public static class CommentDialog
         {
-            Comment = dto with
+            public const string EndpointName = "Htmx_CommentDialog";
+
+            public static RazorComponentResult<CommentDialogComponent> Handler
+                (Guid id)
             {
-                Text = string.Empty,
-            },
-        });
-    }
-
-    private static async ValueTask<Results<NotFound, NoContent>> DeleteCommentEndPointHandler
-    (
-        IDbContextFactory<KhDbContext> dbContextFactory,
-        Guid id,
-        CancellationToken ct
-    )
-    {
-        await using var dbContext = await dbContextFactory.CreateDbContextAsync(ct);
-        if (await dbContext.Comments.FindAsync(id) is not { } entity)
-        {
-            return TypedResults.NotFound();
+                return new RazorComponentResult<CommentDialogComponent>(new
+                {
+                    Id = id
+                });
+            }
         }
 
-        dbContext.Remove(entity);
-        await dbContext.SaveChangesAsync(ct);
-
-        return TypedResults.NoContent();
-    }
-
-    private static RazorComponentResult<CommentTable> GetCommentsTableEndpointHandler
-        ()
-    {
-        return new RazorComponentResult<CommentTable>();
-    }
-
-    private static RazorComponentResult<CommentDialog> GetCommentDialogEndpointHandler
-        (Guid id)
-    {
-        return new RazorComponentResult<CommentDialog>(new
+        public static class EditCommentForm
         {
-            Id = id
-        });
-    }
+            public const string EndpointName = "Htmx_CommentEditForm";
 
-    private static async ValueTask<Results<NotFound, RazorComponentResult<EditCommentForm>>> GetCommentEditFormEndPointHandler
-    (
-        IDbContextFactory<KhDbContext> dbContextFactory,
-        Guid id,
-        CancellationToken ct
-    )
-    {
-        await using var dbContext = await dbContextFactory.CreateDbContextAsync(ct);
-        if (await dbContext.Comments.FirstOrDefaultAsync(x => x.Id == id, ct) is not { } entity)
-        {
-            return TypedResults.NotFound();
-        }
-
-        var dto = EditCommentFormDto.FromCommentEntity(entity);
-
-        return new RazorComponentResult<EditCommentForm>(new
-        {
-            Comment = dto,
-        });
-    }
-
-    private static async ValueTask<Results<NotFound, RazorComponentResult<EditCommentForm>, Ok>> UpdateCommentEndPointHandler
-    (
-        IValidator<EditCommentFormDto> validator,
-        IDbContextFactory<KhDbContext> dbContextFactory,
-        Guid id,
-        [FromForm] EditCommentFormDto dto,
-        CancellationToken ct)
-    {
-        if (await validator.ValidateAsync(dto, ct) is { IsValid: false } validationResult)
-        {
-            return new RazorComponentResult<EditCommentForm>(new
+            public static async ValueTask<Results<NotFound, RazorComponentResult<EditCommentFormComponent>>> Handler
+            (
+                IDbContextFactory<KhDbContext> dbContextFactory,
+                Guid id,
+                CancellationToken ct
+            )
             {
-                Comment = dto,
-                Errors = validationResult.Errors.Select(x => x.ErrorMessage).ToArray(),
-            });
-        }
+                await using var dbContext = await dbContextFactory.CreateDbContextAsync(ct);
+                if (await dbContext.Comments.FirstOrDefaultAsync(x => x.Id == id, ct) is not { } entity)
+                {
+                    return TypedResults.NotFound();
+                }
 
-        await using var dbContext = await dbContextFactory.CreateDbContextAsync(ct);
-        if (await dbContext.Comments.FirstOrDefaultAsync(x => x.Id == id, cancellationToken: ct) is not { } entity)
+                var dto = EditCommentFormDto.FromCommentEntity(entity);
+
+                return new RazorComponentResult<EditCommentFormComponent>(new
+                {
+                    Comment = dto,
+                });
+            }
+        }
+    }
+
+    public static class Api
+    {
+        public static class CreateComment
         {
-            return TypedResults.NotFound();
+            public const string EndpointName = "Api_CreateComment";
+
+            public static async ValueTask<RazorComponentResult<CreateCommentFormComponent>> Handler
+            (
+                IValidator<CreateCommentFormDto> validator,
+                IDbContextFactory<KhDbContext> dbContextFactory,
+                [FromForm] CreateCommentFormDto dto,
+                CancellationToken ct
+            )
+            {
+                if (await validator.ValidateAsync(dto, ct) is { IsValid: false } validationResult)
+                {
+                    return new RazorComponentResult<CreateCommentFormComponent>(new
+                    {
+                        Comment = dto,
+                        Errors = validationResult.Errors.Select(x => x.ErrorMessage).ToArray(),
+                    });
+                }
+
+                await using var dbContext = await dbContextFactory.CreateDbContextAsync(ct);
+
+                // TODO: Use CQRS instead, and use the current user
+                var user = await dbContext.Users.FirstOrDefaultAsync(x => x.UserName == "admin", ct)
+                           ?? throw new InvalidOperationException("Admin user not found");
+
+                DateTimeOffset timestamp = TimeProvider.System.GetUtcNow();
+                var entity = Comment.Create(dto.Text, timestamp, user.Id);
+
+                dbContext.Add(entity);
+                await dbContext.SaveChangesAsync(ct);
+
+                return new RazorComponentResult<CreateCommentFormComponent>(new
+                {
+                    Comment = dto with
+                    {
+                        Text = string.Empty,
+                    },
+                });
+            }
         }
 
-        entity.ChangeText(dto.Text);
+        public static class DeleteComment
+        {
+            public const string EndpointName = "Api_DeleteComment";
 
-        await dbContext.SaveChangesAsync(ct);
+            public static async ValueTask<Results<NotFound, NoContent>> Handler
+            (
+                IDbContextFactory<KhDbContext> dbContextFactory,
+                Guid id,
+                CancellationToken ct
+            )
+            {
+                await using var dbContext = await dbContextFactory.CreateDbContextAsync(ct);
+                if (await dbContext.Comments.FindAsync(id) is not { } entity)
+                {
+                    return TypedResults.NotFound();
+                }
 
-        return TypedResults.Ok();
+                dbContext.Remove(entity);
+                await dbContext.SaveChangesAsync(ct);
+
+                return TypedResults.NoContent();
+            }
+        }
+
+        public static class UpdateComment
+        {
+            public const string EndpointName = "Api_UpdateComment";
+
+            public static async ValueTask<Results<NotFound, RazorComponentResult<EditCommentFormComponent>, Ok>> Handler
+            (
+                IValidator<EditCommentFormDto> validator,
+                IDbContextFactory<KhDbContext> dbContextFactory,
+                Guid id,
+                [FromForm] EditCommentFormDto dto,
+                CancellationToken ct)
+            {
+                if (await validator.ValidateAsync(dto, ct) is { IsValid: false } validationResult)
+                {
+                    return new RazorComponentResult<EditCommentFormComponent>(new
+                    {
+                        Comment = dto,
+                        Errors = validationResult.Errors.Select(x => x.ErrorMessage).ToArray(),
+                    });
+                }
+
+                await using var dbContext = await dbContextFactory.CreateDbContextAsync(ct);
+                if (await dbContext.Comments.FirstOrDefaultAsync(x => x.Id == id, cancellationToken: ct) is not { } entity)
+                {
+                    return TypedResults.NotFound();
+                }
+
+                entity.ChangeText(dto.Text);
+
+                await dbContext.SaveChangesAsync(ct);
+
+                return TypedResults.Ok();
+            }
+        }
     }
 }
