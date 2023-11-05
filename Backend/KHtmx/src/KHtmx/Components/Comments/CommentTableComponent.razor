@@ -58,7 +58,8 @@
                             hx-trigger="click"
                             hx-target="#home"
                             hx-swap="beforeend"
-                            hx-get="@LinkGenerator.GetPathByName(CommentEndpoints.GetCommentDialog.EndpointName, new { id = comment.Id })">
+                            hx-get="@LinkGenerator.GetPathByName(CommentEndpoints.GetCommentDialog.EndpointName, new { id = comment.Id })"
+                            >
                             @comment.AuthorFirstName @comment.AuthorLastName
                         </button>
                     </td>

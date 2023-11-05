@@ -1,9 +1,12 @@
+using System.Security.Claims;
 using FluentValidation;
 using KHtmx.Components.Comments;
 using KHtmx.Constants;
 using KHtmx.Domain.Comments;
+using KHtmx.Domain.People;
 using KHtmx.Persistence;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -93,12 +96,15 @@ public static class CommentEndpoints
     public static class CreateComment
     {
         public const string EndpointName = "CreateComment";
+        private static readonly string[] UserNotFoundError = ["User not found"];
 
         public static async ValueTask<RazorComponentResult<CommentCreateFormComponent>> Handler
         (
             IValidator<CommentCreateFormDto> validator,
             IDbContextFactory<KhDbContext> dbContextFactory,
             [FromForm] CommentCreateFormDto dto,
+            ClaimsPrincipal claimsPrincipal,
+            UserManager<KhtmxUser> userManager,
             CancellationToken ct
         )
         {
@@ -113,9 +119,14 @@ public static class CommentEndpoints
 
             await using var dbContext = await dbContextFactory.CreateDbContextAsync(ct);
 
-            // TODO: Use CQRS instead, and use the current user
-            var user = await dbContext.Users.FirstOrDefaultAsync(x => x.UserName == "admin", ct)
-                       ?? throw new InvalidOperationException("Admin user not found");
+            if (await userManager.GetUserAsync(claimsPrincipal) is not {} user)
+            {
+                return new RazorComponentResult<CommentCreateFormComponent>(new
+                {
+                    Comment = dto,
+                    Errors = UserNotFoundError,
+                });
+            }
 
             DateTimeOffset timestamp = TimeProvider.System.GetUtcNow();
             var entity = Comment.Create(dto.Text, timestamp, user.Id);

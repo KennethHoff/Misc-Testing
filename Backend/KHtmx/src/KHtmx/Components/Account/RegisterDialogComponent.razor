@@ -5,7 +5,6 @@
 @* ReSharper disable once Blazor.EditorRequired *@
 <SelfClosingDialogComponent
     Id="register-dialog">
-
     @if (Errors is not [])
     {
         <div>
@@ -22,7 +21,8 @@
         hx-post="@LinkGenerator.GetPathByName(AccountEndpoints.Register.EndpointName)"
         hx-target="#register-dialog"
         hx-swap="outerHTML"
-        >
+        hx-on="htmx:afterRequest:window.location.reload()">
+
         <AntiforgeryToken />
         <!-- username input -->
         <input

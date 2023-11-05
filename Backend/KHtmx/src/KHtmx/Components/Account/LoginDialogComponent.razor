@@ -5,9 +5,10 @@
 <SelfClosingDialogComponent
     Id="login-dialog">
     <form
-        hx-post="@LinkGenerator.GetPathByName(AccountEndpoints.Login.EndpointName)">
+        hx-post="@LinkGenerator.GetPathByName(AccountEndpoints.Login.EndpointName)"
+        hx-on="htmx:afterRequest:window.location.reload()">
         <AntiforgeryToken />
-        
+
         <!-- Username Input-->
         <input
             type="text"
@@ -40,7 +41,7 @@
             type="hidden"
             name="rememberMe"
             value="false" />
-        
+
         <!-- Login Button -->
         <button
             type="submit">

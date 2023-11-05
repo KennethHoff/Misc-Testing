@@ -37,7 +37,7 @@ public static class WebApplicationExtensions
             return app;
         }
 
-        var adminUser = KhtmxUser.Create("Admin", "Admin", "admin", "admin@betweennames.dev");
+        var adminUser = KhtmxUser.Create("admin", "admin@betweennames.dev", "Admin", "admin");
 
         dbContext.Users.Add(adminUser);
         dbContext.SaveChanges();

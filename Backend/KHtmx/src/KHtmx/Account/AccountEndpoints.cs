@@ -13,11 +13,14 @@ public static class AccountEndpoints
     {
         var htmxGroup = route.MapGroup(EndpointConstants.HtmxPrefix);
 
-        route.MapPost("login", Login.Handler)
+        htmxGroup.MapPost("login", Login.Handler)
             .WithName(Login.EndpointName);
 
-        route.MapPost("register", Register.Handler)
+        htmxGroup.MapPost("register", Register.Handler)
             .WithName(Register.EndpointName);
+
+        htmxGroup.MapGet("logout", Logout.Handler)
+            .WithName(Logout.EndpointName);
 
         htmxGroup.MapGet("loginDialog", GetLoginDialog.Handler)
             .WithName(GetLoginDialog.EndpointName);
@@ -107,6 +110,23 @@ public static class AccountEndpoints
             }
 
             return new RazorComponentResult<RegisterDialogComponent>();
+        }
+    }
+
+    public class Logout
+    {
+        public const string EndpointName = "Logout";
+
+        public static async ValueTask<Ok> Handler
+        (
+            ILogger<Logout> logger,
+            SignInManager<KhtmxUser> signInManager,
+            CancellationToken ct
+        )
+        {
+            await signInManager.SignOutAsync();
+            logger.LogInformation("User logged out");
+            return TypedResults.Ok();
         }
     }
 }
