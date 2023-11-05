@@ -98,6 +98,7 @@ public static class CommentEndpoints
         public const string EndpointName = "CreateComment";
         private static readonly string[] UserNotFoundError = ["User not found"];
 
+        // TODO: Figure out how to extract authorization logic into a Requirement and Handler
         public static async ValueTask<RazorComponentResult<CommentCreateFormComponent>> Handler
         (
             IValidator<CommentCreateFormDto> validator,
@@ -119,7 +120,7 @@ public static class CommentEndpoints
 
             await using var dbContext = await dbContextFactory.CreateDbContextAsync(ct);
 
-            if (await userManager.GetUserAsync(claimsPrincipal) is not {} user)
+            if (await userManager.GetUserAsync(claimsPrincipal) is not { } user)
             {
                 return new RazorComponentResult<CommentCreateFormComponent>(new
                 {
@@ -136,9 +137,9 @@ public static class CommentEndpoints
 
             return new RazorComponentResult<CommentCreateFormComponent>(new
             {
-                Comment = dto with
+                Comment = new CommentCreateFormDto
                 {
-                    Text = string.Empty,
+                    Text = string.Empty
                 },
             });
         }
@@ -148,17 +149,24 @@ public static class CommentEndpoints
     {
         public const string EndpointName = "DeleteComment";
 
-        public static async ValueTask<Results<NotFound, NoContent>> Handler
+        public static async ValueTask<Results<NotFound, NoContent, UnauthorizedHttpResult>> Handler
         (
             IDbContextFactory<KhDbContext> dbContextFactory,
+            ClaimsPrincipal claimsPrincipal,
+            UserManager<KhtmxUser> userManager,
             Guid id,
             CancellationToken ct
         )
         {
             await using var dbContext = await dbContextFactory.CreateDbContextAsync(ct);
-            if (await dbContext.Comments.FindAsync(id) is not { } entity)
+            if (await dbContext.Comments.FirstOrDefaultAsync(x => x.Id == id, cancellationToken: ct) is not { } entity)
             {
                 return TypedResults.NotFound();
+            }
+
+            if (await userManager.GetUserAsync(claimsPrincipal) is not { } user || entity.AuthorId != user.Id)
+            {
+                return TypedResults.Unauthorized();
             }
 
             dbContext.Remove(entity);
@@ -172,10 +180,12 @@ public static class CommentEndpoints
     {
         public const string EndpointName = "UpdateComment";
 
-        public static async ValueTask<Results<NotFound, RazorComponentResult<CommentEditFormComponent>, Ok>> Handler
+        public static async ValueTask<Results<NotFound, RazorComponentResult<CommentEditFormComponent>, Ok, UnauthorizedHttpResult>> Handler
         (
             IValidator<CommentEditFormDto> validator,
             IDbContextFactory<KhDbContext> dbContextFactory,
+            ClaimsPrincipal claimsPrincipal,
+            UserManager<KhtmxUser> userManager,
             Guid id,
             [FromForm] CommentEditFormDto dto,
             CancellationToken ct)
@@ -193,6 +203,11 @@ public static class CommentEndpoints
             if (await dbContext.Comments.FirstOrDefaultAsync(x => x.Id == id, cancellationToken: ct) is not { } entity)
             {
                 return TypedResults.NotFound();
+            }
+
+            if (await userManager.GetUserAsync(claimsPrincipal) is not { } user || entity.AuthorId != user.Id)
+            {
+                return TypedResults.Unauthorized();
             }
 
             entity.ChangeText(dto.Text);

@@ -21,7 +21,7 @@ builder.Services.AddComments();
 builder.Services.AddRazorComponents();
 
 builder.Services.AddServerSentEvents();
-builder.Services.AddHostedService<AdminCommentSpamEventWorker>();
+// builder.Services.AddHostedService<AdminCommentSpamEventWorker>();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>(includeInternalTypes: true);
 builder.Services.AddMediatR(opt =>
 {

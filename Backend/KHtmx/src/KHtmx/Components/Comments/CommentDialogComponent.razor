@@ -2,8 +2,12 @@
 @using Microsoft.EntityFrameworkCore
 @using KHtmx.Comments
 @using Humanizer
+@using KHtmx.Domain.People
+@using Microsoft.AspNetCore.Identity
 @inject KhDbContext DbContext
 @inject LinkGenerator LinkGenerator
+@inject UserManager<KhtmxUser> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
 
 @* ReSharper disable once Blazor.EditorRequired *@
 <SelfClosingDialogComponent
@@ -24,26 +28,29 @@
                 @_comment.Text
             </p>
 
-            <div
-                class="p-4">
-                <!-- Delete Button-->
-                <button
-                    type="button"
-                    class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-dotted focus:outline-blue-500"
-                    hx-delete="@LinkGenerator.GetPathByName(CommentEndpoints.DeleteComment.EndpointName, new { id = _comment.Id })"
-                    hx-on="htmx:afterRequest:htmx.trigger('#comment_dialog', 'close')">
-                    Delete
-                </button>
+            @if (canEdit)
+            {
+                <div
+                    class="p-4">
+                    <!-- Delete Button-->
+                    <button
+                        type="button"
+                        class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-dotted focus:outline-blue-500"
+                        hx-delete="@LinkGenerator.GetPathByName(CommentEndpoints.DeleteComment.EndpointName, new { id = _comment.Id })"
+                        hx-on="htmx:afterRequest:htmx.trigger('#comment_dialog', 'close')">
+                        Delete
+                    </button>
 
-                <!-- Edit Button-->
-                <button
-                    type="button"
-                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-dotted focus:outline-red-500"
-                    hx-get="@LinkGenerator.GetPathByName(CommentEndpoints.GetCommentEditForm.EndpointName, new { id = _comment.Id })"
-                    hx-target="#comment_dialog-body">
-                    Edit
-                </button>
-            </div>
+                    <!-- Edit Button-->
+                    <button
+                        type="button"
+                        class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-dotted focus:outline-red-500"
+                        hx-get="@LinkGenerator.GetPathByName(CommentEndpoints.GetCommentEditForm.EndpointName, new { id = _comment.Id })"
+                        hx-target="#comment_dialog-body">
+                        Edit
+                    </button>
+                </div>
+            }
         }
         else
         {
@@ -61,6 +68,8 @@
 
     private CommentDialogDto? _comment;
 
+    private bool canEdit;
+
     protected override async Task OnInitializedAsync()
     {
         _comment = await DbContext.Comments
@@ -72,7 +81,25 @@
                 Timestamp = c.Timestamp,
                 AuthorFirstName = c.Author.FirstName,
                 AuthorLastName = c.Author.LastName,
+                AuthorId = c.AuthorId
             })
             .FirstOrDefaultAsync();
+
+        if (_comment is null)
+        {
+            return;
+        }
+
+        if (HttpContextAccessor.HttpContext is not {} httpContext)
+        {
+            return;
+        }
+
+        if (await UserManager.GetUserAsync(httpContext.User) is not {} user)
+        {
+            return;
+        }
+
+        canEdit = user.Id == _comment.AuthorId;
     }
 }
