@@ -4,8 +4,6 @@
 @using KHtmx.Persistence
 @using KHtmx.Domain.Comments
 @using Microsoft.EntityFrameworkCore
-@inject IDbContextFactory<KhDbContext> DbContextFactory
-@inject ILogger<CommentTableComponent> Logger
 @inject LinkGenerator LinkGenerator
 
 <table
@@ -13,6 +11,11 @@
     hx-swap="outerHTML"
     hx-trigger="sse:@ServerSentEventNames.CommentAdded, sse:@ServerSentEventNames.CommentDeleted, sse:@ServerSentEventNames.CommentUpdated"
     hx-get="@LinkGenerator.GetPathByName(CommentEndpoints.GetCommentTable.EndpointName)">
+    <!--
+    TODO: Fix the above hx-get to include the filter
+    ^ That tells me that I need to re-refactor the retrieval logic 
+    such that the filter itself is a parameter (instead of the comments directly)
+    -->
     <colgroup>
         <col />
         <col />
@@ -56,10 +59,9 @@
                             class="focus:outline-none"
                             id="tr_btn_@comment.Id"
                             hx-trigger="click"
-                            hx-target="#home"
+                            hx-target="body"
                             hx-swap="beforeend"
-                            hx-get="@LinkGenerator.GetPathByName(CommentEndpoints.GetCommentDialog.EndpointName, new { id = comment.Id })"
-                            >
+                            hx-get="@LinkGenerator.GetPathByName(CommentEndpoints.GetCommentDialog.EndpointName, new { id = comment.Id })">
                             @comment.AuthorFirstName @comment.AuthorLastName
                         </button>
                     </td>
@@ -81,35 +83,8 @@
 
 
 @code {
-    private IReadOnlyList<CommentTableDto> Comments { get; set; } = ArraySegment<CommentTableDto>.Empty;
 
-    protected override async Task OnInitializedAsync()
-    {
-        await using var dbContext = await DbContextFactory.CreateDbContextAsync();
-        var comments = await dbContext.Comments
-            .OrderByDescending(comment => comment.Timestamp)
-            .Take(10)
-            .Select(x => new
-            {
-                Id = x.Id,
-                Text = x.Text,
-                Author = dbContext.Users
-                    .FirstOrDefault(user => user.Id == x.AuthorId),
-                Timestamp = x.Timestamp
-            })
-            .ToListAsync();
-
-        Comments = comments.Select(x => new CommentTableDto
-        {
-            Id = x.Id,
-            Text = x.Text,
-            AuthorFirstName = x.Author?.FirstName ?? "Unknown",
-            AuthorLastName = x.Author?.LastName ?? "Unknown",
-            Timestamp = x.Timestamp,
-        }).ToArray();
-
-
-        await base.OnInitializedAsync();
-    }
+    [Parameter, EditorRequired]
+    public IReadOnlyList<CommentTableDto> Comments { get; set; } = [];
 
 }

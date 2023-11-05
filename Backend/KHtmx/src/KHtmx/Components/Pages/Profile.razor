@@ -1,0 +1,57 @@
+@page "/profile"
+@using KHtmx.Comments
+@using KHtmx.Domain.People
+@using KHtmx.Persistence
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
+@inject IDbContextFactory<KhDbContext> DbContextFactory
+@inject IHttpContextAccessor HttpContextAccessor
+@inject UserManager<KhtmxUser> UserManager
+
+<PageTitle>Profile</PageTitle>
+
+<h3>
+    Your most recent comments
+</h3>
+
+<CommentTableComponent
+    Comments="_comments" />
+
+
+@code {
+
+    private IReadOnlyList<CommentTableDto> _comments = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (HttpContextAccessor.HttpContext is not {} httpContext)
+        {
+            return;
+        }
+
+    // This Task.Delay(1) has to be here to make the code work.
+    // Otherwise, the UserManager.GetUserAsync() call will throw the following exception:
+    // InvalidOperationException: A second operation was started on this context instance before a previous operation completed. This is usually caused by different threads concurrently using the same instance of DbContext. For more information on how to avoid threading issues with DbContext, see https://go.microsoft.com/fwlink/?linkid=2097913.'
+        await Task.Delay(1);
+        if (await UserManager.GetUserAsync(httpContext.User) is not { } user)
+        {
+            return;
+        }
+        await using var dbContext = await DbContextFactory.CreateDbContextAsync();
+
+        _comments = await dbContext.Comments
+            .OrderByDescending(comment => comment.Timestamp)
+            .Where(x => x.AuthorId == user.Id)
+            .Take(10)
+            .Select(x => new CommentTableDto
+            {
+                Id = x.Id,
+                Text = x.Text,
+                AuthorFirstName = user.FirstName,
+                AuthorLastName = user.LastName,
+                Timestamp = x.Timestamp,
+            })
+            .ToListAsync();
+    }
+
+}

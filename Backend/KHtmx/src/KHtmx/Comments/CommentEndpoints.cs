@@ -46,10 +46,38 @@ public static class CommentEndpoints
     {
         public const string EndpointName = "GetCommentsTable";
 
-        public static RazorComponentResult<CommentTableComponent> Handler
-            ()
+        public static async ValueTask<RazorComponentResult<CommentTableComponent>> Handler
+        (
+            IDbContextFactory<KhDbContext> dbContextFactory
+        )
         {
-            return new RazorComponentResult<CommentTableComponent>();
+            await using var dbContext = await dbContextFactory.CreateDbContextAsync();
+            var fromDb = await dbContext.Comments
+                .OrderByDescending(comment => comment.Timestamp)
+                .Take(10)
+                .Select(x => new
+                {
+                    Id = x.Id,
+                    Text = x.Text,
+                    Author = dbContext.Users
+                        .FirstOrDefault(user => user.Id == x.AuthorId),
+                    Timestamp = x.Timestamp
+                })
+                .ToListAsync();
+
+            var comments = fromDb.Select(x => new CommentTableDto
+            {
+                Id = x.Id,
+                Text = x.Text,
+                AuthorFirstName = x.Author?.FirstName ?? "Unknown",
+                AuthorLastName = x.Author?.LastName ?? "Unknown",
+                Timestamp = x.Timestamp,
+            }).ToArray();
+
+            return new RazorComponentResult<CommentTableComponent>(new
+            {
+                Comments = comments,
+            });
         }
     }
 

@@ -1,10 +1,46 @@
 ﻿@page "/"
 @using KHtmx.Constants
+@using KHtmx.Persistence
+@using Microsoft.EntityFrameworkCore
+@using KHtmx.Comments
+@inject IDbContextFactory<KhDbContext> DbContextFactory
 
 <PageTitle>Home</PageTitle>
 
 <div hx-sse="connect:@ServerSentEventNames.SseEndpoint" id="home">
     <CommentCreateFormComponent />
 
-    <CommentTableComponent/>
+    <CommentTableComponent Comments="_comments" />
 </div>
+
+
+@code {
+
+    private IReadOnlyList<CommentTableDto> _comments = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        await using var dbContext = await DbContextFactory.CreateDbContextAsync();
+        var comments = await dbContext.Comments
+            .OrderByDescending(comment => comment.Timestamp)
+            .Take(10)
+            .Select(x => new
+            {
+                Id = x.Id,
+                Text = x.Text,
+                Author = dbContext.Users
+                    .FirstOrDefault(user => user.Id == x.AuthorId),
+                Timestamp = x.Timestamp
+            })
+            .ToListAsync();
+
+        _comments = comments.Select(x => new CommentTableDto
+        {
+            Id = x.Id,
+            Text = x.Text,
+            AuthorFirstName = x.Author?.FirstName ?? "Unknown",
+            AuthorLastName = x.Author?.LastName ?? "Unknown",
+            Timestamp = x.Timestamp,
+        }).ToArray();
+    }
+}

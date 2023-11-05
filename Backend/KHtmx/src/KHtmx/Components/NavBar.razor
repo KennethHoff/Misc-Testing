@@ -1,6 +1,7 @@
 @using Microsoft.Identity.Client
 @using KHtmx.Account
 @using KHtmx.Domain.People
+@using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Identity
 @inject LinkGenerator LinkGenerator
 @inject IHttpContextAccessor HttpContextAccessor
@@ -8,6 +9,12 @@
 
 <nav
     class="flex flex-row place-content-between place-items-center">
+    <a
+        href="/"
+        hx-boost="true"
+        class="text-2xl font-bold text-blue-500">
+        KHtmx
+    </a>
     @if (!IsAuthenticated)
     {
         <div></div>
@@ -33,7 +40,13 @@
     else
     {
         <p>
-            Hello, @FirstName @LastName
+            Hello,
+            <a
+                class="text-blue-500"
+                hx-boost="true"
+                href="/profile">
+                @FirstName @LastName
+            </a>
         </p>
 
         <button
