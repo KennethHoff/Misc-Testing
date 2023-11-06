@@ -42,17 +42,15 @@ public static class CommentEndpoints
     }
 
 
-    public class GetCommentTable
+    public sealed class GetCommentTable
     {
         public const string EndpointName = "GetCommentsTable";
 
         public static RazorComponentResult<CommentTableComponent> Handler
         (
-            ILogger<GetCommentTable> logger,
             [FromQuery(Name = "authorId")] Guid? authorId
         )
         {
-            logger.LogInformation("AuthorId: {AuthorId}", authorId);
             if (authorId is { } authorGuid)
             {
                 return new RazorComponentResult<CommentTableComponent>(new
@@ -65,7 +63,7 @@ public static class CommentEndpoints
         }
     }
 
-    public class GetCommentDialog
+    public sealed class GetCommentDialog
     {
         public const string EndpointName = "GetCommentDialog";
 
@@ -81,7 +79,7 @@ public static class CommentEndpoints
         }
     }
 
-    public class GetCommentEditForm
+    public sealed class GetCommentEditForm
     {
         public const string EndpointName = "GetCommentEditForm";
 
@@ -107,7 +105,7 @@ public static class CommentEndpoints
         }
     }
 
-    public class CreateComment
+    public sealed class CreateComment
     {
         public const string EndpointName = "CreateComment";
         private static readonly string[] UserNotFoundError = ["User not found"];
@@ -159,7 +157,7 @@ public static class CommentEndpoints
         }
     }
 
-    public class DeleteComment
+    public sealed class DeleteComment
     {
         public const string EndpointName = "DeleteComment";
 
@@ -190,7 +188,7 @@ public static class CommentEndpoints
         }
     }
 
-    public class UpdateComment
+    public sealed class UpdateComment
     {
         public const string EndpointName = "UpdateComment";
 
@@ -214,17 +212,17 @@ public static class CommentEndpoints
             }
 
             await using var dbContext = await dbContextFactory.CreateDbContextAsync(ct);
-            if (await dbContext.Comments.FirstOrDefaultAsync(x => x.Id == id, cancellationToken: ct) is not { } entity)
+            if (await dbContext.Comments.FirstOrDefaultAsync(x => x.Id == id, cancellationToken: ct) is not { } comment)
             {
                 return TypedResults.NotFound();
             }
 
-            if (await userManager.GetUserAsync(claimsPrincipal) is not { } user || entity.AuthorId != user.Id)
+            if (await userManager.GetUserAsync(claimsPrincipal) is not { } user || comment.AuthorId != user.Id)
             {
                 return TypedResults.Unauthorized();
             }
 
-            entity.ChangeText(dto.Text);
+            comment.ChangeText(dto.Text);
 
             await dbContext.SaveChangesAsync(ct);
 

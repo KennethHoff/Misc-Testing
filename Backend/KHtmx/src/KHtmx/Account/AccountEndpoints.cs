@@ -29,7 +29,7 @@ public static class AccountEndpoints
             .WithName(GetRegisterDialog.EndpointName);
     }
 
-    public class GetLoginDialog
+    public sealed class GetLoginDialog
     {
         public const string EndpointName = "GetLoginDialog";
 
@@ -42,7 +42,7 @@ public static class AccountEndpoints
         }
     }
 
-    public class GetRegisterDialog
+    public sealed class GetRegisterDialog
     {
         public const string EndpointName = "GetRegisterDialog";
 
@@ -55,7 +55,7 @@ public static class AccountEndpoints
         }
     }
 
-    public class Login
+    public sealed class Login
     {
         public const string EndpointName = "Login";
 
@@ -84,7 +84,7 @@ public static class AccountEndpoints
         }
     }
 
-    public class Register
+    public sealed class Register
     {
         public const string EndpointName = "Register";
 
@@ -113,7 +113,7 @@ public static class AccountEndpoints
         }
     }
 
-    public class Logout
+    public sealed class Logout
     {
         public const string EndpointName = "Logout";
 
