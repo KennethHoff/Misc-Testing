@@ -5,7 +5,7 @@
 @using Microsoft.AspNetCore.Identity
 @inject LinkGenerator LinkGenerator
 @inject IHttpContextAccessor HttpContextAccessor
-@inject UserManager<KhtmxUser> UserManager
+@inject IServiceScopeFactory ServiceScopeFactory
 
 <nav
     class="flex flex-row place-content-between place-items-center">
@@ -15,7 +15,7 @@
         class="text-2xl font-bold text-blue-500">
         KHtmx
     </a>
-    @if (!IsAuthenticated)
+    @if (!_isAuthenticated)
     {
         <div></div>
         <div>
@@ -45,7 +45,7 @@
                 class="text-blue-500 font-bold"
                 hx-boost="true"
                 href="/profile">
-                @FirstName @LastName
+                @_firstName @_lastName
             </a>
         </p>
 
@@ -63,10 +63,10 @@
 
 @code {
 
-    private bool IsAuthenticated;
+    private bool _isAuthenticated;
 
-    private string? FirstName;
-    private string? LastName;
+    private string? _firstName;
+    private string? _lastName;
 
     protected override async Task OnInitializedAsync()
     {
@@ -74,16 +74,18 @@
         {
             return;
         }
-
-        if (await UserManager.GetUserAsync(claimsPrincipal) is not {} user)
+        
+        using var serviceScope = ServiceScopeFactory.CreateScope();
+        using var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<KhtmxUser>>();
+        if (await userManager.GetUserAsync(claimsPrincipal) is not {} user)
         {
             return;
         }
 
-        IsAuthenticated = true;
+        _isAuthenticated = true;
 
-        FirstName = user.FirstName;
-        LastName = user.LastName;
+        _firstName = user.FirstName;
+        _lastName = user.LastName;
     }
 
 }

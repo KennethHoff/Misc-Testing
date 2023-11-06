@@ -7,7 +7,7 @@
 @using Microsoft.EntityFrameworkCore
 @inject IDbContextFactory<KhDbContext> DbContextFactory
 @inject IHttpContextAccessor HttpContextAccessor
-@inject UserManager<KhtmxUser> UserManager
+@inject IServiceScopeFactory ServiceScopeFactory
 
 <PageTitle>Profile</PageTitle>
 
@@ -31,16 +31,14 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (HttpContextAccessor.HttpContext is not {} httpContext)
+        if (HttpContextAccessor.HttpContext?.User is not { Identity.IsAuthenticated: true } claimsPrincipal)
         {
             return;
         }
 
-    // This Task.Delay(1) has to be here to make the code work.
-    // Otherwise, the UserManager.GetUserAsync() call will throw the following exception:
-    // InvalidOperationException: A second operation was started on this context instance before a previous operation completed. This is usually caused by different threads concurrently using the same instance of DbContext. For more information on how to avoid threading issues with DbContext, see https://go.microsoft.com/fwlink/?linkid=2097913.'
-        await Task.Delay(1);
-        if (await UserManager.GetUserAsync(httpContext.User) is not { } user)
+        using var serviceScope = ServiceScopeFactory.CreateScope();
+        using var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<KhtmxUser>>();
+        if (await userManager.GetUserAsync(claimsPrincipal) is not {} user)
         {
             return;
         }
