@@ -36,12 +36,14 @@
             return;
         }
 
+        // TODO: Figure out how to get the UserManager from the DI container (By default, it's scoped to the request, which breaks Blazor)
         using var serviceScope = ServiceScopeFactory.CreateScope();
         using var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<KhtmxUser>>();
         if (await userManager.GetUserAsync(claimsPrincipal) is not {} user)
         {
             return;
         }
+
         await using var dbContext = await DbContextFactory.CreateDbContextAsync();
 
         _comments = await dbContext.Comments
