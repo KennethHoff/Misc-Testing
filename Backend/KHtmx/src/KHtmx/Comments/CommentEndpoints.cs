@@ -42,51 +42,37 @@ public static class CommentEndpoints
     }
 
 
-    public static class GetCommentTable
+    public class GetCommentTable
     {
         public const string EndpointName = "GetCommentsTable";
 
-        public static async ValueTask<RazorComponentResult<CommentTableComponent>> Handler
+        public static RazorComponentResult<CommentTableComponent> Handler
         (
-            IDbContextFactory<KhDbContext> dbContextFactory
+            ILogger<GetCommentTable> logger,
+            [FromQuery(Name = "authorId")] Guid? authorId
         )
         {
-            await using var dbContext = await dbContextFactory.CreateDbContextAsync();
-            var fromDb = await dbContext.Comments
-                .OrderByDescending(comment => comment.Timestamp)
-                .Take(10)
-                .Select(x => new
+            logger.LogInformation("AuthorId: {AuthorId}", authorId);
+            if (authorId is { } authorGuid)
+            {
+                return new RazorComponentResult<CommentTableComponent>(new
                 {
-                    Id = x.Id,
-                    Text = x.Text,
-                    Author = dbContext.Users
-                        .FirstOrDefault(user => user.Id == x.AuthorId),
-                    Timestamp = x.Timestamp
-                })
-                .ToListAsync();
+                    Filter = new AuthorCommentTableFilter(authorGuid),
+                });
+            }
 
-            var comments = fromDb.Select(x => new CommentTableDto
-            {
-                Id = x.Id,
-                Text = x.Text,
-                AuthorFirstName = x.Author?.FirstName ?? "Unknown",
-                AuthorLastName = x.Author?.LastName ?? "Unknown",
-                Timestamp = x.Timestamp,
-            }).ToArray();
-
-            return new RazorComponentResult<CommentTableComponent>(new
-            {
-                Comments = comments,
-            });
+            return new RazorComponentResult<CommentTableComponent>();
         }
     }
 
-    public static class GetCommentDialog
+    public class GetCommentDialog
     {
         public const string EndpointName = "GetCommentDialog";
 
         public static RazorComponentResult<CommentDialogComponent> Handler
-            (Guid id)
+        (
+            Guid id
+        )
         {
             return new RazorComponentResult<CommentDialogComponent>(new
             {
@@ -95,7 +81,7 @@ public static class CommentEndpoints
         }
     }
 
-    public static class GetCommentEditForm
+    public class GetCommentEditForm
     {
         public const string EndpointName = "GetCommentEditForm";
 
@@ -121,7 +107,7 @@ public static class CommentEndpoints
         }
     }
 
-    public static class CreateComment
+    public class CreateComment
     {
         public const string EndpointName = "CreateComment";
         private static readonly string[] UserNotFoundError = ["User not found"];
@@ -173,7 +159,7 @@ public static class CommentEndpoints
         }
     }
 
-    public static class DeleteComment
+    public class DeleteComment
     {
         public const string EndpointName = "DeleteComment";
 
@@ -204,7 +190,7 @@ public static class CommentEndpoints
         }
     }
 
-    public static class UpdateComment
+    public class UpdateComment
     {
         public const string EndpointName = "UpdateComment";
 

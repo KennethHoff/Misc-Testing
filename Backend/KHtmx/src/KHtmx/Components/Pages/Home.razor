@@ -7,10 +7,12 @@
 
 <PageTitle>Home</PageTitle>
 
-<div hx-sse="connect:@ServerSentEventNames.SseEndpoint" >
+<div
+    hx-sse="connect:@ServerSentEventNames.SseEndpoint">
+
     <CommentCreateFormComponent />
 
-    <CommentTableComponent Comments="_comments" />
+    <CommentTableComponent />
 </div>
 
 
@@ -43,4 +45,5 @@
             Timestamp = x.Timestamp,
         }).ToArray();
     }
+
 }

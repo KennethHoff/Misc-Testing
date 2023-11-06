@@ -2,32 +2,27 @@
 @using KHtmx.Comments
 @using KHtmx.Constants
 @using KHtmx.Domain.People
-@using KHtmx.Persistence
 @using Microsoft.AspNetCore.Identity
-@using Microsoft.EntityFrameworkCore
-@inject IDbContextFactory<KhDbContext> DbContextFactory
 @inject IHttpContextAccessor HttpContextAccessor
 @inject IServiceScopeFactory ServiceScopeFactory
 
+
 <PageTitle>Profile</PageTitle>
 
-@* <div *@
-@*     hx-sse="connect:@ServerSentEventNames.SseEndpoint" *@
-@*     > *@
-<div>
+<div
+    hx-sse="connect:@ServerSentEventNames.SseEndpoint">
 
     <h3>
         Your most recent comments
     </h3>
 
     <CommentTableComponent
-        Comments="_comments" />
+        Filter="_filter" />
 </div>
-
 
 @code {
 
-    private IReadOnlyList<CommentTableDto> _comments = [];
+    private ICommentTableFilter? _filter;
 
     protected override async Task OnInitializedAsync()
     {
@@ -36,7 +31,6 @@
             return;
         }
 
-        // TODO: Figure out how to get the UserManager from the DI container (By default, it's scoped to the request, which breaks Blazor)
         using var serviceScope = ServiceScopeFactory.CreateScope();
         using var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<KhtmxUser>>();
         if (await userManager.GetUserAsync(claimsPrincipal) is not {} user)
@@ -44,21 +38,7 @@
             return;
         }
 
-        await using var dbContext = await DbContextFactory.CreateDbContextAsync();
-
-        _comments = await dbContext.Comments
-            .OrderByDescending(comment => comment.Timestamp)
-            .Where(x => x.AuthorId == user.Id)
-            .Take(10)
-            .Select(x => new CommentTableDto
-            {
-                Id = x.Id,
-                Text = x.Text,
-                AuthorFirstName = user.FirstName,
-                AuthorLastName = user.LastName,
-                Timestamp = x.Timestamp,
-            })
-            .ToListAsync();
+        _filter = new AuthorCommentTableFilter(user.Id);
     }
 
 }

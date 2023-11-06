@@ -29,7 +29,7 @@ public static class AccountEndpoints
             .WithName(GetRegisterDialog.EndpointName);
     }
 
-    public static class GetLoginDialog
+    public class GetLoginDialog
     {
         public const string EndpointName = "GetLoginDialog";
 
@@ -42,7 +42,7 @@ public static class AccountEndpoints
         }
     }
 
-    public static class GetRegisterDialog
+    public class GetRegisterDialog
     {
         public const string EndpointName = "GetRegisterDialog";
 

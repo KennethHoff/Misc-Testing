@@ -3,19 +3,20 @@
 @using KHtmx.Constants
 @using KHtmx.Persistence
 @using KHtmx.Domain.Comments
+@using KHtmx.Domain.People
+@using Microsoft.AspNetCore.Identity
 @using Microsoft.EntityFrameworkCore
 @inject LinkGenerator LinkGenerator
+@inject IDbContextFactory<KhDbContext> DbContextFactory
+@inject IHttpContextAccessor HttpContextAccessor
+@inject IServiceScopeFactory ServiceScopeFactory
 
 <table
     class="w-full text-left"
     hx-swap="outerHTML"
     hx-trigger="sse:@ServerSentEventNames.CommentAdded, sse:@ServerSentEventNames.CommentDeleted, sse:@ServerSentEventNames.CommentUpdated"
-    hx-get="@LinkGenerator.GetPathByName(CommentEndpoints.GetCommentTable.EndpointName)">
-    <!--
-    TODO: Fix the above hx-get to include the filter
-    ^ That tells me that I need to re-refactor the retrieval logic 
-    such that the filter itself is a parameter (instead of the comments directly)
-    -->
+    hx-get="@(LinkGenerator.GetPathByName(CommentEndpoints.GetCommentTable.EndpointName) + Filter?.QueryString)">
+    <!-- TODO: Figure out how to somehow only listen to the SSEs that are relevant to the filter. -->
     <colgroup>
         <col />
         <col />
@@ -39,7 +40,7 @@
         </tr>
     </thead>
     <tbody>
-        @if (Comments is [])
+        @if (_comments is [])
         {
             <tr>
                 <td
@@ -50,12 +51,12 @@
         }
         else
         {
-            foreach (var comment in Comments)
+            foreach (var comment in _comments)
             {
                 <tr
                     class="odd:bg-gray-300 even:bg-gray-100 [&:has(button:focus)]:bg-gray-400">
                     <td
-                        >
+                    >
                         <button
                             class="focus:outline-none"
                             id="tr_btn_@comment.Id"
@@ -85,7 +86,56 @@
 
 @code {
 
-    [Parameter, EditorRequired]
-    public IReadOnlyList<CommentTableDto> Comments { get; set; } = [];
+    [Parameter]
+    public ICommentTableFilter? Filter { get; set; }
+
+    private IReadOnlyList<CommentTableDto> _comments = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (HttpContextAccessor.HttpContext?.User is not { Identity.IsAuthenticated: true } claimsPrincipal)
+        {
+            return;
+        }
+
+        using var serviceScope = ServiceScopeFactory.CreateScope();
+        using var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<KhtmxUser>>();
+        if (await userManager.GetUserAsync(claimsPrincipal) is not {} user)
+        {
+            return;
+        }
+
+        await using var dbContext = await DbContextFactory.CreateDbContextAsync();
+
+        var query = dbContext.Comments.AsQueryable();
+
+        if (Filter is not null)
+        {
+            query = Filter.Apply(query);
+        }
+
+        var commentsFromDb = await query
+            .OrderByDescending(x => x.Timestamp)
+            .Take(10)
+            .Select(c => new
+            {
+                Id = c.Id,
+                Text = c.Text,
+                Author = dbContext.Users.FirstOrDefault(u => u.Id == c.AuthorId),
+                Timestamp = c.Timestamp,
+            })
+            .ToListAsync();
+
+        _comments = commentsFromDb
+            .Select(c => new CommentTableDto
+            {
+                Id = c.Id,
+                Text = c.Text,
+                AuthorFirstName = c.Author?.FirstName ?? "Unknown",
+                AuthorLastName = c.Author?.LastName ?? "Unknown",
+                Timestamp = c.Timestamp,
+            })
+            .ToList();
+    }
 
 }
