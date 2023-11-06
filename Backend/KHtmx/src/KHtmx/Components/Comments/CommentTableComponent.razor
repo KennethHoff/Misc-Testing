@@ -53,8 +53,9 @@
             foreach (var comment in Comments)
             {
                 <tr
-                    class="[&:nth-child(odd)]:bg-gray-300 [&:nth-child(even)]:bg-gray-100 [&:has(button:focus)]:bg-gray-400">
-                    <td>
+                    class="odd:bg-gray-300 even:bg-gray-100 [&:has(button:focus)]:bg-gray-400">
+                    <td
+                        >
                         <button
                             class="focus:outline-none"
                             id="tr_btn_@comment.Id"
