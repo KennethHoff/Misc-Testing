@@ -3,7 +3,7 @@ using KHtmx.Domain.People;
 
 namespace KHtmx.Domain.Comments;
 
-public sealed record class Comment
+public sealed class Comment
 {
     // EF Core requires a parameterless constructor
     public Comment()
