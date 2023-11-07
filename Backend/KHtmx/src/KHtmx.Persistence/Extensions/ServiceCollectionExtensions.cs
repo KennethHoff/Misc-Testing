@@ -29,7 +29,7 @@ public static class WebApplicationExtensions
         using var scope = app.Services.CreateScope();
         var dbContextFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<KhDbContext>>();
         using var dbContext = dbContextFactory.CreateDbContext();
-        dbContext.Database.EnsureDeleted();
+        // dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
 
         if (dbContext.Users.Any(x => x.UserName == "admin"))
