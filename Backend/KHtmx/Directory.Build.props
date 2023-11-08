@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <UseArtifactsOutput>true</UseArtifactsOutput>
+    <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
 
     <!-- Central Package Management -->
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
