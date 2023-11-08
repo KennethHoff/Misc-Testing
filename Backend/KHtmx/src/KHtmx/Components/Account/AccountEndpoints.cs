@@ -1,11 +1,11 @@
-using KHtmx.Components.Account;
+using KHtmx.Components.Account.Data;
 using KHtmx.Constants;
 using KHtmx.Domain.People;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace KHtmx.Account;
+namespace KHtmx.Components.Account;
 
 public static class AccountEndpoints
 {

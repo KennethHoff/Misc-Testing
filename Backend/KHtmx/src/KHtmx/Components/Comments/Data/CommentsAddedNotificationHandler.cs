@@ -3,7 +3,7 @@ using KHtmx.Domain.Comments.Events;
 using Lib.AspNetCore.ServerSentEvents;
 using MediatR;
 
-namespace KHtmx.Comments;
+namespace KHtmx.Components.Comments.Data;
 
 public sealed class CommentsAddedNotificationHandler(
     IServerSentEventsService serverSentEventsService

@@ -1,6 +1,6 @@
 using System.Security.Claims;
 using FluentValidation;
-using KHtmx.Components.Comments;
+using KHtmx.Components.Comments.Data;
 using KHtmx.Constants;
 using KHtmx.Domain.Comments;
 using KHtmx.Domain.People;
@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace KHtmx.Comments;
+namespace KHtmx.Components.Comments;
 
 public static class CommentEndpoints
 {

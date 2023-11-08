@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace KHtmx.Account;
+namespace KHtmx.Components.Account.Data;
 
 public sealed record class RegisterFormDto
 {

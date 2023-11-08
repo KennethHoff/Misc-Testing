@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace KHtmx.Comments;
+namespace KHtmx.Components.Comments.Data;
 
 public readonly record struct CommentCreateFormDto
 {

@@ -1,7 +1,7 @@
 using FluentValidation;
-using KHtmx.Account;
-using KHtmx.Comments;
 using KHtmx.Components;
+using KHtmx.Components.Account;
+using KHtmx.Components.Comments;
 using KHtmx.Constants;
 using KHtmx.Domain.People;
 using KHtmx.Persistence;

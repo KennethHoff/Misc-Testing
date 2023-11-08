@@ -1,4 +1,4 @@
-namespace KHtmx.Comments;
+namespace KHtmx.Components.Comments.Data;
 
 public sealed record class CommentDialogDto
 {

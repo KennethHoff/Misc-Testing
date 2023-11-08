@@ -1,6 +1,6 @@
 using KHtmx.Domain.Comments;
 
-namespace KHtmx.Comments;
+namespace KHtmx.Components.Comments.Data;
 
 public interface ICommentTableFilter
 {
