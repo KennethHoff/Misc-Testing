@@ -100,7 +100,7 @@ public static class CommentEndpoints
 
             return new RazorComponentResult<CommentEditFormComponent>(new
             {
-                Comment = dto,
+                FormData = dto,
             });
         }
     }
@@ -125,7 +125,7 @@ public static class CommentEndpoints
             {
                 return new RazorComponentResult<CommentCreateFormComponent>(new
                 {
-                    Comment = dto,
+                    FormData = dto,
                     Errors = validationResult.Errors.Select(x => x.ErrorMessage).ToArray(),
                 });
             }
@@ -136,7 +136,7 @@ public static class CommentEndpoints
             {
                 return new RazorComponentResult<CommentCreateFormComponent>(new
                 {
-                    Comment = dto,
+                    FormData = dto,
                     Errors = UserNotFoundError,
                 });
             }
@@ -149,7 +149,7 @@ public static class CommentEndpoints
 
             return new RazorComponentResult<CommentCreateFormComponent>(new
             {
-                Comment = new CommentCreateFormDto
+                FormData = new CommentCreateFormDto
                 {
                     Text = string.Empty
                 },
@@ -206,7 +206,7 @@ public static class CommentEndpoints
             {
                 return new RazorComponentResult<CommentEditFormComponent>(new
                 {
-                    Comment = dto,
+                    FormData = dto,
                     Errors = validationResult.Errors.Select(x => x.ErrorMessage).ToArray(),
                 });
             }

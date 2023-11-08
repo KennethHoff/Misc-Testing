@@ -23,7 +23,7 @@
             type="text"
             placeholder="Comment"
             name="text"
-            value="@Comment?.Text" />
+            value="@FormData?.Text" />
 
         <!-- Submit Button-->
         <button
@@ -36,7 +36,7 @@
 @code {
 
     [Parameter]
-    public CommentCreateFormDto? Comment { get; init; }
+    public CommentCreateFormDto? FormData { get; init; }
 
     [Parameter]
     public IReadOnlyList<string> Errors { get; init; } = ArraySegment<string>.Empty;
