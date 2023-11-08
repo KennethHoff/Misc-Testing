@@ -1,5 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   
+  <PropertyGroup>
+<!--    <EnableRequestDelegateGenerator>true</EnableRequestDelegateGenerator>-->
+  </PropertyGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\KHtmx.Domain\KHtmx.Domain.csproj" />
     <ProjectReference Include="..\KHtmx.Persistence\KHtmx.Persistence.csproj" />

@@ -10,7 +10,7 @@ using KHtmx.Persistence.Extensions;
 using Lib.AspNetCore.ServerSentEvents;
 using Microsoft.AspNetCore.Identity;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateSlimBuilder(args);
 builder.Services.AddKhData(builder.Configuration);
 builder.Services.AddIdentity<KhtmxUser, KhtmxRole>()
     .AddEntityFrameworkStores<KhDbContext>()
