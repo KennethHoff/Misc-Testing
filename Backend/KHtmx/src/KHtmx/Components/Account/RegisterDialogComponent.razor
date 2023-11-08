@@ -1,17 +1,16 @@
 @using Microsoft.AspNetCore.Identity
-@using KHtmx.Components.Account.Data
 @inject LinkGenerator LinkGenerator
 
 @* ReSharper disable once Blazor.EditorRequired *@
 <SelfClosingDialogComponent
     Id="register-dialog">
-    @if (Errors is not [])
+    @if (ValidationFailures is not [])
     {
         <div>
             <ul>
-                @foreach (var error in Errors)
+                @foreach (var failure in ValidationFailures)
                 {
-                    <li>@error.Description</li>
+                    <li>@failure.Description</li>
                 }
             </ul>
         </div>
@@ -26,49 +25,61 @@
         <AntiforgeryToken />
         <!-- username input -->
         <input
+            id="register-dialog_username"
+            name="username" 
             type="text"
             placeholder="Username"
             autocomplete="username"
-            value="@FormData?.Username"
-            name="username" />
+            hx-preserve
+        />
 
         <!-- email input -->
         <input
+            id="register-dialog_email"
+            name="email" 
             type="email"
             placeholder="Email"
             autocomplete="email"
-            value="@FormData?.Email"
-            name="email" />
+            hx-preserve
+        />
 
         <!-- FirstName input -->
         <input
+            id="register-dialog_firstName"
+            name="firstName" 
             type="text"
             placeholder="First Name"
             autocomplete="given-name"
-            value="@FormData?.FirstName"
-            name="firstName" />
+            hx-preserve
+        />
 
         <!-- LastName input -->
         <input
+            id="register-dialog_lastName"
+            name="lastName" 
             type="text"
             placeholder="Last Name"
             autocomplete="family-name"
-            value="@FormData?.LastName"
-            name="lastName" />
+            hx-preserve
+        />
 
         <!-- Password input -->
         <input
+            id="register-dialog_password"
+            name="password" 
             type="password"
             placeholder="Password"
             autocomplete="new-password"
-            name="password" />
+        />
 
         <!-- ConfirmPassword input -->
         <input
+            id="register-dialog_confirmPassword"
+            name="confirmPassword" 
             type="password"
             placeholder="Confirm Password"
             autocomplete="new-password"
-            name="confirmPassword" />
+        />
 
         <button
             type="submit">
@@ -81,9 +92,5 @@
 {
 
     [Parameter]
-    public IReadOnlyList<IdentityError> Errors { get; set; } = [];
-
-    [Parameter]
-    public RegisterFormDto? FormData { get; set; }
-
+    public IReadOnlyList<IdentityError> ValidationFailures { get; set; } = [];
 }

@@ -1,45 +1,61 @@
+@using FluentValidation.Results
 @inject LinkGenerator LinkGenerator
 
 @* ReSharper disable once Blazor.EditorRequired *@
 <SelfClosingDialogComponent
     Id="login-dialog">
+    
+    @if (ValidationFailures is not [])
+    {
+        @foreach(var failure in ValidationFailures)
+        {
+            <p class="text-red-800">@failure.ErrorMessage</p>
+        }
+    }
     <form
         hx-post="@LinkGenerator.GetPathByName(AccountEndpoints.Login.EndpointName)"
-        hx-on="htmx:afterRequest:window.location.reload()">
-        <AntiforgeryToken />
+        hx-target="#login-dialog"
+        hx-swap="outerHTML swap:200ms"
+        >
+        <AntiforgeryToken/>
 
         <!-- Username Input-->
         <input
+            id="login-dialog__username"
+            autofocus
             type="text"
             placeholder="Username"
             name="username"
-            autocomplete="username" />
+            hx-preserve
+            autocomplete="username"/>
 
         <!-- Password Input-->
         <input
+            id="login-dialog__password"
             type="password"
             placeholder="Password"
             name="password"
-            autocomplete="current-password" />
+            autocomplete="current-password"/>
 
         <!-- Remember Me Input-->
         <label
-            for="remember-me">
+            for="login-dialog__remember-me">
             Remember me
         </label>
 
         <input
-            id="remember-me"
+            id="login-dialog__remember-me"
             type="checkbox"
             name="rememberMe"
             value="true"
+            hx-preserve
             placeholder="Remember me">
 
         <!-- Why is this necessary, AspNetCore >_> -->
         <input
             type="hidden"
             name="rememberMe"
-            value="false" />
+            value="false"/>
 
         <!-- Login Button -->
         <button
@@ -48,3 +64,9 @@
         </button>
     </form>
 </SelfClosingDialogComponent>
+
+@code {
+
+    [Parameter]
+    public IReadOnlyList<ValidationFailure> ValidationFailures { get; set; } = [];
+}

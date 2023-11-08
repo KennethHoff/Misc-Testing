@@ -1,6 +1,8 @@
+using FluentValidation.Results;
 using KHtmx.Components.Account.Data;
 using KHtmx.Constants;
 using KHtmx.Domain.People;
+using KHtmx.Extensions;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -59,12 +61,12 @@ public static class AccountEndpoints
     {
         public const string EndpointName = "Login";
 
-        // TODO: Implement login
-        public static async ValueTask<Results<RazorComponentResult<LoginDialogComponent>, Created>> Handler
+        public static async ValueTask<Results<RazorComponentResult<LoginDialogComponent>, Ok>> Handler
         (
             ILogger<Login> logger,
             SignInManager<KhtmxUser> signInManager,
             [FromForm] LoginFormDto form,
+            HttpResponse response,
             CancellationToken ct
         )
         {
@@ -74,13 +76,16 @@ public static class AccountEndpoints
                 logger.LogInformation("Failed to login user: {@Errors}", result);
                 return new RazorComponentResult<LoginDialogComponent>(new
                 {
-                    Errors = result.ToString(),
-                    FormData = form
+                    ValidationFailures = new[]
+                    {
+                        new ValidationFailure("Username", "Invalid username or password")
+                    },
                 });
             }
 
             logger.LogInformation("User logged in: {@User}", form.Username);
-            return new RazorComponentResult<LoginDialogComponent>();
+            response.Headers.AddHtmxHeader(new HtmxRefreshHeader());
+            return TypedResults.Ok();
         }
     }
 
@@ -104,8 +109,7 @@ public static class AccountEndpoints
                 logger.LogInformation("Failed to create user: {@Errors}", result.Errors);
                 return new RazorComponentResult<RegisterDialogComponent>(new
                 {
-                    Errors = result.Errors.ToArray(),
-                    FormData = form
+                    ValidationFailures = result.Errors.ToReadOnlyList(),
                 });
             }
 
