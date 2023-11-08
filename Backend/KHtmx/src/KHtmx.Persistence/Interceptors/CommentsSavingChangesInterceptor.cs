@@ -25,7 +25,7 @@ internal sealed class CommentsSavingChangesInterceptor(
         var entries = context.ChangeTracker.Entries<Comment>()
             .Where(e => e.State is EntityState.Added or EntityState.Modified or EntityState.Deleted)
             .ToList();
-        
+
         logger.LogInformation("Found {Count} entries", entries.Count);
 
         foreach (var entry in entries)

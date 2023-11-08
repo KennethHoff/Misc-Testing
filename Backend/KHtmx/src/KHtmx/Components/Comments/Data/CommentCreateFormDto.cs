@@ -13,8 +13,6 @@ internal sealed class CreateCommentFormDtoValidator : AbstractValidator<CommentC
     {
         RuleFor(x => x.Text)
             .NotEmpty()
-            .WithMessage("Text is required")
-            .MinimumLength(10)
-            .WithMessage("Text must be at least 10 characters long");
+            .WithMessage("Text is required");
     }
 }

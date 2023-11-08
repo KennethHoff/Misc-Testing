@@ -5,7 +5,11 @@ module.exports = {
       "./Components/**/*.razor"
   ],
   theme: {
-    extend: {},
+    extend: {
+        gridTemplateColumns: {
+            'comment-table': '125px 1fr 150px'
+        }
+    },
   },
   plugins: [],
 }

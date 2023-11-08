@@ -11,6 +11,10 @@ public sealed class CommentsAddedNotificationHandler(
     INotificationHandler<CommentUpdatedEvent>,
     INotificationHandler<CommentDeletedEvent>
 {
+    private static readonly TimeSpan MinTimeBetweenEvents = TimeSpan.FromMilliseconds(250);
+
+    private static DateTimeOffset _lastEventTime = DateTimeOffset.MinValue;
+
     public Task Handle(CommentAddedEvent notification, CancellationToken cancellationToken)
     {
         return SendEventAsync(cancellationToken);
@@ -28,6 +32,13 @@ public sealed class CommentsAddedNotificationHandler(
 
     private async Task SendEventAsync(CancellationToken cancellationToken)
     {
+        var now = TimeProvider.System.GetUtcNow();
+        if (_lastEventTime + MinTimeBetweenEvents > now)
+        {
+            return;
+        }
+
+        _lastEventTime = now;
         await serverSentEventsService.SendEventAsync(new ServerSentEvent
         {
             Id = ServerSentEventNames.CommentTableUpdated,

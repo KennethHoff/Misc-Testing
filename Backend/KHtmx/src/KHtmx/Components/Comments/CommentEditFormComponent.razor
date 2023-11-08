@@ -14,7 +14,7 @@
 
     <form
         class="flex flex-row gap-4 py-2"
-        hx-patch="@LinkGenerator.GetPathByName(CommentEndpoints.UpdateComment.EndpointName, new { id = Comment?.Id })"
+        hx-patch="@LinkGenerator.GetPathByName(CommentEndpoints.UpdateComment.EndpointName, new { id = FormData?.Id })"
         hx-on="htmx:afterRequest:htmx.trigger('#comment_dialog', 'close')">
         <AntiforgeryToken />
 
@@ -22,7 +22,7 @@
         <input
             type="hidden"
             name="id"
-            value="@Comment?.Id" />
+            value="@FormData?.Id" />
 
         <!-- Comment Input-->
         <input
@@ -30,7 +30,7 @@
             placeholder="Comment"
             autofocus
             name="text"
-            value="@Comment?.Text" />
+            value="@FormData?.Text" />
 
         <!-- Submit Button-->
         <button
@@ -43,7 +43,7 @@
 @code {
 
     [Parameter]
-    public CommentEditFormDto? Comment { get; init; }
+    public CommentEditFormDto? FormData { get; init; }
 
     [Parameter]
     public IReadOnlyList<string> Errors { get; init; } = ArraySegment<string>.Empty;

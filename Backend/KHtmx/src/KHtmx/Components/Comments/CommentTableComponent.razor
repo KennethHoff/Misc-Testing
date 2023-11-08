@@ -13,78 +13,96 @@
 
 <!-- TODO: Figure out how to somehow only listen to the SSEs that are relevant to the filter. -->
 <!-- TODO: Figure out how to use `sse-swap` instead of trigger+get w/ Blazor SSR -->
-<table
-    class="w-full text-left"
-    hx-swap="outerHTML"
-    hx-trigger="sse:@ServerSentEventNames.CommentTableUpdated"
-    hx-get="@(LinkGenerator.GetPathByName(CommentEndpoints.GetCommentTable.EndpointName, Filter?.QueryString))">
 
-    <colgroup>
-        <col/>
-        <col/>
-        <col/>
-    </colgroup>
-    <thead>
-        <tr
-            class="bg-gray-600 text-white">
-            <th
-                scope="col">
-                Author
-            </th>
-            <th
-                scope="col">
-                Text
-            </th>
-            <th
-                scope="col">
-                Timestamp
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (_comments is [])
-        {
-            <tr>
-                <td
-                    colspan="3">
-                    No comments yet - be the first!
-                </td>
-            </tr>
-        }
-        else
-        {
-            foreach (var comment in _comments)
-            {
-                <tr
-                    class="odd:bg-gray-300 even:bg-gray-100 [&:has(button:focus)]:bg-gray-400">
-                    <td
-                    >
-                        <button
-                            class="focus:outline-none"
-                            id="tr_btn_@comment.Id"
-                            hx-trigger="click"
-                            hx-target="body"
-                            hx-swap="beforeend"
-                            hx-get="@LinkGenerator.GetPathByName(CommentEndpoints.GetCommentDialog.EndpointName, new { id = comment.Id })">
-                            @comment.AuthorFirstName @comment.AuthorLastName
-                        </button>
-                    </td>
-                    <td>
-                        @comment.Text
-                    </td>
-                    <td>
-                        <time
-                            datetime="@comment.Timestamp.ToString("o")"
-                            title="@comment.Timestamp.ToString("G")">
-                            @comment.Timestamp.Humanize(DateTimeOffset.Now)
-                        </time>
-                    </td>
-                </tr>
-            }
-        }
-    </tbody>
-</table>
+<div class="grid w-full comment-table"
+     role="table"
+     aria-rowcount="@_comments.Count"
+     hx-swap="outerHTML transition:true"
+     hx-trigger="sse:@ServerSentEventNames.CommentTableUpdated"
+     hx-get="@(LinkGenerator.GetPathByName(CommentEndpoints.GetCommentTable.EndpointName, Filter?.QueryString))">
 
+    <!-- Table header -->
+    <div role="row" aria-rowindex="1" class="grid bg-gray-600 text-white grid-cols-comment-table">
+        <div aria-colindex="1" role="columnheader">
+            Author
+        </div>
+        <div aria-colindex="2" role="columnheader">
+            Text
+        </div>
+        <div aria-colindex="3" role="columnheader">
+            Timestamp
+        </div>
+    </div>
+
+    <!-- Table body -->
+    @if (_comments is [])
+    {
+        <div aria-rowspan="0">
+            No comments yet - be the first!
+        </div>
+    }
+    else
+    {
+        for (var index = 0; index < _comments.Count; index++)
+        {
+            var comment = _comments[index];
+            <div style="view-transition-name: @GetViewTransitionName(comment.Id);"
+                 role="row"
+                 id="tr_@(comment.Id)"
+                 aria-rowindex="@index"
+                 class="grid grid-cols-comment-table odd:bg-gray-300 even:bg-gray-100 [&:has(button:focus)]:bg-gray-400">
+                <div role="cell" aria-colindex="1">
+                    <button
+                        class="focus:outline-none"
+                        id="tr_btn_@comment.Id"
+                        hx-trigger="click"
+                        hx-target="body"
+                        hx-swap="beforeend"
+                        hx-get="@LinkGenerator.GetPathByName(CommentEndpoints.GetCommentDialog.EndpointName, new { id = comment.Id })">
+                        @comment.AuthorFirstName @comment.AuthorLastName
+                    </button>
+                </div>
+                <div role="cell" aria-colindex="2">
+                    @comment.Text
+                </div>
+                <div role="cell" aria-colindex="3">
+                    <time datetime="@comment.Timestamp.ToString("o")">
+                        @comment.Timestamp.ToString("G")
+                    </time>
+                </div>
+            </div>
+        }
+    }
+
+    <style>
+    
+    @@keyframes move-down {
+        from {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }    
+    }
+    
+        @foreach (var comment in _comments)
+        {
+            var viewTransitionName = GetViewTransitionName(comment.Id);
+
+            <text>
+                ::view-transition-old(@viewTransitionName) {
+                    animation-duration: 50ms;
+                }
+                
+                ::view-transition-new(@viewTransitionName) {
+                    animation-duration: 50ms;
+                }
+            </text>
+        }
+    </style>
+</div>
 
 @code {
 
@@ -118,7 +136,7 @@
 
         var commentsFromDb = await query
             .OrderByDescending(x => x.Timestamp)
-            .Take(10)
+            .Take(100)
             .Select(c => new
             {
                 Id = c.Id,
@@ -139,5 +157,7 @@
             })
             .ToList();
     }
+
+    private string GetViewTransitionName(Guid id) => $"vt_{id}";
 
 }

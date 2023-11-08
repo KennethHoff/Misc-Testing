@@ -1,3 +1,4 @@
+using Bogus;
 using KHtmx.Persistence;
 using KHtmx.Domain.Comments;
 using Microsoft.EntityFrameworkCore;
@@ -26,17 +27,28 @@ public sealed class AdminCommentSpamEventWorker(
                     throw new InvalidOperationException("Admin not found.");
                 }
 
-                var newComment = Comment.Create("Hello from the server! " + DateTimeOffset.UtcNow.ToString(""), DateTimeOffset.UtcNow, admin.Id);
+                var numberOfComments = Random.Shared.Next(1, 4);
 
-                await dbContext.Comments.AddAsync(newComment, stoppingToken);
+                var comments = Enumerable.Range(0, numberOfComments)
+                    .Select(_ => Comment.Create(GetRandomString(2, 20), DateTimeOffset.UtcNow, admin.Id))
+                    .ToReadOnlyList();
+
+                await dbContext.Comments.AddRangeAsync(comments, stoppingToken);
                 await dbContext.SaveChangesAsync(stoppingToken);
 
-                await Task.Delay(TimeSpan.FromMilliseconds(3_000), stoppingToken);
+                await Task.Delay(TimeSpan.FromMilliseconds(250), stoppingToken);
             }
         }
         catch (TaskCanceledException)
         {
             // ignore
         }
+    }
+
+    private static string GetRandomString(int minLength, int maxLength)
+    {
+        var faker = new Faker();
+
+        return faker.Lorem.Sentence(Random.Shared.Next(minLength, maxLength));
     }
 }
