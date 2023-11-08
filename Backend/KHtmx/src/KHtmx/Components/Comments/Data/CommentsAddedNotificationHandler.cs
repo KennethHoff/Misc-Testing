@@ -7,45 +7,32 @@ namespace KHtmx.Components.Comments.Data;
 
 public sealed class CommentsAddedNotificationHandler(
     IServerSentEventsService serverSentEventsService
-) : INotificationHandler<CommentAddedEvent>
+) : INotificationHandler<CommentAddedEvent>,
+    INotificationHandler<CommentUpdatedEvent>,
+    INotificationHandler<CommentDeletedEvent>
 {
     public Task Handle(CommentAddedEvent notification, CancellationToken cancellationToken)
     {
-        return serverSentEventsService.SendEventAsync(new ServerSentEvent
-        {
-            Id = ServerSentEventNames.CommentAdded,
-            Type = ServerSentEventNames.CommentAdded,
-            Data = ["Literally anything"],
-        }, cancellationToken);
+        return SendEventAsync(cancellationToken);
     }
-}
 
-public sealed class CommentUpdatedNotificationHandler(
-    IServerSentEventsService serverSentEventsService
-) : INotificationHandler<CommentUpdatedEvent>
-{
     public Task Handle(CommentUpdatedEvent notification, CancellationToken cancellationToken)
     {
-        return serverSentEventsService.SendEventAsync(new ServerSentEvent
-        {
-            Id = ServerSentEventNames.CommentUpdated,
-            Type = ServerSentEventNames.CommentUpdated,
-            Data = ["Literally anything"],
-        }, cancellationToken);
+        return SendEventAsync(cancellationToken);
     }
-}
 
-public sealed class CommentDeletedNotificationHandler(
-    IServerSentEventsService serverSentEventsService
-) : INotificationHandler<CommentDeletedEvent>
-{
     public Task Handle(CommentDeletedEvent notification, CancellationToken cancellationToken)
     {
-        return serverSentEventsService.SendEventAsync(new ServerSentEvent
+        return SendEventAsync(cancellationToken);
+    }
+
+    private async Task SendEventAsync(CancellationToken cancellationToken)
+    {
+        await serverSentEventsService.SendEventAsync(new ServerSentEvent
         {
-            Id = ServerSentEventNames.CommentDeleted,
-            Type = ServerSentEventNames.CommentDeleted,
-            Data = ["Literally anything"],
+            Id = ServerSentEventNames.CommentTableUpdated,
+            Type = ServerSentEventNames.CommentTableUpdated,
+            Data = ["."],
         }, cancellationToken);
     }
 }

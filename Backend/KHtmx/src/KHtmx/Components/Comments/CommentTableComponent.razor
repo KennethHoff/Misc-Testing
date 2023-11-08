@@ -11,16 +11,18 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @inject IServiceScopeFactory ServiceScopeFactory
 
+<!-- TODO: Figure out how to somehow only listen to the SSEs that are relevant to the filter. -->
+<!-- TODO: Figure out how to use `sse-swap` instead of trigger+get w/ Blazor SSR -->
 <table
     class="w-full text-left"
     hx-swap="outerHTML"
-    hx-trigger="sse:@ServerSentEventNames.CommentAdded, sse:@ServerSentEventNames.CommentDeleted, sse:@ServerSentEventNames.CommentUpdated"
-    hx-get="@(LinkGenerator.GetPathByName(CommentEndpoints.GetCommentTable.EndpointName) + Filter?.QueryString)">
-    <!-- TODO: Figure out how to somehow only listen to the SSEs that are relevant to the filter. -->
+    hx-trigger="sse:@ServerSentEventNames.CommentTableUpdated"
+    hx-get="@(LinkGenerator.GetPathByName(CommentEndpoints.GetCommentTable.EndpointName, Filter?.QueryString))">
+
     <colgroup>
-        <col />
-        <col />
-        <col />
+        <col/>
+        <col/>
+        <col/>
     </colgroup>
     <thead>
         <tr
