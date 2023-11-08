@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\KHtmx.Domain\KHtmx.Domain.csproj" />
     <ProjectReference Include="..\KHtmx.Persistence\KHtmx.Persistence.csproj" />
+    <ProjectReference Include="..\KHtmx.Utilities\KHtmx.Utilities.csproj" />
   </ItemGroup>
   
   <ItemGroup>
