@@ -29,7 +29,6 @@ builder.Services.AddMediatR(opt =>
 
 var app = builder.Build();
 app.UseKhData();
-
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();

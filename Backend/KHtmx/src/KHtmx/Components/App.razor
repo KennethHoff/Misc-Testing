@@ -3,33 +3,31 @@
     lang="en">
 
 <head>
-    <meta
-        charset="utf-8" />
+    <meta charset="utf-8"/>
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0" />
+        content="width=device-width, initial-scale=1.0"/>
     <meta
         name="description"
-        content="HTMX Demo by @@KennethHoff" />
-    <base
-        href="/" />
+        content="HTMX Demo by @@KennethHoff"/>
+    <base href="/"/>
     <link
         rel="stylesheet"
-        href="app.css?v=@DateTimeOffset.UtcNow.ToString("O")" />
+        href="app.css?v=@DateTimeOffset.UtcNow.ToString("O")"/>
     <link
         rel="icon"
         type="image/png"
-        href="favicon.png" />
-    <script
-        src="htmx.min.js"></script>
-    <script
-        src="idiomorph-ext.min.js"></script>
-    <HeadOutlet />
+        href="favicon.png"/>
+    <script src="htmx/htmx.js"></script>
+    <script src="htmx/extensions/idiomorph.js"></script>
+    <script src="htmx/extensions/sse.js"></script>
+    <HeadOutlet/>
 </head>
 
 <body
-    hx-ext="morph">
-<Routes />
+    hx-ext="morph"
+    >
+<Routes/>
 </body>
 
 </html>
