@@ -11,6 +11,7 @@
         hx-patch="@LinkGenerator.GetPathByName(CommentEndpoints.UpdateComment.EndpointName, new { id = FormData?.Id })"
         hx-on::after-request="htmx.trigger('#comment_dialog', 'close')">
         <!-- TODO: Figure out how to only trigger the after-request event if there was no validation failure in the response -->
+        <!-- I imagine I could trigger it via a Response Header of some sort -->
         @if (ValidationFailures is not [])
         {
             <ul>
