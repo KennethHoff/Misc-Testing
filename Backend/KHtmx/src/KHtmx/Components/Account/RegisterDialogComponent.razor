@@ -1,11 +1,11 @@
-@using Microsoft.AspNetCore.Identity
+@using KHtmx.Models
+@using KHtmx.Components.Account.Data
 @inject LinkGenerator LinkGenerator
 
 @* ReSharper disable once Blazor.EditorRequired *@
 <SelfClosingDialogComponent
     Id="register-dialog"
     class="p-4 rounded-xl bg-gray-800">
-
 
     <!-- TODO: Improve the visual design of this form -->
     <form
@@ -18,7 +18,9 @@
             <ul>
                 @foreach (var failure in ValidationFailures)
                 {
-                    <li class="text-invalid">@failure.Description</li>
+                    <li class="text-invalid">
+                        @failure.ErrorMessage
+                    </li>
                 }
             </ul>
         }
@@ -35,8 +37,9 @@
             autocomplete="username"
             class="p-2"
             autofocus
-            @* required *@
-            hx-preserve
+            required
+            value="@FormData?.Username"
+            aria-invalid="@ValidationFailures.PropertyHasErrors(nameof(FormData.Username))"
         />
 
         <!-- email input -->
@@ -46,12 +49,13 @@
             name="email"
             type="email"
             autocomplete="email"
-            @* class="p-2" *@
-            @* required *@
-            hx-preserve 
+            class="p-2" 
+            required
+            value="@FormData?.Email"
+            aria-invalid="@ValidationFailures.PropertyHasErrors(nameof(FormData.Email))"
         />
         @* </div> *@
-
+        
         <div class="flex flex-col md:flex-row gap-6">
             <!-- FirstName input -->
             <LabelledInput
@@ -61,8 +65,8 @@
                 type="text"
                 autocomplete="given-name"
                 class="p-2"
-                @* required *@
-                hx-preserve 
+                value="@FormData?.FirstName"
+                required
             />
 
             <!-- LastName input -->
@@ -73,8 +77,8 @@
                 type="text"
                 autocomplete="family-name"
                 class="p-2"
-                @* required *@
-                hx-preserve 
+                value="@FormData?.LastName"
+                required
             />
         </div>
 
@@ -112,5 +116,7 @@
 
 @code
 {
-    [Parameter] public IReadOnlyList<IdentityError> ValidationFailures { get; set; } = [];
+    [Parameter] public ValidationFailureCollection ValidationFailures { get; set; } = [];
+    
+    [Parameter] public RegisterFormDto? FormData { get; set; }
 }

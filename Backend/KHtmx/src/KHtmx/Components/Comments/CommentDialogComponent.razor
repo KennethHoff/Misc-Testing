@@ -28,7 +28,7 @@
                 @_comment.Text
             </p>
 
-            @if (canEdit)
+            @if (_canEdit)
             {
                 <div
                     class="p-4">
@@ -37,7 +37,8 @@
                         type="button"
                         class="bg-red-600 hover:bg-red-700 font-bold py-2 px-4 rounded focus:outline-dotted focus:outline-blue-500"
                         hx-delete="@LinkGenerator.GetPathByName(CommentEndpoints.DeleteComment.EndpointName, new { id = _comment.Id })"
-                        hx-on="htmx:afterRequest:htmx.trigger('#comment_dialog', 'close')">
+                        hx-on::after-request="htmx.trigger('#comment_dialog', 'close')"
+                    >
                         Delete
                     </button>
 
@@ -68,7 +69,7 @@
 
     private CommentDialogDto? _comment;
 
-    private bool canEdit;
+    private bool _canEdit;
 
     protected override async Task OnInitializedAsync()
     {
@@ -100,6 +101,6 @@
             return;
         }
 
-        canEdit = user.Id == _comment.AuthorId;
+        _canEdit = user.Id == _comment.AuthorId;
     }
 }

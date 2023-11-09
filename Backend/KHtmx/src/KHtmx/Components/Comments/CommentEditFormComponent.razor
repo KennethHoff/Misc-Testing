@@ -15,7 +15,7 @@
     <form
         class="flex flex-row gap-4 py-2"
         hx-patch="@LinkGenerator.GetPathByName(CommentEndpoints.UpdateComment.EndpointName, new { id = FormData?.Id })"
-        hx-on="htmx:afterRequest:htmx.trigger('#comment_dialog', 'close')">
+        hx-on::after-request="htmx.trigger('#comment_dialog', 'close')">
         <AntiforgeryToken />
 
         <!-- Hidden CommentId Input-->
@@ -42,11 +42,9 @@
 
 @code {
 
-    [Parameter]
-    public CommentEditFormDto? FormData { get; init; }
+    [Parameter] public CommentEditFormDto? FormData { get; init; }
 
-    [Parameter]
-    public IReadOnlyList<string> Errors { get; init; } = ArraySegment<string>.Empty;
+    [Parameter] public IReadOnlyList<string> Errors { get; init; } = ArraySegment<string>.Empty;
 
     private string ErrorMessage => string.Join(", ", Errors);
 }

@@ -50,12 +50,13 @@
         </p>
 
         <button
-            class="bg-gray-800 px-3 py-2 rounded-md text-sm font-medium"
+            class="bg-action px-3 py-2 rounded-md text-sm font-medium hover:bg-action-hover"
             hx-trigger="click"
             hx-get="@LinkGenerator.GetPathByName(AccountEndpoints.Logout.EndpointName)"
             hx-target="closest nav"
             hx-swap="beforeend"
-            hx-on="htmx:afterRequest:window.location.reload()">
+            hx-on::after-request="window.location.reload();"
+        >
             Logout
         </button>
     }

@@ -21,6 +21,15 @@ module.exports = {
             }
         },
     },
-    plugins: [],
+    plugins: [
+        // Aria-invalid
+        function ({ addVariant, e }) {
+            addVariant('aria-invalid', ({ modifySelectors, separator }) => {
+                modifySelectors(({ className }) => {
+                    return `.${e(`aria-invalid${separator}${className}`)}[aria-invalid]`
+                })
+            })
+        },
+    ],
 }
 

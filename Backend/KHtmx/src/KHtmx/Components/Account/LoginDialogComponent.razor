@@ -1,4 +1,5 @@
-@using FluentValidation.Results
+@using KHtmx.Models
+@using KHtmx.Components.Account.Data
 @inject LinkGenerator LinkGenerator
 
 <!-- TODO: Find a better background color for the dialog -->
@@ -29,9 +30,8 @@
             class="p-2"
             autofocus
             required
-            hx-preserve
-            autocomplete="username"
-        />
+            value="@FormData?.Username"
+            autocomplete="username" />
 
         <!-- Password Input -->
         <LabelledInput
@@ -41,8 +41,7 @@
             type="password"
             class="p-2"
             required
-            autocomplete="current-password"
-        />
+            autocomplete="current-password" />
 
         <!-- Remember Me Input -->
         <LabelledInput
@@ -52,12 +51,11 @@
             name="rememberMe"
             type="checkbox"
             value="true"
-            hx-preserve
-        />
+            checked="@FormData?.RememberMe" />
 
         <!-- Login Button -->
         <button
-            class="bg-action rounded-md mx-auto px-4 py-2 text-white hover:bg-action-hover focus-visible:bg-action-hover"
+            class="bg-action rounded-md mx-auto px-4 py-2 hover:bg-action-hover focus-visible:bg-action-hover"
             type="submit">
             Login
         </button>
@@ -66,5 +64,8 @@
 
 @code {
 
-    [Parameter] public IReadOnlyList<ValidationFailure> ValidationFailures { get; set; } = [];
+    [Parameter] public ValidationFailureCollection ValidationFailures { get; set; } = [];
+
+    [Parameter] public LoginFormDto? FormData { get; set; }
+
 }

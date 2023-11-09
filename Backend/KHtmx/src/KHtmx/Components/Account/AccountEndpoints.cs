@@ -1,8 +1,8 @@
-using FluentValidation.Results;
 using KHtmx.Components.Account.Data;
 using KHtmx.Constants;
 using KHtmx.Domain.People;
 using KHtmx.Extensions;
+using KHtmx.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -76,10 +76,15 @@ public static class AccountEndpoints
                 logger.LogInformation("Failed to login user: {@Errors}", result);
                 return new RazorComponentResult<LoginDialogComponent>(new
                 {
-                    ValidationFailures = new[]
+                    ValidationFailures = new ValidationFailureCollection
                     {
-                        new ValidationFailure("Username", "Incorrect username or password")
+                        new()
+                        {
+                            ErrorMessage = "Incorrect username or password",
+                            Severity = Severity.Error,
+                        }
                     },
+                    FormData = form,
                 });
             }
 
@@ -103,13 +108,33 @@ public static class AccountEndpoints
         )
         {
             var user = KhtmxUser.Create(form.Username, form.Email, form.FirstName, form.LastName);
+
+            if (await userManager.FindByEmailAsync(form.Email) is not null)
+            {
+                logger.LogInformation("Failed to create user: {@Errors}", "Email already in use");
+                return new RazorComponentResult<RegisterDialogComponent>(new
+                {
+                    ValidationFailures = new ValidationFailureCollection
+                    {
+                        new()
+                        {
+                            PropertyName = nameof(form.Email),
+                            ErrorMessage = "Email already in use",
+                            Severity = Severity.Error,
+                        }
+                    },
+                    FormData = form,
+                });
+            }
+
             var result = await userManager.CreateAsync(user, form.Password);
             if (!result.Succeeded)
             {
                 logger.LogInformation("Failed to create user: {@Errors}", result.Errors);
                 return new RazorComponentResult<RegisterDialogComponent>(new
                 {
-                    ValidationFailures = result.Errors.ToReadOnlyList(),
+                    ValidationFailures = result.Errors.ToValidationFailures(),
+                    FormData = form,
                 });
             }
 
