@@ -7,6 +7,7 @@ using KHtmx.Domain.People;
 using KHtmx.HostedServices;
 using KHtmx.Persistence;
 using KHtmx.Persistence.Extensions;
+using KHtmx.Telemetry.Extensions;
 using Lib.AspNetCore.ServerSentEvents;
 using Microsoft.AspNetCore.Identity;
 
@@ -17,6 +18,7 @@ builder.Services.AddIdentity<KhtmxUser, KhtmxRole>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddComments();
+builder.Services.AddKHtmxTelemetry();
 
 builder.Services.AddRazorComponents();
 
@@ -30,7 +32,6 @@ builder.Services.AddMediatR(opt =>
 
 var app = builder.Build();
 app.UseKhData();
-app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseAntiforgery();

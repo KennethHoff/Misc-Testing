@@ -3,20 +3,17 @@ using KHtmx.Domain.Comments.Events;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.Extensions.Logging;
 
 namespace KHtmx.Persistence.Interceptors;
 
 // TODO: Replace with Outbox pattern
 internal sealed class CommentsSavingChangesInterceptor(
-    IMediator mediator,
-    ILogger<CommentsSavingChangesInterceptor> logger
+    IMediator mediator
 ) : SaveChangesInterceptor
 {
     public override async ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result,
         CancellationToken cancellationToken = default)
     {
-        logger.LogInformation("SaveChangesAsync: {Context}", eventData.Context?.GetType().FullName ?? "null");
         if (eventData.Context is not { } context)
         {
             return await base.SavingChangesAsync(eventData, result, cancellationToken);
@@ -25,8 +22,6 @@ internal sealed class CommentsSavingChangesInterceptor(
         var entries = context.ChangeTracker.Entries<Comment>()
             .Where(e => e.State is EntityState.Added or EntityState.Modified or EntityState.Deleted)
             .ToList();
-
-        logger.LogInformation("Found {Count} entries", entries.Count);
 
         foreach (var entry in entries)
         {
@@ -37,8 +32,6 @@ internal sealed class CommentsSavingChangesInterceptor(
                 EntityState.Deleted => new CommentDeletedEvent(entry.Entity),
                 _ => throw new ArgumentOutOfRangeException(),
             };
-            logger.LogInformation("Publishing event {Event}", @event);
-
             await mediator.Publish(@event, cancellationToken);
         }
 

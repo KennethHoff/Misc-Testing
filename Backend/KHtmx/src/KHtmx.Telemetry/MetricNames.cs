@@ -1,4 +1,4 @@
-namespace KHtmx.Constants;
+namespace KHtmx.Telemetry;
 
 public static class MetricNames
 {
