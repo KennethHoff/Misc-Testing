@@ -1,4 +1,4 @@
-<dialog id="@Id">
+<dialog id="@Id" @attributes="AdditionalAttributes">
     @ChildContent
     
     <script type="module">
@@ -28,6 +28,9 @@
 
     [Parameter, EditorRequired]
     public string? Id { get; init; }
+    
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; init; }
 
     [Parameter]
     public RenderFragment? ChildContent { get; init; }

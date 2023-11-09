@@ -1,64 +1,81 @@
 @using FluentValidation.Results
 @inject LinkGenerator LinkGenerator
 
+<!-- TODO: Find a better background color for the dialog -->
 @* ReSharper disable once Blazor.EditorRequired *@
-<SelfClosingDialogComponent
-    Id="login-dialog">
-    
-    @if (ValidationFailures is not [])
-    {
-        @foreach(var failure in ValidationFailures)
-        {
-            <p class="text-red-800">@failure.ErrorMessage</p>
-        }
-    }
+<SelfClosingDialogComponent Id="login-dialog" class="p-4 rounded-xl bg-gray-800">
     <form
+        class="flex flex-col gap-6"
         hx-post="@LinkGenerator.GetPathByName(AccountEndpoints.Login.EndpointName)"
         hx-target="#login-dialog"
-        hx-swap="outerHTML swap:200ms"
-        >
+        hx-swap="outerHTML swap:200ms">
+
+        @if (ValidationFailures is not [])
+        {
+            @foreach (var failure in ValidationFailures)
+            {
+                <p class="text-red-800">@failure.ErrorMessage</p>
+            }
+        }
         <AntiforgeryToken/>
 
         <!-- Username Input-->
-        <input
-            id="login-dialog__username"
-            autofocus
-            type="text"
-            placeholder="Username"
-            name="username"
-            hx-preserve
-            autocomplete="username"/>
+        <div class="flex flex-col gap-2">
+            <label for="login-dialog__username">
+                Username
+            </label>
+            <input
+                class="p-1"
+                id="login-dialog__username"
+                autofocus
+                type="text"
+                placeholder="Username"
+                name="username"
+                required
+                hx-preserve
+                autocomplete="username"/>
+        </div>
 
         <!-- Password Input-->
-        <input
-            id="login-dialog__password"
-            type="password"
-            placeholder="Password"
-            name="password"
-            autocomplete="current-password"/>
+        <div class="flex flex-col gap-2">
+            <label for="login-dialog__password">
+                Password
+            </label>
+            <input
+                class="p-2"
+                id="login-dialog__password"
+                type="password"
+                placeholder="Password"
+                name="password"
+                required
+                autocomplete="current-password"/>
+        </div>
 
         <!-- Remember Me Input-->
-        <label
-            for="login-dialog__remember-me">
-            Remember me
-        </label>
+        <div class="flex flex-row gap-3">
+            <label
+                for="login-dialog__remember-me">
+                Remember me?
+            </label>
 
-        <input
-            id="login-dialog__remember-me"
-            type="checkbox"
-            name="rememberMe"
-            value="true"
-            hx-preserve
-            placeholder="Remember me">
+            <input
+                id="login-dialog__remember-me"
+                type="checkbox"
+                name="rememberMe"
+                value="true"
+                hx-preserve
+                placeholder="Remember me">
 
-        <!-- Why is this necessary, AspNetCore >_> -->
-        <input
-            type="hidden"
-            name="rememberMe"
-            value="false"/>
+            <!-- Why is this necessary, AspNetCore >_> -->
+            <input
+                type="hidden"
+                name="rememberMe"
+                value="false"/>
+        </div>
 
         <!-- Login Button -->
         <button
+            class="bg-action rounded-md mx-auto px-4 py-2 text-white hover:bg-action-hover focus-visible:bg-action-hover"
             type="submit">
             Login
         </button>
@@ -67,6 +84,5 @@
 
 @code {
 
-    [Parameter]
-    public IReadOnlyList<ValidationFailure> ValidationFailures { get; set; } = [];
+    [Parameter] public IReadOnlyList<ValidationFailure> ValidationFailures { get; set; } = [];
 }

@@ -35,7 +35,7 @@
                     <!-- Delete Button-->
                     <button
                         type="button"
-                        class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-dotted focus:outline-blue-500"
+                        class="bg-red-600 hover:bg-red-700 font-bold py-2 px-4 rounded focus:outline-dotted focus:outline-blue-500"
                         hx-delete="@LinkGenerator.GetPathByName(CommentEndpoints.DeleteComment.EndpointName, new { id = _comment.Id })"
                         hx-on="htmx:afterRequest:htmx.trigger('#comment_dialog', 'close')">
                         Delete
@@ -44,7 +44,7 @@
                     <!-- Edit Button-->
                     <button
                         type="button"
-                        class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-dotted focus:outline-red-500"
+                        class="bg-blue-600 hover:bg-blue-700 font-bold py-2 px-4 rounded focus:outline-dotted focus:outline-red-500"
                         hx-get="@LinkGenerator.GetPathByName(CommentEndpoints.GetCommentEditForm.EndpointName, new { id = _comment.Id })"
                         hx-target="#comment_dialog-body">
                         Edit

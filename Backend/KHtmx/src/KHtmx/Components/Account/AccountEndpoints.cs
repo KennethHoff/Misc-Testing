@@ -78,7 +78,7 @@ public static class AccountEndpoints
                 {
                     ValidationFailures = new[]
                     {
-                        new ValidationFailure("Username", "Invalid username or password")
+                        new ValidationFailure("Username", "Incorrect username or password")
                     },
                 });
             }
