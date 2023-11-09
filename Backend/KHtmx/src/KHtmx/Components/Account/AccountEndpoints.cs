@@ -81,7 +81,6 @@ public static class AccountEndpoints
                         new()
                         {
                             ErrorMessage = "Incorrect username or password",
-                            Severity = Severity.Error,
                         }
                     },
                     FormData = form,
@@ -120,7 +119,6 @@ public static class AccountEndpoints
                         {
                             PropertyName = nameof(form.Email),
                             ErrorMessage = "Email already in use",
-                            Severity = Severity.Error,
                         }
                     },
                     FormData = form,

@@ -1,22 +1,31 @@
 @using KHtmx.Components.Comments.Data
+@using KHtmx.Models
 @inject LinkGenerator LinkGenerator
 
 <div
     class="wrapper">
-    @if (Errors is not [])
-    {
-        <div
-            class="text-red-800"
-            role="alert">
-            @ErrorMessage
-        </div>
-    }
+
 
     <form
         class="flex flex-row gap-4 py-2"
         hx-patch="@LinkGenerator.GetPathByName(CommentEndpoints.UpdateComment.EndpointName, new { id = FormData?.Id })"
         hx-on::after-request="htmx.trigger('#comment_dialog', 'close')">
+        <!-- TODO: Figure out how to only trigger the after-request event if there was no validation failure in the response -->
+        @if (ValidationFailures is not [])
+        {
+            <ul>
+                @foreach (var failure in ValidationFailures)
+                {
+                    <li
+                        class="text-invalid">
+                        @failure.ErrorMessage
+                    </li>
+                }
+            </ul>
+        }
+
         <AntiforgeryToken />
+
 
         <!-- Hidden CommentId Input-->
         <input
@@ -44,7 +53,5 @@
 
     [Parameter] public CommentEditFormDto? FormData { get; init; }
 
-    [Parameter] public IReadOnlyList<string> Errors { get; init; } = ArraySegment<string>.Empty;
-
-    private string ErrorMessage => string.Join(", ", Errors);
+    [Parameter] public ValidationFailureCollection ValidationFailures { get; init; } = [];
 }

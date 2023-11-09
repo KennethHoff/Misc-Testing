@@ -1,21 +1,28 @@
 @using KHtmx.Components.Comments.Data
+@using KHtmx.Models
 @inject LinkGenerator LinkGenerator
 <div
     class="wrapper">
-    @if (Errors is not [])
-    {
-        <div
-            class="text-red-800"
-            role="alert">
-            @ErrorMessage
-        </div>
-    }
+
 
     <form
         class="flex flex-row gap-4 py-2"
         hx-post="@LinkGenerator.GetPathByName(CommentEndpoints.CreateComment.EndpointName)"
         hx-target="closest .wrapper"
         hx-swap="outerHTML">
+        @if (ValidationFailures is not [])
+        {
+            <ul>
+                @foreach (var failure in ValidationFailures)
+                {
+                    <li
+                        class="text-invalid">
+                        @failure.ErrorMessage
+                    </li>
+                }
+            </ul>
+        }
+
         <AntiforgeryToken />
 
         <!-- Comment Input-->
@@ -37,11 +44,7 @@
 
 @code {
 
-    [Parameter]
-    public CommentCreateFormDto? FormData { get; init; }
+    [Parameter] public CommentCreateFormDto? FormData { get; init; }
 
-    [Parameter]
-    public IReadOnlyList<string> Errors { get; init; } = ArraySegment<string>.Empty;
-
-    private string ErrorMessage => string.Join(", ", Errors);
+    [Parameter] public ValidationFailureCollection ValidationFailures { get; init; } = [];
 }

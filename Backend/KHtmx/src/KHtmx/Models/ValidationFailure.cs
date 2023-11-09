@@ -10,7 +10,7 @@ public sealed record class ValidationFailure
 
     // public object? AttemptedValue { get; init; }
     // public object? CustomState { get; init; }
-    public required Severity Severity { get; init; }
+    // public required Severity Severity { get; init; }
 }
 
 public sealed class ValidationFailureCollection : Collection<ValidationFailure>
@@ -26,13 +26,6 @@ public sealed class ValidationFailureCollection : Collection<ValidationFailure>
     public bool PropertyHasErrors(string propertyName) => this.Any(x => x.PropertyName == propertyName);
 }
 
-public enum Severity
-{
-    Error,
-    Warning,
-    Info
-}
-
 public static class ValidationFailureExtensions
 {
     public static ValidationFailureCollection ToValidationFailures(this IEnumerable<IdentityError> errors)
@@ -41,7 +34,15 @@ public static class ValidationFailureExtensions
         {
             PropertyName = x.Code,
             ErrorMessage = x.Description,
-            Severity = Severity.Error
+        }).ToArray());
+    }
+
+    public static ValidationFailureCollection ToValidationFailures(this IEnumerable<FluentValidation.Results.ValidationFailure> errors)
+    {
+        return new ValidationFailureCollection(errors.Select(x => new ValidationFailure
+        {
+            PropertyName = x.PropertyName,
+            ErrorMessage = x.ErrorMessage,
         }).ToArray());
     }
 }

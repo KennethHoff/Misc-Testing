@@ -11,12 +11,15 @@
         hx-target="#login-dialog"
         hx-swap="outerHTML swap:200ms">
 
+        <!-- TODO: Improve the error display -->
         @if (ValidationFailures is not [])
         {
-            @foreach (var failure in ValidationFailures)
-            {
-                <p class="text-invalid">@failure.ErrorMessage</p>
-            }
+            <ul>
+                @foreach (var failure in ValidationFailures)
+                {
+                    <li class="text-invalid">@failure.ErrorMessage</li>
+                }
+            </ul>
         }
 
         <AntiforgeryToken />

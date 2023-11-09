@@ -4,6 +4,7 @@ using KHtmx.Components.Comments.Data;
 using KHtmx.Constants;
 using KHtmx.Domain.Comments;
 using KHtmx.Domain.People;
+using KHtmx.Models;
 using KHtmx.Persistence;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
@@ -108,7 +109,6 @@ public static class CommentEndpoints
     public sealed class CreateComment
     {
         public const string EndpointName = "CreateComment";
-        private static readonly string[] UserNotFoundError = ["User not found"];
 
         // TODO: Figure out how to extract authorization logic into a Requirement and Handler
         public static async ValueTask<RazorComponentResult<CommentCreateFormComponent>> Handler
@@ -126,7 +126,7 @@ public static class CommentEndpoints
                 return new RazorComponentResult<CommentCreateFormComponent>(new
                 {
                     FormData = dto,
-                    Errors = validationResult.Errors.Select(x => x.ErrorMessage).ToArray(),
+                    ValidationFailures = validationResult.Errors.ToValidationFailures()
                 });
             }
 
@@ -137,7 +137,13 @@ public static class CommentEndpoints
                 return new RazorComponentResult<CommentCreateFormComponent>(new
                 {
                     FormData = dto,
-                    Errors = UserNotFoundError,
+                    ValidationFailures = new ValidationFailureCollection
+                    {
+                        new()
+                        {
+                            ErrorMessage = "You must be logged in to comment"
+                        }
+                    }
                 });
             }
 
@@ -207,7 +213,7 @@ public static class CommentEndpoints
                 return new RazorComponentResult<CommentEditFormComponent>(new
                 {
                     FormData = dto,
-                    Errors = validationResult.Errors.Select(x => x.ErrorMessage).ToArray(),
+                    ValidationFailures = validationResult.Errors.ToValidationFailures(),
                 });
             }
 
