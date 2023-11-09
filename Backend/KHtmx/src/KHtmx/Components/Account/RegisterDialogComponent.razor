@@ -3,85 +3,107 @@
 
 @* ReSharper disable once Blazor.EditorRequired *@
 <SelfClosingDialogComponent
-    Id="register-dialog">
-    @if (ValidationFailures is not [])
-    {
-        <div>
+    Id="register-dialog"
+    class="p-4 rounded-xl bg-gray-800">
+
+
+    <!-- TODO: Improve the visual design of this form -->
+    <form
+        class="flex flex-col gap-6"
+        hx-post="@LinkGenerator.GetPathByName(AccountEndpoints.Register.EndpointName)"
+        hx-target="#register-dialog"
+        hx-swap="outerHTML">
+        @if (ValidationFailures is not [])
+        {
             <ul>
                 @foreach (var failure in ValidationFailures)
                 {
-                    <li>@failure.Description</li>
+                    <li class="text-invalid">@failure.Description</li>
                 }
             </ul>
-        </div>
-    }
-
-    <form
-        hx-post="@LinkGenerator.GetPathByName(AccountEndpoints.Register.EndpointName)"
-        hx-target="#register-dialog"
-        hx-swap="outerHTML"
-        hx-on="htmx:afterRequest:window.location.reload()">
+        }
 
         <AntiforgeryToken />
+
+        @* <div class="flex flex-col md:flex-row gap-6"> *@
         <!-- username input -->
-        <input
-            id="register-dialog_username"
-            name="username" 
+        <LabelledInput
+            Id="register-dialog_username"
+            Label="Username"
+            name="username"
             type="text"
-            placeholder="Username"
             autocomplete="username"
+            class="p-2"
+            autofocus
+            @* required *@
             hx-preserve
         />
 
         <!-- email input -->
-        <input
-            id="register-dialog_email"
-            name="email" 
+        <LabelledInput
+            Id="register-dialog_email"
+            Label="Email"
+            name="email"
             type="email"
-            placeholder="Email"
             autocomplete="email"
-            hx-preserve
+            @* class="p-2" *@
+            @* required *@
+            hx-preserve 
         />
+        @* </div> *@
 
-        <!-- FirstName input -->
-        <input
-            id="register-dialog_firstName"
-            name="firstName" 
-            type="text"
-            placeholder="First Name"
-            autocomplete="given-name"
-            hx-preserve
-        />
+        <div class="flex flex-col md:flex-row gap-6">
+            <!-- FirstName input -->
+            <LabelledInput
+                Id="register-dialog_firstName"
+                Label="First Name"
+                name="firstName"
+                type="text"
+                autocomplete="given-name"
+                class="p-2"
+                @* required *@
+                hx-preserve 
+            />
 
-        <!-- LastName input -->
-        <input
-            id="register-dialog_lastName"
-            name="lastName" 
-            type="text"
-            placeholder="Last Name"
-            autocomplete="family-name"
-            hx-preserve
-        />
+            <!-- LastName input -->
+            <LabelledInput
+                Id="register-dialog_lastName"
+                Label="Last Name"
+                name="lastName"
+                type="text"
+                autocomplete="family-name"
+                class="p-2"
+                @* required *@
+                hx-preserve 
+            />
+        </div>
 
-        <!-- Password input -->
-        <input
-            id="register-dialog_password"
-            name="password" 
-            type="password"
-            placeholder="Password"
-            autocomplete="new-password"
-        />
+        <div class="flex flex-col md:flex-row gap-6">
+            <!-- Password input -->
+            <LabelledInput
+                Id="register-dialog_password"
+                Label="Password"
+                name="password"
+                type="password"
+                autocomplete="new-password"
+                class="p-2"
+                required 
+            />
 
-        <!-- ConfirmPassword input -->
-        <input
-            id="register-dialog_confirmPassword"
-            name="confirmPassword" 
-            type="password"
-            placeholder="Confirm Password"
-            autocomplete="new-password"
-        />
+            <!-- ConfirmPassword input -->
+            <LabelledInput
+                Id="register-dialog_confirmPassword"
+                Label="Confirm Password"
+                name="confirmPassword"
+                type="password"
+                autocomplete="new-password"
+                class="p-2"
+                required 
+            />
+        </div>
 
         <button
+            class="bg-action rounded-md mx-auto px-4 py-2 text-white hover:bg-action-hover focus-visible:bg-action-hover"
             type="submit">
             Register
         </button>
@@ -90,7 +112,5 @@
 
 @code
 {
-
-    [Parameter]
-    public IReadOnlyList<IdentityError> ValidationFailures { get; set; } = [];
+    [Parameter] public IReadOnlyList<IdentityError> ValidationFailures { get; set; } = [];
 }
