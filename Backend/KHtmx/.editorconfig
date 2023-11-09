@@ -8,9 +8,12 @@ indent_style = space
 
 # ReSharper properties
 resharper_html_insert_final_newline = true
+resharper_html_space_after_last_pi_attribute = true
+resharper_html_space_before_self_closing = true
 resharper_linebreak_before_all_elements = true
 resharper_max_array_initializer_elements_on_line = 1
 resharper_max_initializer_elements_on_line = 1
+resharper_normalize_tag_names = true
 resharper_no_indent_inside_elements = html,body
 resharper_place_simple_initializer_on_single_line = false
 resharper_wrap_array_initializer_style = chop_always
