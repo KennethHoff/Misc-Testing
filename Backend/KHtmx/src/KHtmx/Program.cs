@@ -18,7 +18,7 @@ builder.Services.AddIdentity<KhtmxUser, KhtmxRole>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddComments();
-builder.Services.AddKHtmxTelemetry();
+builder.Services.AddKHtmxTelemetry(builder.Configuration);
 
 builder.Services.AddRazorComponents();
 

@@ -59,12 +59,6 @@ public static class CommentEndpoints
                 });
             }
 
-            // 1% chance to throw an exception
-            if (new Random().Next(0, 100) == 0)
-            {
-                throw new Exception("Random exception");
-            }
-
             return new RazorComponentResult<CommentTableComponent>();
         }
     }
