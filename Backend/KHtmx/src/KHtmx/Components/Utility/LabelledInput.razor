@@ -1,6 +1,7 @@
+<!-- TODO: Replace placeholder with floating label -->
 <div class="flex @(InlineLabel ? "flex-row" : "flex-col") gap-2">
     <label for="@Id">@Label</label>
-    <input id="@Id" @attributes="AdditionalAttributes"/>
+    <input id="@Id" @attributes="AdditionalAttributes" placeholder="@Label"/>
     @ChildContent
 </div>
 
