@@ -17,61 +17,45 @@
                 <p class="text-red-800">@failure.ErrorMessage</p>
             }
         }
-        <AntiforgeryToken/>
 
-        <!-- Username Input-->
-        <div class="flex flex-col gap-2">
-            <label for="login-dialog__username">
-                Username
-            </label>
-            <input
-                class="p-1"
-                id="login-dialog__username"
-                autofocus
-                type="text"
-                placeholder="Username"
-                name="username"
-                required
-                hx-preserve
-                autocomplete="username"/>
-        </div>
+        <AntiforgeryToken />
 
-        <!-- Password Input-->
-        <div class="flex flex-col gap-2">
-            <label for="login-dialog__password">
-                Password
-            </label>
-            <input
-                class="p-2"
-                id="login-dialog__password"
-                type="password"
-                placeholder="Password"
-                name="password"
-                required
-                autocomplete="current-password"/>
-        </div>
+        <!-- Username Input -->
+        <LabelledInput
+            Id="login-dialog_username"
+            Label="Username"
+            name="username"
+            type="text"
+            class="p-2"
+            autofocus
+            placeholder="Username"
+            required
+            hx-preserve
+            autocomplete="username"
+        />
 
-        <!-- Remember Me Input-->
-        <div class="flex flex-row gap-3">
-            <label
-                for="login-dialog__remember-me">
-                Remember me?
-            </label>
+        <!-- Password Input -->
+        <LabelledInput
+            Id="login-dialog_password"
+            Label="Password"
+            name="password"
+            type="password"
+            class="p-2"
+            placeholder="Password"
+            required
+            autocomplete="current-password"
+        />
 
-            <input
-                id="login-dialog__remember-me"
-                type="checkbox"
-                name="rememberMe"
-                value="true"
-                hx-preserve
-                placeholder="Remember me">
-
-            <!-- Why is this necessary, AspNetCore >_> -->
-            <input
-                type="hidden"
-                name="rememberMe"
-                value="false"/>
-        </div>
+        <!-- Remember Me Input -->
+        <LabelledInput
+            Id="login-dialog_remember-me"
+            Label="Remember Me"
+            InlineLabel="true"
+            name="rememberMe"
+            type="checkbox"
+            value="true"
+            hx-preserve
+        />
 
         <!-- Login Button -->
         <button

@@ -1,0 +1,29 @@
+<div class="flex @(InlineLabel ? "flex-row" : "flex-col") gap-2">
+    <label for="@Id">@Label</label>
+    <input id="@Id" @attributes="AdditionalAttributes"/>
+    @ChildContent
+</div>
+
+@code {
+
+    [Parameter, EditorRequired] public string Id { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Label and Placeholder for the input
+    /// </summary>
+    [Parameter, EditorRequired]
+    public string Label { get; set; } = string.Empty;
+
+    /// <summary>
+    /// If true, the label is displayed inline with the input.<br />
+    /// Otherwise, the label is displayed above the input.
+    /// </summary>
+    [Parameter]
+    public bool InlineLabel { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> AdditionalAttributes { get; set; } = new();
+
+    [Parameter] public RenderFragment ChildContent { get; set; } = default!;
+
+}
