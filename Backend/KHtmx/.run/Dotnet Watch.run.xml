@@ -4,6 +4,7 @@
     <option name="programParameters" value="" />
     <option name="projectFilePath" value="$PROJECT_DIR$/src/KHtmx/KHtmx.csproj" />
     <option name="projectTfm" value="net8.0" />
+    <option name="usePollingFileWatcher" value="true" />
     <option name="workingDirectory" value="$PROJECT_DIR$/src/KHtmx" />
     <method v="2" />
   </configuration>
