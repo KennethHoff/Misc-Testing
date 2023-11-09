@@ -16,7 +16,8 @@ module.exports = {
                 action: {
                     DEFAULT: colors.zinc[600],
                     hover: colors.zinc[500],
-                }
+                },
+                invalid: colors.red["800"]
             }
         },
     },
