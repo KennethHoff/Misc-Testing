@@ -32,23 +32,23 @@
             {
                 <div
                     class="p-4">
-                    <!-- Delete Button-->
-                    <button
-                        type="button"
-                        class="bg-red-600 hover:bg-red-700 font-bold py-2 px-4 rounded focus:outline-dotted focus:outline-blue-500"
-                        hx-delete="@LinkGenerator.GetPathByName(CommentEndpoints.DeleteComment.EndpointName, new { id = _comment.Id })"
-                        hx-on::after-request="htmx.trigger('#comment_dialog', 'close')"
-                    >
-                        Delete
-                    </button>
-
                     <!-- Edit Button-->
                     <button
                         type="button"
-                        class="bg-blue-600 hover:bg-blue-700 font-bold py-2 px-4 rounded focus:outline-dotted focus:outline-red-500"
+                        class="bg-action hover:bg-action-hover focus:bg-action-hover font-bold py-2 px-4 rounded"
                         hx-get="@LinkGenerator.GetPathByName(CommentEndpoints.GetCommentEditForm.EndpointName, new { id = _comment.Id })"
                         hx-target="#comment_dialog-body">
                         Edit
+                    </button>
+                    <!-- TODO: Add "Escape goes back to dialog" functionality -->
+
+                    <!-- Delete Button-->
+                    <button
+                        type="button"
+                        class="bg-invalid hover:bg-invalid-hover focus:bg-invalid-hover font-bold py-2 px-4 rounded"
+                        hx-delete="@LinkGenerator.GetPathByName(CommentEndpoints.DeleteComment.EndpointName, new { id = _comment.Id })"
+                        hx-on::after-request="htmx.trigger('#comment_dialog', 'close')">
+                        Delete
                     </button>
                 </div>
             }
@@ -64,8 +64,7 @@
 
 @code
 {
-    [Parameter, EditorRequired]
-    public Guid Id { get; set; }
+    [Parameter, EditorRequired] public Guid Id { get; set; }
 
     private CommentDialogDto? _comment;
 
@@ -91,12 +90,12 @@
             return;
         }
 
-        if (HttpContextAccessor.HttpContext is not {} httpContext)
+        if (HttpContextAccessor.HttpContext is not { } httpContext)
         {
             return;
         }
 
-        if (await UserManager.GetUserAsync(httpContext.User) is not {} user)
+        if (await UserManager.GetUserAsync(httpContext.User) is not { } user)
         {
             return;
         }

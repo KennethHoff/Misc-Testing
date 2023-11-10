@@ -15,11 +15,20 @@ module.exports = {
                 'background': colors.zinc["800"],
                 action: {
                     DEFAULT: colors.zinc[600],
-                    hover: colors.zinc[500],
+                    hover: colors.zinc[400],
                 },
-                invalid: colors.red["800"]
-            }
+                invalid: {
+                    DEFAULT: colors.red[800],
+                    hover: colors.red[600],
+                }
+            },
+            // outlineStyle: {
+            //     dashed: 'dashed',
+            // }
         },
+        outlineStyle: {
+            dashed: 'dashed',
+        }
     },
     plugins: [
         // Aria-invalid
