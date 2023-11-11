@@ -56,8 +56,7 @@
                     <button
                         class="focus:outline-none"
                         id="tr_btn_@comment.Id"
-                        hx-trigger="click"
-                        hx-target="body"
+                        hx-target="closest div"
                         hx-swap="beforeend"
                         hx-get="@LinkGenerator.GetPathByName(CommentEndpoints.GetCommentDialog.EndpointName, new { id = comment.Id })">
                         @comment.AuthorFirstName @comment.AuthorLastName

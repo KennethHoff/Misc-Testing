@@ -9,13 +9,18 @@
         
         // Adds a click-listener to the dialog that closes it when the user clicks outside of it, but only if the user started and ended the click outside of the dialog.
         // This prevents the dialog from closing when the user tries to select something inside the modal and accidentally drags their mouse outside before releasing.
+        
+        
         let mouseDownInsideDialog = false;
         dialog.addEventListener("mousedown", (e) => {
-            mouseDownInsideDialog = e.target === dialog;
+            const rect = dialog.getBoundingClientRect();
+            mouseDownInsideDialog = isInsideDialog(rect,  e);
         });
         
         dialog.addEventListener("mouseup", (e) => {
-            if (e.target === dialog && mouseDownInsideDialog) {
+            const rect = dialog.getBoundingClientRect();
+            if (!mouseDownInsideDialog && !isInsideDialog(rect, e)) {
+                mouseDownInsideDialog = false;
                 dialog.close();
             }
         });
@@ -23,6 +28,10 @@
         dialog.addEventListener("close", () => {
             dialog.remove();
         });
+        
+        function isInsideDialog(rect, e) {
+            return e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom;
+        }
     </script>
 </dialog>
 
