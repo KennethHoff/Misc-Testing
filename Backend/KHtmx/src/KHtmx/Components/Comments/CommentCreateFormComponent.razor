@@ -1,46 +1,43 @@
 @using KHtmx.Components.Comments.Data
 @using KHtmx.Models
 @inject LinkGenerator LinkGenerator
-<div
-    class="wrapper">
+<form
+    class="flex flex-row gap-4 py-2"
+    hx-post="@LinkGenerator.GetPathByName(CommentEndpoints.CreateComment.EndpointName)"
+    hx-swap="outerHTML">
+    @if (ValidationFailures is not [])
+    {
+        <ul>
+            @foreach (var failure in ValidationFailures)
+            {
+                <li
+                    class="text-invalid">
+                    @failure.ErrorMessage
+                </li>
+            }
+        </ul>
+    }
 
+    <AntiforgeryToken />
 
-    <form
-        class="flex flex-row gap-4 py-2"
-        hx-post="@LinkGenerator.GetPathByName(CommentEndpoints.CreateComment.EndpointName)"
-        hx-target="closest .wrapper"
-        hx-swap="outerHTML">
-        @if (ValidationFailures is not [])
-        {
-            <ul>
-                @foreach (var failure in ValidationFailures)
-                {
-                    <li
-                        class="text-invalid">
-                        @failure.ErrorMessage
-                    </li>
-                }
-            </ul>
-        }
+    <!-- Comment Input-->
+    <input
+        class="rounded border border-gray-400 text-base px-4 py-2 flex-1 focus:outline-none focus:ring-2 focus:ring-focus"
+        type="text"
+        placeholder="Comment"
+        name="text"
+        autocomplete="off"
+        autofocus="@ValidationFailures.PropertyHasErrors(nameof(CommentCreateFormDto.Text))"
+        aria-invalid="@ValidationFailures.PropertyHasErrors(nameof(CommentCreateFormDto.Text))"
+        value="@FormData?.Text" />
 
-        <AntiforgeryToken />
-
-        <!-- Comment Input-->
-        <input
-            class="bg-gray-100 rounded border border-gray-400 text-base px-4 py-2 flex-1"
-            type="text"
-            placeholder="Comment"
-            name="text"
-            value="@FormData?.Text" />
-
-        <!-- Submit Button-->
-        <button
-            class="bg-action hover:bg-action-hover text-white font-bold py-2 px-4 rounded"
-            type="submit">
-            Create
-        </button>
-    </form>
-</div>
+    <!-- Submit Button-->
+    <button
+        class="bg-action hover:bg-action-hover text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-focus"
+        type="submit">
+        Create
+    </button>
+</form>
 
 @code {
 

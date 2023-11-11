@@ -12,15 +12,18 @@ module.exports = {
                 'comment-table': '125px 1fr 150px'
             },
             colors: {
-                'background': colors.zinc["800"],
+                background: colors.zinc[800],
                 action: {
                     DEFAULT: colors.zinc[600],
                     hover: colors.zinc[400],
                 },
+                focus: {
+                    DEFAULT: colors.zinc[100],
+                },
                 invalid: {
                     DEFAULT: colors.red[800],
                     hover: colors.red[600],
-                }
+                },
             },
             // outlineStyle: {
             //     dashed: 'dashed',
