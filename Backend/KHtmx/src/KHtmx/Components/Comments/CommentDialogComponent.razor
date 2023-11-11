@@ -10,8 +10,7 @@
 @inject IHttpContextAccessor HttpContextAccessor
 
 @* ReSharper disable once Blazor.EditorRequired *@
-<SelfClosingDialogComponent
-    Id="comment_dialog">
+<SelfClosingDialogComponent Id="comment_dialog" class="p-4 rounded-xl bg-gray-800">
     <div
         id="comment_dialog-body">
         @if (_comment is not null)
@@ -32,24 +31,25 @@
             {
                 <div
                     class="p-4">
-                    <!-- Edit Button-->
-                    <button
+                    <ActionButton
                         type="button"
-                        class="bg-action hover:bg-action-hover focus:bg-action-hover font-bold py-2 px-4 rounded"
+                        Class="bg-action hover:bg-action-active focus:bg-action-active"
                         hx-get="@LinkGenerator.GetPathByName(CommentEndpoints.GetCommentEditForm.EndpointName, new { id = _comment.Id })"
-                        hx-target="#comment_dialog-body">
+                        hx-target="#comment_dialog-body"
+                    >
                         Edit
-                    </button>
+                    </ActionButton>
                     <!-- TODO: Add "Escape goes back to dialog" functionality -->
-
-                    <!-- Delete Button-->
-                    <button
+                    <!-- TODO: Figure out why closing the dialog (Escape or click outside) correctly adjusts focus, but doing an action doesn't([Edit -> Change -> Edit] or Delete) -->
+                    
+                    <ActionButton
                         type="button"
-                        class="bg-invalid hover:bg-invalid-hover focus:bg-invalid-hover font-bold py-2 px-4 rounded"
+                        Class="bg-invalid hover:bg-invalid-active focus:bg-invalid-active"
                         hx-delete="@LinkGenerator.GetPathByName(CommentEndpoints.DeleteComment.EndpointName, new { id = _comment.Id })"
-                        hx-on::after-request="htmx.trigger('#comment_dialog', 'close')">
+                        hx-on::after-request="htmx.trigger('#comment_dialog', 'close')"
+                    >
                         Delete
-                    </button>
+                    </ActionButton>
                 </div>
             }
         }

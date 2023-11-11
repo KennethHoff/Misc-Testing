@@ -6,6 +6,8 @@
 @using KHtmx.Domain.People
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.EntityFrameworkCore
+@using Microsoft.EntityFrameworkCore.Internal
+@using KHtmx.Components.Comments
 @inject LinkGenerator LinkGenerator
 @inject IDbContextFactory<KhDbContext> DbContextFactory
 @inject IHttpContextAccessor HttpContextAccessor
@@ -46,16 +48,16 @@
         for (var index = 0; index < _comments.Count; index++)
         {
             var comment = _comments[index];
-            <div style="view-transition-name: @GetViewTransitionName(comment.Id);"
+            <div style="view-transition-name: @GetViewTransitionName(comment);"
                  role="row"
-                 id="tr_@(comment.Id)"
+                 id="@GetRowId(comment)"
                  aria-rowindex="@index"
-                 class="grid grid-cols-comment-table odd:bg-gray-800 even:bg-gray-900  [&:has(button:focus)]:bg-action-hover"
-            >
+                 class="grid grid-cols-comment-table odd:bg-gray-800 even:bg-gray-900 [&:has([data-open-dialog]:focus)]:bg-action-active">
                 <div role="cell" aria-colindex="1">
                     <button
+                        data-open-dialog
                         class="focus:outline-none"
-                        id="tr_btn_@comment.Id"
+                        id="@GetRowColumnButtonId(comment)"
                         hx-target="closest div"
                         hx-swap="beforeend"
                         hx-get="@LinkGenerator.GetPathByName(CommentEndpoints.GetCommentDialog.EndpointName, new { id = comment.Id })">
@@ -89,7 +91,7 @@
     
         @foreach (var comment in _comments)
         {
-            var viewTransitionName = GetViewTransitionName(comment.Id);
+            var viewTransitionName = GetViewTransitionName(comment);
 
             <text>
                 ::view-transition-old(@viewTransitionName) {
@@ -106,8 +108,7 @@
 
 @code {
 
-    [Parameter]
-    public ICommentTableFilter? Filter { get; set; }
+    [Parameter] public ICommentTableFilter? Filter { get; set; }
 
     private IReadOnlyList<CommentTableDto> _comments = [];
 
@@ -120,7 +121,7 @@
 
         using var serviceScope = ServiceScopeFactory.CreateScope();
         using var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<KhtmxUser>>();
-        if (await userManager.GetUserAsync(claimsPrincipal) is not {} user)
+        if (await userManager.GetUserAsync(claimsPrincipal) is not { } user)
         {
             return;
         }
@@ -158,6 +159,8 @@
             .ToList();
     }
 
-    private string GetViewTransitionName(Guid id) => $"vt_{id}";
+    private string GetViewTransitionName(CommentTableDto comment) => $"vt_{comment.Id}";
+    private string GetRowId(CommentTableDto comment) => $"tr_{comment.Id:N}";
+    private string GetRowColumnButtonId(CommentTableDto comment) => $"tr_btn_{comment.Id:N}";
 
 }

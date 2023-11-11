@@ -19,22 +19,23 @@
     {
         <div></div>
         <div>
-            <button
-                class="bg-action px-3 py-2 rounded-md text-sm font-medium"
-                hx-trigger="click"
+            <ActionButton
+                Class="bg-action hover:bg-action-active focus:bg-action-active"
                 hx-get="@LinkGenerator.GetPathByName(AccountEndpoints.GetRegisterDialog.EndpointName)"
                 hx-target="closest nav"
-                hx-swap="beforeend">
+                hx-swap="beforeend"
+                >
                 Register
-            </button>
-            <button
-                class="bg-action px-3 py-2 rounded-md text-sm font-medium"
-                hx-trigger="click"
+            </ActionButton>
+
+            <ActionButton
+                Class="bg-action hover:bg-action-active focus:bg-action-active"
                 hx-get="@LinkGenerator.GetPathByName(AccountEndpoints.GetLoginDialog.EndpointName)"
                 hx-target="closest nav"
-                hx-swap="beforeend">
+                hx-swap="beforeend"
+                >
                 Login
-            </button>
+            </ActionButton>
         </div>
     }
     else
@@ -49,16 +50,14 @@
             </a>
         </p>
 
-        <button
-            class="bg-action px-3 py-2 rounded-md text-sm font-medium hover:bg-action-hover"
-            hx-trigger="click"
+        <ActionButton
+            Class="bg-action hover:bg-action-active focus:bg-action-active"
             hx-get="@LinkGenerator.GetPathByName(AccountEndpoints.Logout.EndpointName)"
             hx-target="closest nav"
             hx-swap="beforeend"
-            hx-on::after-request="window.location.reload();"
-        >
+            hx-on::after-request="window.location.reload();">
             Logout
-        </button>
+        </ActionButton>
     }
 </nav>
 
@@ -75,11 +74,11 @@
         {
             return;
         }
-        
+
         // TODO: Figure out how to get the UserManager from the DI container (By default, it's scoped to the request, which breaks Blazor)
         using var serviceScope = ServiceScopeFactory.CreateScope();
         using var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<KhtmxUser>>();
-        if (await userManager.GetUserAsync(claimsPrincipal) is not {} user)
+        if (await userManager.GetUserAsync(claimsPrincipal) is not { } user)
         {
             return;
         }

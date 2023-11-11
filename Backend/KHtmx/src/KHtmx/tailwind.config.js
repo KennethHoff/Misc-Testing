@@ -15,14 +15,14 @@ module.exports = {
                 background: colors.zinc[800],
                 action: {
                     DEFAULT: colors.zinc[600],
-                    hover: colors.zinc[400],
+                    active: colors.zinc[400],
                 },
                 focus: {
                     DEFAULT: colors.zinc[100],
                 },
                 invalid: {
                     DEFAULT: colors.red[800],
-                    hover: colors.red[600],
+                    active: colors.red[600],
                 },
             },
             // outlineStyle: {
