@@ -1,3 +1,4 @@
+using System.Diagnostics.Metrics;
 using System.Security.Claims;
 using FluentValidation;
 using KHtmx.Components.Comments.Data;
@@ -6,6 +7,7 @@ using KHtmx.Domain.Comments;
 using KHtmx.Domain.People;
 using KHtmx.Models;
 using KHtmx.Persistence;
+using KHtmx.Telemetry;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -115,9 +117,9 @@ public static class CommentEndpoints
         (
             IValidator<CommentCreateFormDto> validator,
             IDbContextFactory<KhDbContext> dbContextFactory,
-            [FromForm] CommentCreateFormDto dto,
             ClaimsPrincipal claimsPrincipal,
             UserManager<KhtmxUser> userManager,
+            [FromForm] CommentCreateFormDto dto,
             CancellationToken ct
         )
         {
@@ -173,12 +175,21 @@ public static class CommentEndpoints
             ClaimsPrincipal claimsPrincipal,
             UserManager<KhtmxUser> userManager,
             Guid id,
+            IMeterFactory meterFactory,
             CancellationToken ct
         )
         {
             await using var dbContext = await dbContextFactory.CreateDbContextAsync(ct);
             if (await dbContext.Comments.FirstOrDefaultAsync(x => x.Id == id, cancellationToken: ct) is not { } entity)
             {
+                meterFactory.Create(MetricNames.MeterName)
+                    .CreateCounter<long>(MetricNames.CommentDeleteFailedNotFound)
+                    .Add(1, tags:
+                    [
+                        KeyValuePair.Create<string, object?>("comment_id", id),
+                        KeyValuePair.Create<string, object?>("user_username", claimsPrincipal.Identity?.Name)
+                    ]);
+
                 return TypedResults.NotFound();
             }
 
@@ -205,11 +216,18 @@ public static class CommentEndpoints
             ClaimsPrincipal claimsPrincipal,
             UserManager<KhtmxUser> userManager,
             Guid id,
+            IMeterFactory meterFactory,
             [FromForm] CommentEditFormDto dto,
             CancellationToken ct)
         {
+            Console.WriteLine("Updating comment {0} by user {1}", id, claimsPrincipal.Identity?.Name);
             if (await validator.ValidateAsync(dto, ct) is { IsValid: false } validationResult)
             {
+                meterFactory.Create(MetricNames.MeterName)
+                    .CreateCounter<long>(MetricNames.CommentEditFailedValidation)
+                    .Add(1);
+
+                Console.WriteLine("Validation failed for comment {0} by user {1}", id, claimsPrincipal.Identity?.Name);
                 return new RazorComponentResult<CommentEditFormComponent>(new
                 {
                     FormData = dto,
