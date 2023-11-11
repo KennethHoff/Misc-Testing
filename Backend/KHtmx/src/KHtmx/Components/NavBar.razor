@@ -19,23 +19,23 @@
     {
         <div></div>
         <div>
-            <ActionButton
-                Class="bg-action hover:bg-action-active focus:bg-action-active"
+            <button
+                Class="font-bold py-2 px-4 rounded bg-action hover:bg-action-active focus:bg-action-active"
                 hx-get="@LinkGenerator.GetPathByName(AccountEndpoints.GetRegisterDialog.EndpointName)"
                 hx-target="closest nav"
                 hx-swap="beforeend"
                 >
                 Register
-            </ActionButton>
+            </button>
 
-            <ActionButton
-                Class="bg-action hover:bg-action-active focus:bg-action-active"
+            <button
+                Class="font-bold py-2 px-4 rounded bg-action hover:bg-action-active focus:bg-action-active"
                 hx-get="@LinkGenerator.GetPathByName(AccountEndpoints.GetLoginDialog.EndpointName)"
                 hx-target="closest nav"
                 hx-swap="beforeend"
                 >
                 Login
-            </ActionButton>
+            </button>
         </div>
     }
     else
@@ -50,14 +50,14 @@
             </a>
         </p>
 
-        <ActionButton
-            Class="bg-action hover:bg-action-active focus:bg-action-active"
+        <button
+            Class="font-bold py-2 px-4 rounded bg-action hover:bg-action-active focus:bg-action-active"
             hx-get="@LinkGenerator.GetPathByName(AccountEndpoints.Logout.EndpointName)"
             hx-target="closest nav"
             hx-swap="beforeend"
             hx-on::after-request="window.location.reload();">
             Logout
-        </ActionButton>
+        </button>
     }
 </nav>
 

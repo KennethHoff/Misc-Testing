@@ -31,25 +31,25 @@
             {
                 <div
                     class="p-4">
-                    <ActionButton
+                    <button
                         type="button"
-                        Class="bg-action hover:bg-action-active focus:bg-action-active"
+                        Class="font-bold py-2 px-4 rounded bg-action hover:bg-action-active focus:bg-action-active"
                         hx-get="@LinkGenerator.GetPathByName(CommentEndpoints.GetCommentEditForm.EndpointName, new { id = _comment.Id })"
                         hx-target="#comment_dialog-body"
                     >
                         Edit
-                    </ActionButton>
+                    </button>
                     <!-- TODO: Add "Escape goes back to dialog" functionality -->
                     <!-- TODO: Figure out why closing the dialog (Escape or click outside) correctly adjusts focus, but doing an action doesn't([Edit -> Change -> Edit] or Delete) -->
                     
-                    <ActionButton
+                    <button
                         type="button"
-                        Class="bg-invalid hover:bg-invalid-active focus:bg-invalid-active"
+                        Class="font-bold py-2 px-4 rounded bg-invalid hover:bg-invalid-active focus:bg-invalid-active"
                         hx-delete="@LinkGenerator.GetPathByName(CommentEndpoints.DeleteComment.EndpointName, new { id = _comment.Id })"
                         hx-on::after-request="htmx.trigger('#comment_dialog', 'close')"
                     >
                         Delete
-                    </ActionButton>
+                    </button>
                 </div>
             }
         }
