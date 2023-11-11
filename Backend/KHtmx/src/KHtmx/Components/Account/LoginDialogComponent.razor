@@ -1,5 +1,6 @@
 @using KHtmx.Models
 @using KHtmx.Components.Account.Data
+@using KHtmx.Components.Utility.Data
 @inject LinkGenerator LinkGenerator
 
 <!-- TODO: Find a better background color for the dialog -->
@@ -50,7 +51,7 @@
         <LabelledInput
             Id="login-dialog_remember-me"
             Label="Remember Me"
-            InlineLabel="true"
+            LabelType="LabelType.Inline"
             name="rememberMe"
             type="checkbox"
             value="true"

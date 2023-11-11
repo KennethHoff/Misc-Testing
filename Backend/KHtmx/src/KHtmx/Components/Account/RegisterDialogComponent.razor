@@ -35,7 +35,6 @@
             name="username"
             type="text"
             autocomplete="username"
-            class="p-2"
             autofocus
             required
             value="@FormData?.Username"
@@ -49,7 +48,6 @@
             name="email"
             type="email"
             autocomplete="email"
-            class="p-2" 
             required
             value="@FormData?.Email"
             aria-invalid="@ValidationFailures.PropertyHasErrors(nameof(FormData.Email))"
@@ -64,7 +62,6 @@
                 name="firstName"
                 type="text"
                 autocomplete="given-name"
-                class="p-2"
                 value="@FormData?.FirstName"
                 required
             />
@@ -76,7 +73,6 @@
                 name="lastName"
                 type="text"
                 autocomplete="family-name"
-                class="p-2"
                 value="@FormData?.LastName"
                 required
             />
@@ -90,7 +86,6 @@
                 name="password"
                 type="password"
                 autocomplete="new-password"
-                class="p-2"
                 required 
             />
 
@@ -101,7 +96,6 @@
                 name="confirmPassword"
                 type="password"
                 autocomplete="new-password"
-                class="p-2"
                 required 
             />
         </div>

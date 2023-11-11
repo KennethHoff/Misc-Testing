@@ -1,9 +1,24 @@
-<!-- TODO: Replace placeholder with floating label -->
-<div class="flex @(InlineLabel ? "flex-row" : "flex-col") gap-2">
-    <label for="@Id">@Label</label>
-    <input id="@Id" @attributes="AdditionalAttributes" placeholder="@Label"/>
-    @ChildContent
-</div>
+@using KHtmx.Components.Utility.Data
+@switch (LabelType)
+{
+    // TODO: Improve the styling of the floating label
+    case LabelType.Floating:
+        <div class="floating-label relative">
+            <label for="@Id" class="absolute transition-all duration-200 ease-in-out p-2 pointer-events-none">@Label</label>
+            <input id="@Id" placeholder="@Label" @attributes="AdditionalAttributes" class="placeholder-transparent p-2" />
+            @ChildContent
+        </div>
+        break;
+    case LabelType.Inline:
+        <div class="flex flex-row gap-2">
+            <label for="@Id">@Label</label>
+            <input id="@Id" @attributes="AdditionalAttributes" placeholder="@Label" />
+            @ChildContent
+        </div>
+        break;
+    default:
+        throw new ArgumentOutOfRangeException();
+}
 
 @code {
 
@@ -15,12 +30,7 @@
     [Parameter, EditorRequired]
     public string Label { get; set; } = string.Empty;
 
-    /// <summary>
-    /// If true, the label is displayed inline with the input.<br />
-    /// Otherwise, the label is displayed above the input.
-    /// </summary>
-    [Parameter]
-    public bool InlineLabel { get; set; }
+    [Parameter] public LabelType LabelType { get; set; } = LabelType.Floating;
 
     [Parameter(CaptureUnmatchedValues = true)]
     public Dictionary<string, object> AdditionalAttributes { get; set; } = new();
