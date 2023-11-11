@@ -4,7 +4,8 @@ import colors from "tailwindcss/colors";
 module.exports = {
     content: [
         "./Pages/**/*.razor",
-        "./Components/**/*.razor"
+        "./Components/**/*.razor",
+        "wwwroot/**/*.js",
     ],
     theme: {
         extend: {
