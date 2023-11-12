@@ -52,10 +52,10 @@
                  role="row"
                  id="@GetRowId(comment)"
                  aria-rowindex="@index"
-                 class="grid grid-cols-comment-table odd:bg-gray-800 even:bg-gray-900 [&:has([data-open-dialog]:focus)]:bg-action-active">
+                 class="grid grid-cols-comment-table odd:bg-table-odd even:bg-table-even transition-all duration-200 [&:has([data-role='open-dialog']:focus)]:bg-hover [&:has([data-role='open-dialog']:focus)]:outline-none">
                 <div role="cell" aria-colindex="1">
                     <button
-                        data-open-dialog
+                        data-role="open-dialog"
                         class="focus:outline-none"
                         id="@GetRowColumnButtonId(comment)"
                         hx-target="closest div"

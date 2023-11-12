@@ -27,20 +27,20 @@
 
         <AntiforgeryToken />
 
-
-        <!-- Hidden CommentId Input-->
+        <!-- Hidden CommentId Input for use in the Form Submission -->
         <input
             type="hidden"
             name="id"
             value="@FormData?.Id" />
 
-        <!-- Comment Input-->
-        <input
-            type="text"
-            placeholder="Comment"
+        <!-- Comment Text Input -->
+        <LabelledInput
+            Id="comment_text" 
+            Label="Comment"
+            type="input"
             autofocus
-            name="text"
-            value="@FormData?.Text" />
+            value="@FormData?.Text"
+        />
 
         <button 
             Class="font-bold py-2 px-4 rounded bg-action hover:bg-action-active focus:bg-action-active">

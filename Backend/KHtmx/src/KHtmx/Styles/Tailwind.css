@@ -1,14 +1,22 @@
-:root {
-    color-scheme: dark;
-}
-
-.floating-label {
-    &:is(:not(:has(input:placeholder-shown)), :has(input:focus)) > label {
-        top: -0.8lh;
-        font-size: calc((2 / 3) * 1em);
-    }
-}
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    :root {
+        color-scheme: dark;
+    }
+
+    input[type="hidden"] {
+        @apply hidden;
+    }
+}
+
+@layer utilities {
+    .floating-label {
+        &:is(:not(:has(input:placeholder-shown)), :has(input:focus)) > label {
+            top: -0.8lh;
+            font-size: calc((2 / 3) * 1em);
+        }
+    }
+}
