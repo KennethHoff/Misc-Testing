@@ -182,7 +182,7 @@ public static class CommentEndpoints
             await using var dbContext = await dbContextFactory.CreateDbContextAsync(ct);
             if (await dbContext.Comments.FirstOrDefaultAsync(x => x.Id == id, cancellationToken: ct) is not { } entity)
             {
-                meterFactory.Create(MetricNames.MeterName)
+                meterFactory.Create(MetricNames.CommentDeleteFailedNotFound)
                     .CreateCounter<long>(MetricNames.CommentDeleteFailedNotFound)
                     .Add(1, tags:
                     [
@@ -223,7 +223,7 @@ public static class CommentEndpoints
             Console.WriteLine("Updating comment {0} by user {1}", id, claimsPrincipal.Identity?.Name);
             if (await validator.ValidateAsync(dto, ct) is { IsValid: false } validationResult)
             {
-                meterFactory.Create(MetricNames.MeterName)
+                meterFactory.Create(MetricNames.CommentEditFailedValidation)
                     .CreateCounter<long>(MetricNames.CommentEditFailedValidation)
                     .Add(1);
 
