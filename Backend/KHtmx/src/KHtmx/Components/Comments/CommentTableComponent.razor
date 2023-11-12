@@ -48,17 +48,18 @@
         for (var index = 0; index < _comments.Count; index++)
         {
             var comment = _comments[index];
-            <div style="view-transition-name: @GetViewTransitionName(comment);"
-                 role="row"
-                 id="@GetRowId(comment)"
-                 aria-rowindex="@index"
-                 class="grid grid-cols-comment-table odd:bg-table-odd even:bg-table-even transition-all duration-200 [&:has([data-role='open-dialog']:focus)]:bg-hover [&:has([data-role='open-dialog']:focus)]:outline-none">
+            <div
+                style="view-transition-name: @($"vt_{comment.Id}");"
+                role="row"
+                id="@($"tr_{comment.Id:N}")"
+                aria-rowindex="@index"
+                class="grid grid-cols-comment-table odd:bg-table-odd even:bg-table-even transition-all duration-200 [&:has([data-role='open-dialog']:focus)]:bg-hover [&:has([data-role='open-dialog']:focus)]:outline-none">
                 <div role="cell" aria-colindex="1">
                     <button
                         data-role="open-dialog"
                         class="focus:outline-none"
-                        id="@GetRowColumnButtonId(comment)"
-                        hx-target="closest div"
+                        id="@($"tr_btn_{comment.Id:N}")"
+                        hx-target="body"
                         hx-swap="beforeend"
                         hx-get="@LinkGenerator.GetPathByName(CommentEndpoints.GetCommentDialog.EndpointName, new { id = comment.Id })">
                         @comment.AuthorFirstName @comment.AuthorLastName
@@ -75,35 +76,6 @@
             </div>
         }
     }
-
-    <style>
-    
-    @@keyframes move-down {
-        from {
-            transform: translateY(-100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateY(0);
-            opacity: 1;
-        }    
-    }
-    
-        @foreach (var comment in _comments)
-        {
-            var viewTransitionName = GetViewTransitionName(comment);
-
-            <text>
-                ::view-transition-old(@viewTransitionName) {
-                    animation-duration: 50ms;
-                }
-                
-                ::view-transition-new(@viewTransitionName) {
-                    animation-duration: 50ms;
-                }
-            </text>
-        }
-    </style>
 </div>
 
 @code {
@@ -137,7 +109,7 @@
 
         var commentsFromDb = await query
             .OrderByDescending(x => x.Timestamp)
-            .Take(100)
+            .Take(10)
             .Select(c => new
             {
                 Id = c.Id,
@@ -158,9 +130,5 @@
             })
             .ToList();
     }
-
-    private string GetViewTransitionName(CommentTableDto comment) => $"vt_{comment.Id}";
-    private string GetRowId(CommentTableDto comment) => $"tr_{comment.Id:N}";
-    private string GetRowColumnButtonId(CommentTableDto comment) => $"tr_btn_{comment.Id:N}";
 
 }
