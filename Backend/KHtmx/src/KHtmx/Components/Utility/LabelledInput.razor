@@ -4,8 +4,8 @@
     // TODO: Improve the styling of the floating label
     case LabelType.Floating:
         <div class="floating-label relative">
-            <label for="@Id" class="absolute transition-all duration-200 ease-in-out p-2 pointer-events-none">@Label</label>
-            <input id="@Id" placeholder="@Label" @attributes="AdditionalAttributes" class="placeholder-transparent p-2" />
+            <label for="@Id" class="absolute transition-all duration-200 ease-in-out p-2 pointer-events-none text-gray-500">@Label</label>
+            <input id="@Id" placeholder="@Label" @attributes="AdditionalAttributes" class="placeholder-transparent p-2 border-b-2 border-gray-300 focus:border-blue-500 transition-all duration-200 focus:outline-none bg-transparent" />
             @ChildContent
         </div>
         break;

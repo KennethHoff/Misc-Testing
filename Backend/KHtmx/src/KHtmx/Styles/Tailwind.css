@@ -4,9 +4,8 @@
 
 .floating-label {
     &:is(:not(:has(input:placeholder-shown)), :has(input:focus)) > label {
-        left: 0;
-        top: -10px;
-        font-size: calc((2 / 3) * 1rem);
+        top: -0.8lh;
+        font-size: calc((2 / 3) * 1em);
     }
 }
 

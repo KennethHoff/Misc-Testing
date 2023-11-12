@@ -1,4 +1,7 @@
 ﻿@inject IWebHostEnvironment WebHostEnvironment
+@{
+    var now = TimeProvider.System.GetUtcNow().ToString("O");
+}
 
 <!DOCTYPE html>
 <html
@@ -15,7 +18,7 @@
     <base href="/" />
     <link
         rel="stylesheet"
-        href="app.css?v=@DateTimeOffset.UtcNow.ToString("O")" />
+        href="app.css?v=@now" />
     <link
         rel="icon"
         type="image/png"
@@ -25,7 +28,7 @@
     <script src="htmx/extensions/sse.js"></script>
     @if (WebHostEnvironment.IsDevelopment())
     {
-        <script src="scripts/exception_toast.js" defer></script>
+        <script src="scripts/exception_toast.js?@now"></script>
     }
     <HeadOutlet />
 </head>
