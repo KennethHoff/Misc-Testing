@@ -10,7 +10,8 @@ using KHtmx.Telemetry.Extensions;
 using Lib.AspNetCore.ServerSentEvents;
 using Microsoft.AspNetCore.Identity;
 
-var builder = WebApplication.CreateSlimBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddKhData(builder.Configuration);
 builder.Services.AddIdentity<KhtmxUser, KhtmxRole>()
     .AddEntityFrameworkStores<KhDbContext>()
@@ -22,7 +23,7 @@ builder.Services.AddKHtmxTelemetry(builder.Configuration);
 builder.Services.AddRazorComponents();
 
 builder.Services.AddServerSentEvents();
-// builder.Services.AddHostedService<AdminCommentSpamEventWorker>();
+builder.Services.AddHostedService<KHtmx.HostedServices.AdminCommentSpamEventWorker>();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>(includeInternalTypes: true);
 builder.Services.AddMediatR(opt =>
 {
