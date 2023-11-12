@@ -3,15 +3,15 @@
 {
     // TODO: Improve the styling of the floating label
     case LabelType.Floating:
-        <div class="floating-label relative">
-            <label for="@Id" class="absolute transition-all duration-200 ease-in-out p-1 pointer-events-none text-gray-500">@Label</label>
-            <input id="@Id" placeholder="@Label" @attributes="AdditionalAttributes" class="placeholder-transparent p-1 border-b-2 border-gray-300 focus:border-blue-500 transition-all duration-200 focus:outline-none bg-transparent" />
+        <div class="floating-label relative @WrapperClass">
+            <label for="@Id" class="absolute transition-all duration-200 ease-in-out p-1 pointer-events-none @LabelClass">@Label</label>
+            <input id="@Id" placeholder="@Label" @attributes="AdditionalAttributes" class="placeholder-transparent p-1 border-b-2 transition-all duration-200 focus:outline-none bg-transparent @InputClass" />
             @ChildContent
         </div>
         break;
 
     case LabelType.Inline:
-        <div class="flex flex-row gap-2">
+        <div class="flex flex-row gap-2 @WrapperClass">
             <label for="@Id">@Label</label>
             <input id="@Id" @attributes="AdditionalAttributes" placeholder="@Label" />
             @ChildContent
@@ -33,10 +33,35 @@
     public string Label { get; set; } = string.Empty;
 
     [Parameter] public LabelType LabelType { get; set; } = LabelType.Floating;
+    [Parameter] public RenderFragment ChildContent { get; set; } = default!;
+
+    [Parameter] public string? WrapperClass { get; set; }
+    [Parameter] public string? LabelClass { get; set; }
+    [Parameter] public string? InputClass { get; set; }
 
     [Parameter(CaptureUnmatchedValues = true)]
     public Dictionary<string, object> AdditionalAttributes { get; set; } = new();
 
-    [Parameter] public RenderFragment ChildContent { get; set; } = default!;
+    /// <summary>
+    /// Any of the following attributes are ambiguous and should not be used.
+    /// </summary>
+    private static readonly string[] InvalidAttributes =
+    [
+        "class",
+        "placeholder",
+        "id",
+        "for",
+    ];
+
+    protected override void OnParametersSet()
+    {
+        foreach (var invalidAttribute in InvalidAttributes)
+        {
+            if (AdditionalAttributes.TryGetValue(invalidAttribute, out var invalidValue))
+            {
+                throw new ArgumentException($"AdditionalAttributes cannot contain a {invalidAttribute} attribute. The following value was found: {invalidValue}");
+            }
+        }
+    }
 
 }

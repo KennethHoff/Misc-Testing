@@ -39,7 +39,7 @@
             required
             value="@FormData?.Username"
             aria-invalid="@ValidationFailures.PropertyHasErrors(nameof(FormData.Username))"
-        />
+            InputClass="border-primary focus:border-action" />
 
         <!-- email input -->
         <LabelledInput
@@ -51,9 +51,9 @@
             required
             value="@FormData?.Email"
             aria-invalid="@ValidationFailures.PropertyHasErrors(nameof(FormData.Email))"
-        />
+            InputClass="border-primary focus:border-action" />
         @* </div> *@
-        
+
         <div class="flex flex-col md:flex-row gap-6">
             <!-- FirstName input -->
             <LabelledInput
@@ -64,7 +64,7 @@
                 autocomplete="given-name"
                 value="@FormData?.FirstName"
                 required
-            />
+                InputClass="border-primary focus:border-action" />
 
             <!-- LastName input -->
             <LabelledInput
@@ -75,7 +75,7 @@
                 autocomplete="family-name"
                 value="@FormData?.LastName"
                 required
-            />
+                InputClass="border-primary focus:border-action" />
         </div>
 
         <div class="flex flex-col md:flex-row gap-6">
@@ -86,8 +86,8 @@
                 name="password"
                 type="password"
                 autocomplete="new-password"
-                required 
-            />
+                required
+                InputClass="border-primary focus:border-action" />
 
             <!-- ConfirmPassword input -->
             <LabelledInput
@@ -96,14 +96,13 @@
                 name="confirmPassword"
                 type="password"
                 autocomplete="new-password"
-                required 
-            />
+                required
+                InputClass="border-primary focus:border-action" />
         </div>
-        
+
         <button
             Class="font-bold py-2 px-4 rounded bg-action hover:bg-action-active focus:bg-action-active"
-            Type="submit"
-        >
+            Type="submit">
             Register
         </button>
     </form>
@@ -112,6 +111,6 @@
 @code
 {
     [Parameter] public ValidationFailureCollection ValidationFailures { get; set; } = [];
-    
+
     [Parameter] public RegisterFormDto? FormData { get; set; }
 }

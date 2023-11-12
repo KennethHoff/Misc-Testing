@@ -31,11 +31,11 @@
             Label="Username"
             name="username"
             type="text"
-            class="p-2"
             autofocus
             required
             value="@FormData?.Username"
-            autocomplete="username" />
+            autocomplete="username"
+            InputClass="border-primary focus:border-action" />
 
         <!-- Password Input -->
         <LabelledInput
@@ -43,9 +43,9 @@
             Label="Password"
             name="password"
             type="password"
-            class="p-2"
             required
-            autocomplete="current-password" />
+            autocomplete="current-password"
+            InputClass="border-primary focus:border-action" />
 
         <!-- Remember Me Input -->
         <LabelledInput
@@ -60,8 +60,7 @@
         <!-- Login Button -->
         <button
             type="submit"
-            Class="font-bold py-2 px-4 rounded bg-action hover:bg-action-active focus:bg-action-active"
-        >
+            Class="font-bold py-2 px-4 rounded bg-action hover:bg-action-active focus:bg-action-active">
             Login
         </button>
     </form>
