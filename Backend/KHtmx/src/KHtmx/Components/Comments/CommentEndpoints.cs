@@ -28,19 +28,19 @@ public static class CommentEndpoints
         htmxGroup.MapPost("Comment", CreateComment.Handler)
             .WithName(CreateComment.EndpointName);
 
-        htmxGroup.MapDelete("Comment/{id:guid}", DeleteComment.Handler)
+        htmxGroup.MapDelete("Comment/{id}", DeleteComment.Handler)
             .WithName(DeleteComment.EndpointName);
 
-        htmxGroup.MapPatch("Comment/{id:guid}", UpdateComment.Handler)
+        htmxGroup.MapPatch("Comment/{id}", UpdateComment.Handler)
             .WithName(UpdateComment.EndpointName);
 
         htmxGroup.MapGet("GetCommentTable", GetCommentTable.Handler)
             .WithName(GetCommentTable.EndpointName);
 
-        htmxGroup.MapGet("GetCommentDialog/{id:guid}", GetCommentDialog.Handler)
+        htmxGroup.MapGet("GetCommentDialog/{id}", GetCommentDialog.Handler)
             .WithName(GetCommentDialog.EndpointName);
 
-        htmxGroup.MapGet("GetCommentEditForm/{id:guid}/edit", GetCommentEditForm.Handler)
+        htmxGroup.MapGet("GetCommentEditForm/{id}/edit", GetCommentEditForm.Handler)
             .WithName(GetCommentEditForm.EndpointName);
     }
 
