@@ -19,7 +19,7 @@
 <div class="grid w-full comment-table"
      role="table"
      aria-rowcount="@_comments.Count"
-     hx-swap="outerHTML transition:true"
+     hx-swap="outerHTML"
      hx-trigger="sse:@ServerSentEventNames.CommentTableUpdated"
      hx-get="@(LinkGenerator.GetPathByName(CommentEndpoints.GetCommentTable.EndpointName, Filter?.QueryString))">
 
@@ -49,7 +49,6 @@
         {
             var comment = _comments[index];
             <div
-                style="view-transition-name: @($"vt_{comment.Id}");"
                 role="row"
                 id="@($"tr_{comment.Id:N}")"
                 aria-rowindex="@index"
