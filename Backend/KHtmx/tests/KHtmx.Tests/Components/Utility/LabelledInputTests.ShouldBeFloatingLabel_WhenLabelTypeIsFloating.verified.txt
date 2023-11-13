@@ -1,0 +1,10 @@
+﻿{
+  Instance: {
+    Id: labelled-input,
+    Label: Label
+  },
+  Markup:
+<div class="floating-label relative "><label for="labelled-input" class="absolute transition-all duration-200 ease-in-out p-1 pointer-events-none ">Label</label>
+            <input id="labelled-input" placeholder="Label" class="placeholder-transparent p-1 border-b-2 transition-all duration-200 focus:outline-none bg-transparent " />
+            </div>
+}

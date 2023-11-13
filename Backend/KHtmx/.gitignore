@@ -1,1 +1,4 @@
 app.css
+
+# Ignores Verify files
+*.received.txt

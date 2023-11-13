@@ -1,0 +1,11 @@
+﻿{
+  Instance: {
+    Id: labelled-input,
+    Label: Label,
+    LabelType: Inline
+  },
+  Markup:
+<div class="flex flex-row gap-2 "><label for="labelled-input">Label</label>
+            <input id="labelled-input" placeholder="Label" />
+            </div>
+}
