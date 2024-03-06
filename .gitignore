@@ -1,7 +1,7 @@
 ##### .Net Build Output #####
-artifacts/
-bin/
-obj/
+**/artifacts/
+**/bin/
+**/obj/
 BenchmarkDotNet.Artifacts/
 
 #### Rust Build Output ####
