@@ -1,13 +1,18 @@
-##### .Net Build Output #####
+##### C# #####
 **/artifacts/
 **/bin/
 **/obj/
 BenchmarkDotNet.Artifacts/
 
-#### Rust Build Output ####
+#### Rust ####
 target/
 
-#### Development ####
+#### Zig ####
+**/.zig-cache
+
+#### Node/JavaScript ####
 node_modules/
+
+#### IDEs ####
 .idea/
 *.user
