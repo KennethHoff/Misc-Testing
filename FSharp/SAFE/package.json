@@ -6,16 +6,16 @@
     },
     "scripts": {},
     "dependencies": {
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0"
+        "react": "18.3.1",
+        "react-dom": "18.3.1"
     },
     "devDependencies": {
-        "@types/node": "^20.9.1",
-        "@vitejs/plugin-react": "^4.2.0",
-        "autoprefixer": "^10.4.16",
-        "postcss": "^8.4.31",
-        "sass": "^1.69.5",
-        "tailwindcss": "^3.3.5",
-        "vite": "^5.0.13"
+        "@types/node": "22.7.5",
+        "@vitejs/plugin-react": "4.3.2",
+        "autoprefixer": "10.4.20",
+        "postcss": "8.4.47",
+        "sass": "1.79.4",
+        "tailwindcss": "3.4.13",
+        "vite": "5.4.8"
     }
 }
