@@ -1,9 +1,0 @@
-{
-  "semverGroups": [
-    {
-      "range": "",
-      "dependencies": ["**"],
-      "packages": ["*"]
-    }
-  ]
-}

@@ -12,7 +12,7 @@ type Model = {
 type Msg =
     | SetInput of string
     | LoadTodos of ApiCall<unit, Todo list>
-    | SaveTodo of ApiCall<string, Todo>
+    | SaveTodo of ApiCall<string, Todo list>
 
 let todosApi = Api.makeProxy<ITodosApi> ()
 
@@ -30,7 +30,7 @@ let update msg model =
         | Start() ->
             let loadTodosCmd = Cmd.OfAsync.perform todosApi.getTodos () (Finished >> LoadTodos)
 
-            { model with Todos = Loading }, loadTodosCmd
+            { model with Todos = model.Todos.StartLoading() }, loadTodosCmd
         | Finished todos -> { model with Todos = Loaded todos }, Cmd.none
     | SaveTodo msg ->
         match msg with
@@ -40,10 +40,10 @@ let update msg model =
                 Cmd.OfAsync.perform todosApi.addTodo todo (Finished >> SaveTodo)
 
             { model with Input = "" }, saveTodoCmd
-        | Finished todo ->
+        | Finished todos ->
             {
                 model with
-                    Todos = model.Todos |> RemoteData.map (fun todos -> todos @ [ todo ])
+                    Todos = RemoteData.Loaded todos
             },
             Cmd.none
 
@@ -84,7 +84,8 @@ module ViewComponents =
                     prop.children [
                         match model.Todos with
                         | NotStarted -> Html.text "Not Started."
-                        | Loading -> Html.text "Loading..."
+                        | Loading None -> Html.text "Loading..."
+                        | Loading (Some todos)
                         | Loaded todos ->
                             for todo in todos do
                                 Html.li [ prop.className "my-1"; prop.text todo.Description ]
