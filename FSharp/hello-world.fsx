@@ -1,16 +1,26 @@
-type ThingyMaJigg = Red of string | Blue of int
+let stuff = [ [ 1; 7; 3 ]; [ 1; 7; 6 ]; [ 3; 5; 12 ] ]
 
-// Define a function that takes an integer and returns its square
-let square x =
-  match x with
-  | Red red -> red
-  | Blue blue -> (blue * blue).ToString();
+let thing a =
+    a |> List.toSeq |> Seq.transpose |> Seq.map Seq.toList |> Seq.toList
 
-let thingy = 5;
+let printatron e =
+    Seq.iter
+        (fun outer ->
+            (Seq.iter (fun inner -> printf "%d " inner)) outer
+            printfn "")
+        e
 
-// Print the square of 5
-printfn "The square of %d is: %s" thingy (square (Blue thingy))
+printatron stuff
+printfn ""
 
-// A simple loop that prints numbers from 1 to 5
-for i in 1..5 do
-    printfn "Number: %d" i
+let stuff2 = thing stuff
+printatron stuff2
+printfn ""
+
+let stuff3 = thing stuff2
+printatron stuff3
+printfn ""
+
+let stuff4 = thing stuff3
+printatron stuff4
+printfn ""
