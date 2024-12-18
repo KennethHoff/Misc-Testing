@@ -1,0 +1,2 @@
+[*.{fs,fsx}]
+indent_style = space
