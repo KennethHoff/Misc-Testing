@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CD339651-CDB5-4C6B-8021-E7F021DC59A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld.Api", "src\HelloWorld.Api\HelloWorld.Api.csproj", "{8AC6A1DF-D7CE-47F3-B57D-2CCE8B24CDB6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8AC6A1DF-D7CE-47F3-B57D-2CCE8B24CDB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AC6A1DF-D7CE-47F3-B57D-2CCE8B24CDB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AC6A1DF-D7CE-47F3-B57D-2CCE8B24CDB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AC6A1DF-D7CE-47F3-B57D-2CCE8B24CDB6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8AC6A1DF-D7CE-47F3-B57D-2CCE8B24CDB6} = {CD339651-CDB5-4C6B-8021-E7F021DC59A1}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,435 @@
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+indent_style = tab
+indent_size = 4
+max_line_length = 120
+
+# ReSharper properties
+resharper_apply_auto_detected_rules = false
+resharper_braces_for_for = required
+resharper_braces_for_foreach = required
+resharper_braces_for_ifelse = required
+resharper_braces_for_while = required
+resharper_braces_redundant = false
+resharper_enforce_line_ending_style = true
+resharper_keep_existing_declaration_block_arrangement = true
+resharper_keep_existing_embedded_block_arrangement = true
+resharper_keep_existing_enum_arrangement = true
+resharper_max_initializer_elements_on_line = 1
+resharper_pi_attribute_style = do_not_touch
+resharper_place_accessorholder_attribute_on_same_line = false
+resharper_place_constructor_initializer_on_same_line = false
+resharper_place_expr_method_on_single_line = false
+resharper_space_within_list_pattern_brackets = false
+resharper_trailing_comma_in_multiline_lists = true
+resharper_trailing_comma_in_singleline_lists = false
+resharper_use_heuristics_for_body_style = false
+resharper_use_indent_from_vs = false
+resharper_wrap_array_initializer_style = chop_always
+resharper_wrap_before_arrow_with_expressions = true
+resharper_wrap_lines = true
+resharper_wrap_list_pattern = chop_if_long
+resharper_wrap_object_and_collection_initializer_style = chop_always
+
+# Microsoft .NET properties
+csharp_indent_braces = false
+csharp_new_line_before_members_in_object_initializers = false
+csharp_new_line_before_open_brace = all
+csharp_preferred_modifier_order = public, private, protected, internal, file, static, extern, new, virtual, abstract, sealed, override, readonly, unsafe, volatile, async, required:warning
+csharp_style_namespace_declarations = file_scoped:warning
+csharp_space_between_square_brackets = false
+csharp_style_prefer_utf8_string_literals = true:warning
+dotnet_diagnostic.ca2252.severity = warning
+dotnet_naming_rule.constant_fields_should_be_pascal_case_rule.import_to_resharper = True
+dotnet_naming_rule.constant_fields_should_be_pascal_case_rule.resharper_description = constant_fields_should_be_pascal_case
+dotnet_naming_rule.constant_fields_should_be_pascal_case_rule.resharper_guid = 0dd3d265-22b3-4c51-9254-1e29bd0fab94
+dotnet_naming_rule.constant_fields_should_be_pascal_case_rule.severity = warning
+dotnet_naming_rule.constant_fields_should_be_pascal_case_rule.style = upper_camel_case_style
+dotnet_naming_rule.constant_fields_should_be_pascal_case_rule.symbols = constant_fields_should_be_pascal_case_symbols
+dotnet_naming_style.upper_camel_case_style.capitalization = pascal_case
+dotnet_naming_symbols.constant_fields_should_be_pascal_case_symbols.applicable_accessibilities = local, public, internal, private, protected, protected_internal, private_protected
+dotnet_naming_symbols.constant_fields_should_be_pascal_case_symbols.applicable_kinds = field
+dotnet_naming_symbols.constant_fields_should_be_pascal_case_symbols.required_modifiers = const
+dotnet_naming_symbols.constant_fields_should_be_pascal_case_symbols.resharper_applicable_kinds = constant_field
+dotnet_naming_symbols.constant_fields_should_be_pascal_case_symbols.resharper_required_modifiers = any
+
+# ReSharper inspection severities
+resharper_arrange_accessor_owner_body_highlighting = none
+resharper_arrange_this_qualifier_highlighting = none
+resharper_arrange_type_member_modifiers_highlighting = none
+resharper_arrange_type_modifiers_highlighting = none
+resharper_built_in_type_reference_style_for_member_access_highlighting = none
+resharper_built_in_type_reference_style_highlighting = none
+resharper_inconsistent_naming_highlighting = warning
+resharper_mvc_template_not_resolved_highlighting = none
+resharper_redundant_base_qualifier_highlighting = none
+resharper_suggest_var_or_type_built_in_types_highlighting = none
+resharper_suggest_var_or_type_elsewhere_highlighting = none
+resharper_suggest_var_or_type_simple_types_highlighting = none
+resharper_web_config_module_not_resolved_highlighting = warning
+resharper_web_config_type_not_resolved_highlighting = warning
+resharper_web_config_wrong_module_highlighting = warning
+resharper_redundant_lambda_parameter_type_highlighting = none
+resharper_convert_closure_to_method_group_highlighting = none
+
+[*{.csproj,xml,packages.config,Web.config,props,targets,config,json}]
+indent_style = space
+indent_size = 2
+max_line_length = 10000
+
+[*.cs]
+
+###############################
+# .NET Coding Conventions     #
+###############################
+# Organize usings
+dotnet_sort_system_directives_first = true
+# this. preferences
+dotnet_style_qualification_for_field = false:warning
+dotnet_style_qualification_for_property = false:warning
+dotnet_style_qualification_for_method = false:warning
+dotnet_style_qualification_for_event = false:warning
+# Language keywords vs BCL types preferences
+dotnet_style_predefined_type_for_locals_parameters_members = true:warning
+dotnet_style_predefined_type_for_member_access = true:warning
+# Parentheses preferences
+dotnet_style_parentheses_in_arithmetic_binary_operators = always_for_clarity:warning
+dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity:warning
+dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:warning
+dotnet_style_parentheses_in_other_operators = never_if_unnecessary:warning
+# Modifier preferences
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:warning
+dotnet_style_readonly_field = true:warning
+# Expression-level preferences
+dotnet_style_object_initializer = true:warning
+dotnet_style_collection_initializer = true:warning
+dotnet_style_explicit_tuple_names = true:warning
+dotnet_style_null_propagation = true:warning
+dotnet_style_coalesce_expression = true:warning
+dotnet_style_prefer_is_null_check_over_reference_equality_method = true:warning
+dotnet_style_prefer_inferred_tuple_names = true:warning
+dotnet_style_prefer_inferred_anonymous_type_member_names = true:warning
+dotnet_style_prefer_auto_properties = true:warning
+dotnet_style_prefer_conditional_expression_over_assignment = true:warning
+dotnet_style_prefer_conditional_expression_over_return = false:warning
+
+###############################
+# Naming Conventions          #
+###############################
+# Style Definitions
+dotnet_naming_style.pascal_case_style.capitalization = pascal_case
+# Use PascalCase for constant fields
+dotnet_naming_rule.constant_fields_should_be_pascal_case.severity = warning
+dotnet_naming_rule.constant_fields_should_be_pascal_case.symbols = constant_fields
+dotnet_naming_rule.constant_fields_should_be_pascal_case.style = pascal_case_style
+dotnet_naming_symbols.constant_fields.applicable_kinds = field
+dotnet_naming_symbols.constant_fields.applicable_accessibilities = *
+dotnet_naming_symbols.constant_fields.required_modifiers = const
+
+###############################
+# C# Coding Conventions       #
+###############################
+# var preferences
+csharp_style_var_for_built_in_types = true:warning
+csharp_style_var_when_type_is_apparent = true:warning
+csharp_style_var_elsewhere = true:warning
+csharp_style_prefer_pattern_matching = true:warning
+csharp_style_prefer_range_operator = true:warning
+csharp_style_prefer_not_pattern = true:warning
+# Expression-bodied members
+csharp_style_expression_bodied_methods = false:warning
+csharp_style_expression_bodied_constructors = false:warning
+csharp_style_expression_bodied_operators = false:warning
+csharp_style_expression_bodied_properties = true:warning
+csharp_style_expression_bodied_indexers = true:warning
+csharp_style_expression_bodied_accessors = true:warning
+# Pattern matching preferences
+csharp_style_pattern_matching_over_is_with_cast_check = true:warning
+csharp_style_pattern_matching_over_as_with_null_check = true:warning
+# Null-checking preferences
+csharp_style_throw_expression = true:warning
+csharp_style_conditional_delegate_call = true:warning
+# Modifier preferences
+csharp_preferred_modifier_order = public, private, protected, internal, file, static, extern, new, virtual, abstract, sealed, override, readonly, unsafe, volatile, async : warning
+# Expression-level preferences
+csharp_prefer_braces = true:warning
+csharp_style_deconstructed_variable_declaration = true:warning
+csharp_prefer_simple_default_expression = true:warning
+csharp_style_prefer_local_over_anonymous_function = true:warning
+csharp_style_inlined_variable_declaration = true:warning
+
+###############################
+# C# Formatting Rules         #
+###############################
+# New line preferences
+csharp_new_line_before_open_brace = all
+csharp_new_line_before_else = true
+csharp_new_line_before_catch = true
+csharp_new_line_before_finally = true
+csharp_new_line_before_members_in_object_initializers = false
+csharp_new_line_before_members_in_anonymous_types = true
+csharp_new_line_between_query_expression_clauses = true
+# Indentation preferences
+csharp_indent_case_contents = true
+csharp_indent_switch_labels = true
+csharp_indent_labels = flush_left
+# Space preferences
+csharp_space_after_cast = false
+csharp_space_after_keywords_in_control_flow_statements = true
+csharp_space_between_method_call_parameter_list_parentheses = false
+csharp_space_between_method_declaration_parameter_list_parentheses = false
+csharp_space_between_parentheses = false
+csharp_space_before_colon_in_inheritance_clause = true
+csharp_space_after_colon_in_inheritance_clause = true
+csharp_space_around_binary_operators = before_and_after
+csharp_space_between_method_declaration_empty_parameter_list_parentheses = false
+csharp_space_between_method_call_name_and_opening_parenthesis = false
+csharp_space_between_method_call_empty_parameter_list_parentheses = false
+# Wrapping preferences
+csharp_preserve_single_line_statements = true
+csharp_preserve_single_line_blocks = true
+
+###############################
+# Enabled Roslyn Analyzers    #
+###############################
+
+# CA1062: Validate arguments of public methods
+## We also want internal methods to be validated, as they are - in essence - public to the assembly.
+dotnet_code_quality.CA1062.api_surface = public, internal
+
+# IDE0005: Using directive is unnecessary
+dotnet_diagnostic.ide0005.severity = warning
+
+###############################
+# Disabled Roslyn Analyzers   #
+###############################
+# CS1591: Missing XML comment for publicly visible type or member
+## We had this enabled (as a warning) for over a year, so it's not that big of a deal,
+## But at the same time; What do we gain from it?
+dotnet_diagnostic.cs1591.severity = none
+
+#MA0004: Effectively replaced by CA2007
+dotnet_diagnostic.ma0004.severity = none
+
+#CA2007: Configure Calling .ConfigureAwait on the awaited task.
+## Unbelievable amount of bloat.
+dotnet_diagnostic.ca2007.severity = none
+
+# SA1402: File may only contain a single type
+## Feels like this adds needless file bloat.
+dotnet_diagnostic.sa1402.severity = none
+
+# IDE0058: Expression value is never used
+## This introduces a lot of noise. Particularly in fluent APIs.
+dotnet_diagnostic.ide0058.severity = none
+
+# IDE0072 & IDE0010: Populate switch
+## This is fairly buggy after .Net 9 (https://github.com/dotnet/roslyn/issues/57523)
+dotnet_diagnostic.ide0072.severity = none
+dotnet_diagnostic.ide0010.severity = none
+
+# IDE0200: Unnecessary lambda expression
+## I find this can make the code less readable.
+dotnet_diagnostic.ide0200.severity = none
+
+# CA1033: Interface methods should be callable by child types
+## We do not want to follow this rule, as we want to be able to have methods that are only callable by the interface itself.
+dotnet_diagnostic.ca1033.severity = none
+
+# CA1034: Nested types should not be visible
+## A part of how we structure our endpoints is that we have a nested type (under an over-arching type) for each endpoint.
+### This structure is similar in nature to Controllers in ASP.NET Core, and we want to keep it that way.
+dotnet_diagnostic.ca1034.severity = none
+
+# CA1812: Avoid uninstantiated internal classes
+## We have a lot of internal classes that are used by the Dependency Injection framework, and thus are not instantiated by us.
+### There are a lot of false positives here, so we disable this rule.
+dotnet_diagnostic.ca1812.severity = none
+
+# CA1032: Implement standard exception constructors
+## Custom exceptions often have custom constructors for a reason, and thus we do not want to follow this rule.
+dotnet_diagnostic.ca1032.severity = none
+
+# MA0051: Method is too long
+## Splitting up methods into smaller methods can sometimes make the code harder to read, 
+## and thus we do not want to follow this rule in all cases.
+dotnet_diagnostic.ma0051.severity = none
+
+# MA0026: Fix TO-DO comments
+## We do not necessarily want to fix TO-DO comments immediately, as we want to keep track of them.
+dotnet_diagnostic.ma0026.severity = none
+
+# SA1101: Prefix local calls with this
+## We do not want to prefix local calls with this, as it makes the code harder to read.
+dotnet_diagnostic.sa1101.severity = none
+
+# SA1623: Property summary documentation should match accessors
+## We do not want to follow this rule, as it is often redundant.
+dotnet_diagnostic.sa1623.severity = none
+
+# SA1309: Field names should not begin with an underscore
+## We do _not_ want to follow this rule, as we use underscores to denote private fields.
+dotnet_diagnostic.sa1309.severity = none
+# SX1309: Field names _should_ begin with an underscore
+## We _do_ want to follow this rule, as we use underscores to denote private fields.
+dotnet_diagnostic.sx1309.severity = warning
+
+# SA1633: File should have header
+## Definition of bloat, and we do not want to follow this rule.
+dotnet_diagnostic.sa1633.severity = none
+
+# CA2225: Operator overloads have named alternates
+## More needless bloat for application-code.
+dotnet_diagnostic.CA2225.severity = none
+
+# IDE0320: Make anonymous function static
+## While I conceptually agree with this, it introduces a lot of noise for very little real gain.
+dotnet_diagnostic.ide0320.severity = none
+
+#CS8524: Unexhaustive switch expression (Enum cringe where (MyEnum)500 is a valid value)
+## This is a non-issue; Just don't be stupid.
+dotnet_diagnostic.cs8524.severity = none
+
+###############################
+# Redundant analyzers         #
+###############################
+
+# MA0004: Effectively replaced by CA2007
+# (MA0004: Use Task.ConfigureAwait)
+# (CA2007: Do not directly await a Task in a finally block)
+dotnet_diagnostic.ma0004.severity = none
+
+# MA0016: Effectively replaced by CA1002
+# (MA0016: Prefer using collection abstraction over implementation)
+# (CA1002: Do not expose generic lists)
+dotnet_diagnostic.ma0016.severity = none
+
+# MA0018: Replaced by CA1000
+# (MA0018: Do not declare static members on generic types)
+# (CA1000: Do not declare static members on generic types)
+dotnet_diagnostic.ma0018.severity = none
+
+# MA0037: Effectively replaced by SA1106
+# (MA0037: Remove empty statement)
+# (SA1106: CodeMustNotContainEmptyStatements)
+dotnet_diagnostic.ma0037.severity = none
+
+# MA0048: Effectively replaced by SA1649
+# (MA0048: File name must match type name)
+# (SA1649: FileNameMustMatchTypeName)
+dotnet_diagnostic.ma0048.severity = none
+
+# MA0056: Effectively replaced by CA2214
+# (MA0056: Do not call overridable methods in constructors)
+# (CA2214: Do not call overridable methods in constructors)
+dotnet_diagnostic.ma0056.severity = none
+
+# SA1600: Effectively replaced by CS1591
+# (CS1591: Missing XML comment for publicly visible type or member)
+# (SA1600: Elements should be documented)
+dotnet_diagnostic.sa1600.severity = none
+
+# SA1611: Effectively replaced by CS1573
+# (SA1611: ElementParametersMustBeDocumented)
+# (CS1573: Parameter 'parameter' has no matching param tag in the XML comment for 'parameter')
+dotnet_diagnostic.sa1611.severity = none
+
+# SA1602: Effectively replaced by CS5191
+dotnet_diagnostic.sa1602.severity = none
+
+###############################
+# Disabled for CSharpier      #
+###############################
+dotnet_diagnostic.IDE0055.severity = none
+dotnet_diagnostic.SA1000.severity = none
+dotnet_diagnostic.SA1009.severity = none
+dotnet_diagnostic.SA1111.severity = none
+dotnet_diagnostic.SA1118.severity = none
+dotnet_diagnostic.SA1137.severity = none
+dotnet_diagnostic.SA1413.severity = none
+dotnet_diagnostic.SA1500.severity = none
+dotnet_diagnostic.SA1501.severity = none
+dotnet_diagnostic.SA1502.severity = none
+dotnet_diagnostic.SA1504.severity = none
+dotnet_diagnostic.SA1516.severity = none
+dotnet_diagnostic.SA1001.severity = none
+dotnet_diagnostic.SA1002.severity = none
+dotnet_diagnostic.SA1003.severity = none
+dotnet_diagnostic.SA1007.severity = none
+dotnet_diagnostic.SA1008.severity = none
+dotnet_diagnostic.SA1010.severity = none
+dotnet_diagnostic.SA1011.severity = none
+dotnet_diagnostic.SA1012.severity = none
+dotnet_diagnostic.SA1013.severity = none
+dotnet_diagnostic.SA1014.severity = none
+dotnet_diagnostic.SA1015.severity = none
+dotnet_diagnostic.SA1016.severity = none
+dotnet_diagnostic.SA1017.severity = none
+dotnet_diagnostic.SA1018.severity = none
+dotnet_diagnostic.SA1019.severity = none
+dotnet_diagnostic.SA1020.severity = none
+dotnet_diagnostic.SA1021.severity = none
+dotnet_diagnostic.SA1022.severity = none
+dotnet_diagnostic.SA1023.severity = none
+dotnet_diagnostic.SA1024.severity = none
+dotnet_diagnostic.SA1025.severity = none
+dotnet_diagnostic.SA1026.severity = none
+dotnet_diagnostic.SA1027.severity = none
+dotnet_diagnostic.SA1028.severity = none
+dotnet_diagnostic.SA1102.severity = none
+dotnet_diagnostic.SA1103.severity = none
+dotnet_diagnostic.SA1104.severity = none
+dotnet_diagnostic.SA1105.severity = none
+dotnet_diagnostic.SA1107.severity = none
+dotnet_diagnostic.SA1110.severity = none
+dotnet_diagnostic.SA1112.severity = none
+dotnet_diagnostic.SA1113.severity = none
+dotnet_diagnostic.SA1114.severity = none
+dotnet_diagnostic.SA1115.severity = none
+dotnet_diagnostic.SA1116.severity = none
+dotnet_diagnostic.SA1117.severity = none
+dotnet_diagnostic.SA1127.severity = none
+dotnet_diagnostic.SA1128.severity = none
+dotnet_diagnostic.SA1136.severity = none
+dotnet_diagnostic.SA1505.severity = none
+dotnet_diagnostic.SA1506.severity = none
+dotnet_diagnostic.SA1507.severity = none
+dotnet_diagnostic.SA1508.severity = none
+dotnet_diagnostic.SA1509.severity = none
+dotnet_diagnostic.SA1510.severity = none
+dotnet_diagnostic.SA1511.severity = none
+dotnet_diagnostic.SA1515.severity = none
+dotnet_diagnostic.SA1517.severity = none
+
+###############################
+# Auto-generated code         #
+###############################
+[{**/ApiClient/**.cs,artifacts/**}]
+generated_code = true
+
+###############################
+# Database Migrations         #
+###############################
+[**/Migrations/*.cs]
+generated_code = true
+
+###############################
+# Test Projects               #
+###############################
+[**/*Tests.*/**.cs]
+# SA1649: File name should match first type name
+dotnet_diagnostic.sa1649.severity = none
+# CA2000: Dispose objects before losing scope
+dotnet_diagnostic.ca2000.severity = none
+# CA1062: Validate arguments of public methods
+dotnet_diagnostic.ca1062.severity = none
+# CA1822: Mark members as static
+dotnet_diagnostic.ca1822.severity = none
+# CA1515: Make types internal (Doesn't really work for tests; They have to be public)
+dotnet_diagnostic.ca1515.severity = none
+
